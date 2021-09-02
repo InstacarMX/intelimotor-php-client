@@ -1,21 +1,35 @@
 <?php
 
 /*
- * Copyright (c) Instacar 2021. All rights reserved.
+ * Copyright (c) Instacar 2021.
+ * This file is part of IntelimotorApiClient.
+ *
+ * IntelimotorApiClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IntelimotorApiClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU  Lesser General Public License
+ * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace InstacarMX\IntelimotorApiClient\Test\Integration;
+namespace Instacar\IntelimotorApiClient\Test\Integration;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use InstacarMX\IntelimotorApiClient\IntelimotorClient;
-use InstacarMX\IntelimotorApiClient\Model\Brand;
-use InstacarMX\IntelimotorApiClient\Model\BusinessUnit;
-use InstacarMX\IntelimotorApiClient\Model\Color;
-use InstacarMX\IntelimotorApiClient\Model\IdNameTrait;
-use InstacarMX\IntelimotorApiClient\Model\Model;
-use InstacarMX\IntelimotorApiClient\Model\Trim;
-use InstacarMX\IntelimotorApiClient\Model\Unit;
-use InstacarMX\IntelimotorApiClient\Model\Year;
+use Instacar\IntelimotorApiClient\IntelimotorClient;
+use Instacar\IntelimotorApiClient\Model\Brand;
+use Instacar\IntelimotorApiClient\Model\BusinessUnit;
+use Instacar\IntelimotorApiClient\Model\Color;
+use Instacar\IntelimotorApiClient\Model\IdNameTrait;
+use Instacar\IntelimotorApiClient\Model\Model;
+use Instacar\IntelimotorApiClient\Model\Trim;
+use Instacar\IntelimotorApiClient\Model\Unit;
+use Instacar\IntelimotorApiClient\Model\Year;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
@@ -30,8 +44,6 @@ use Symfony\Component\Serializer\Serializer;
 class IntelimotorClientTest extends TestCase
 {
     private $client;
-    /** @var string */
-    private $businessUnitId;
 
     protected function setUp(): void
     {

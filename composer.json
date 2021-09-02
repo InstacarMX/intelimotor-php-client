@@ -1,19 +1,13 @@
 {
     "name": "instacar/intelimotor-api-client",
-    "description": "An API Client to talk with the Intelimotor API",
     "type": "library",
-    "license": "GNU LGPLv3",
-    "autoload": {
-        "psr-4": {
-            "InstacarMX\\IntelimotorApiClient\\": "src/",
-            "InstacarMX\\IntelimotorApiClient\\Test\\": "tests/"
-        }
-    },
+    "description": "An API Client to talk with the Intelimotor API",
+    "keywords": [
+        "intelimotor"
+    ],
+    "license": "LGPL-3.0-only",
     "authors": [
-        {
-            "name": "Brandon Antonio Lorenzo",
-            "email": "bantonio@gtglobal.com"
-        }
+        {"name": "Brandon Antonio Lorenzo", "email": "bantonio@gtglobal.com"}
     ],
     "require": {
         "php": ">=7.3",
@@ -33,5 +27,15 @@
     "replace": {
         "symfony/polyfill-php73": "*",
         "symfony/polyfill-php72": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Instacar\\IntelimotorApiClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Instacar\\IntelimotorApiClient\\Test\\": "tests/"
+        }
     }
 }

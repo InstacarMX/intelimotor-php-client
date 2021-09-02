@@ -1,32 +1,46 @@
 <?php
 
 /*
- * Copyright (c) Instacar 2021. All rights reserved.
+ * Copyright (c) Instacar 2021.
+ * This file is part of IntelimotorApiClient.
+ *
+ * IntelimotorApiClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IntelimotorApiClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU  Lesser General Public License
+ * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace InstacarMX\IntelimotorApiClient;
+namespace Instacar\IntelimotorApiClient;
 
-use InstacarMX\IntelimotorApiClient\Model\Brand;
-use InstacarMX\IntelimotorApiClient\Model\BusinessUnit;
-use InstacarMX\IntelimotorApiClient\Model\Color;
-use InstacarMX\IntelimotorApiClient\Model\Model;
-use InstacarMX\IntelimotorApiClient\Model\Trim;
-use InstacarMX\IntelimotorApiClient\Model\Unit;
-use InstacarMX\IntelimotorApiClient\Model\Year;
-use InstacarMX\IntelimotorApiClient\Response\BrandResponse;
-use InstacarMX\IntelimotorApiClient\Response\BrandsResponse;
-use InstacarMX\IntelimotorApiClient\Response\BusinessUnitResponse;
-use InstacarMX\IntelimotorApiClient\Response\BusinessUnitsResponse;
-use InstacarMX\IntelimotorApiClient\Response\ColorResponse;
-use InstacarMX\IntelimotorApiClient\Response\ColorsResponse;
-use InstacarMX\IntelimotorApiClient\Response\ModelResponse;
-use InstacarMX\IntelimotorApiClient\Response\ModelsResponse;
-use InstacarMX\IntelimotorApiClient\Response\TrimResponse;
-use InstacarMX\IntelimotorApiClient\Response\TrimsResponse;
-use InstacarMX\IntelimotorApiClient\Response\UnitResponse;
-use InstacarMX\IntelimotorApiClient\Response\UnitsResponse;
-use InstacarMX\IntelimotorApiClient\Response\YearResponse;
-use InstacarMX\IntelimotorApiClient\Response\YearsResponse;
+use Instacar\IntelimotorApiClient\Model\Brand;
+use Instacar\IntelimotorApiClient\Model\BusinessUnit;
+use Instacar\IntelimotorApiClient\Model\Color;
+use Instacar\IntelimotorApiClient\Model\Model;
+use Instacar\IntelimotorApiClient\Model\Trim;
+use Instacar\IntelimotorApiClient\Model\Unit;
+use Instacar\IntelimotorApiClient\Model\Year;
+use Instacar\IntelimotorApiClient\Response\BrandResponse;
+use Instacar\IntelimotorApiClient\Response\BrandsResponse;
+use Instacar\IntelimotorApiClient\Response\BusinessUnitResponse;
+use Instacar\IntelimotorApiClient\Response\BusinessUnitsResponse;
+use Instacar\IntelimotorApiClient\Response\ColorResponse;
+use Instacar\IntelimotorApiClient\Response\ColorsResponse;
+use Instacar\IntelimotorApiClient\Response\ModelResponse;
+use Instacar\IntelimotorApiClient\Response\ModelsResponse;
+use Instacar\IntelimotorApiClient\Response\TrimResponse;
+use Instacar\IntelimotorApiClient\Response\TrimsResponse;
+use Instacar\IntelimotorApiClient\Response\UnitResponse;
+use Instacar\IntelimotorApiClient\Response\UnitsResponse;
+use Instacar\IntelimotorApiClient\Response\YearResponse;
+use Instacar\IntelimotorApiClient\Response\YearsResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
