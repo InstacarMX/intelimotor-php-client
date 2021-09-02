@@ -24,10 +24,6 @@
         "doctrine/annotations": "^1.13",
         "phpstan/phpstan": "^0.12.97"
     },
-    "replace": {
-        "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php72": "*"
-    },
     "autoload": {
         "psr-4": {
             "Instacar\\IntelimotorApiClient\\": "src/"
