@@ -62,6 +62,7 @@ class Unit
      * @SerializedName("isSold")
      * @var bool|null
      */
+    #[SerializedName('isSold')]
     private $sold;
 
     /**

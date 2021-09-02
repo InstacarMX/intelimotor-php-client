@@ -20,7 +20,6 @@
 
 namespace Instacar\IntelimotorApiClient\Test\Integration;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Instacar\IntelimotorApiClient\IntelimotorClient;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
@@ -31,15 +30,6 @@ use Instacar\IntelimotorApiClient\Model\Trim;
 use Instacar\IntelimotorApiClient\Model\Unit;
 use Instacar\IntelimotorApiClient\Model\Year;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
-use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class IntelimotorClientTest extends TestCase
 {
@@ -47,19 +37,7 @@ class IntelimotorClientTest extends TestCase
 
     protected function setUp(): void
     {
-        $httpClient = HttpClient::create();
-        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
-        $nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
-        $propertyTypeExtractor = new ReflectionExtractor();
-        $serializer = new Serializer(
-            [
-                new ObjectNormalizer($classMetadataFactory, $nameConverter, null, $propertyTypeExtractor),
-                new ArrayDenormalizer(),
-            ],
-            ['json' => new JsonEncoder()],
-        );
-
-        $this->client = new IntelimotorClient($_SERVER['API_KEY'], $_SERVER['API_SECRET'], $httpClient, $serializer);
+        $this->client = IntelimotorClient::createDefault($_SERVER['API_KEY'], $_SERVER['API_SECRET']);
     }
 
     public function testBusinessUnits(): BusinessUnit

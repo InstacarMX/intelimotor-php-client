@@ -20,6 +20,7 @@
 
 namespace Instacar\IntelimotorApiClient;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
@@ -41,6 +42,17 @@ use Instacar\IntelimotorApiClient\Response\UnitResponse;
 use Instacar\IntelimotorApiClient\Response\UnitsResponse;
 use Instacar\IntelimotorApiClient\Response\YearResponse;
 use Instacar\IntelimotorApiClient\Response\YearsResponse;
+use LogicException;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -50,30 +62,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class IntelimotorClient
 {
-    /** @var HttpClient */
-    private $client;
+    /** @var ApiHttpClient */
+    private $apiClient;
 
     /**
-     * @param string $apiKey
-     * @param string $apiSecret
-     * @param HttpClientInterface $client
+     * @param HttpClientInterface $httpClient
      * @param SerializerInterface $serializer
      */
-    public function __construct(
-        string $apiKey,
-        string $apiSecret,
-        HttpClientInterface $client,
-        SerializerInterface $serializer
-    ) {
-        $apiClient = $client->withOptions([
-            'base_uri' => 'https://app.intelimotor.com/api/',
-            'query' => [
-                'apiKey' => $apiKey,
-                'apiSecret' => $apiSecret,
-            ],
-        ]);
-
-        $this->client = new HttpClient($apiClient, $serializer);
+    public function __construct(HttpClientInterface $httpClient, SerializerInterface $serializer)
+    {
+        $this->apiClient = new ApiHttpClient($httpClient, $serializer);
     }
 
     /**
@@ -85,7 +83,7 @@ class IntelimotorClient
      */
     public function getBusinessUnits(): iterable
     {
-        return $this->client->collectionRequest(
+        return $this->apiClient->collectionRequest(
             BusinessUnitsResponse::class,
             'business-units',
         );
@@ -101,7 +99,7 @@ class IntelimotorClient
      */
     public function getBusinessUnit(string $businessUnitId): BusinessUnit
     {
-        return $this->client->itemRequest(
+        return $this->apiClient->itemRequest(
             BusinessUnitResponse::class,
             "business-units/$businessUnitId",
         );
@@ -116,7 +114,7 @@ class IntelimotorClient
      */
     public function getColors(): iterable
     {
-        return $this->client->collectionRequest(
+        return $this->apiClient->collectionRequest(
             ColorsResponse::class,
             'colors',
         );
@@ -131,7 +129,7 @@ class IntelimotorClient
      */
     public function getColorsCsv(): iterable
     {
-        $colors = $this->client->csvRequest('colors');
+        $colors = $this->apiClient->csvRequest('colors');
 
         foreach ($colors as $color) {
             yield new Color($color['colorId'], $color['name']);
@@ -148,7 +146,7 @@ class IntelimotorClient
      */
     public function getColor(string $colorId): Color
     {
-        return $this->client->itemRequest(
+        return $this->apiClient->itemRequest(
             ColorResponse::class,
             "colors/$colorId",
         );
@@ -164,7 +162,7 @@ class IntelimotorClient
      */
     public function getBrands(string $country = 'MX'): iterable
     {
-        return $this->client->collectionRequest(
+        return $this->apiClient->collectionRequest(
             BrandsResponse::class,
             'brands',
             'GET',
@@ -182,7 +180,7 @@ class IntelimotorClient
      */
     public function getBrandsCsv(string $country = 'MX'): iterable
     {
-        $brands = $this->client->csvRequest('brands', ['query' => ['countryCode' => $country]]);
+        $brands = $this->apiClient->csvRequest('brands', ['query' => ['countryCode' => $country]]);
 
         foreach ($brands as $brand) {
             yield new Brand($brand['brandId'], $brand['name']);
@@ -199,7 +197,7 @@ class IntelimotorClient
      */
     public function getBrand(string $brandId): Brand
     {
-        return $this->client->itemRequest(
+        return $this->apiClient->itemRequest(
             BrandResponse::class,
             "brands/$brandId",
         );
@@ -215,7 +213,7 @@ class IntelimotorClient
      */
     public function getModels(string $brandId): iterable
     {
-        return $this->client->collectionRequest(
+        return $this->apiClient->collectionRequest(
             ModelsResponse::class,
             "brands/$brandId/models",
         );
@@ -231,7 +229,7 @@ class IntelimotorClient
      */
     public function getModelsCsv(string $country = 'MX'): iterable
     {
-        $models = $this->client->csvRequest('models', ['query' => ['countryCode' => $country]]);
+        $models = $this->apiClient->csvRequest('models', ['query' => ['countryCode' => $country]]);
 
         foreach ($models as $model) {
             yield new Model($model['modelId'], $model['name'], new Brand($model['brandId']));
@@ -249,7 +247,7 @@ class IntelimotorClient
      */
     public function getModel(string $brandId, string $modelId): Model
     {
-        return $this->client->itemRequest(
+        return $this->apiClient->itemRequest(
             ModelResponse::class,
             "brands/$brandId/models/$modelId",
         );
@@ -266,7 +264,7 @@ class IntelimotorClient
      */
     public function getYears(string $brandId, string $modelId): iterable
     {
-        return $this->client->collectionRequest(
+        return $this->apiClient->collectionRequest(
             YearsResponse::class,
             "brands/$brandId/models/$modelId/years",
         );
@@ -281,7 +279,7 @@ class IntelimotorClient
      */
     public function getYearsCsv($country = 'MX'): iterable
     {
-        $years = $this->client->csvRequest('years', ['query' => ['countryCode' => $country]]);
+        $years = $this->apiClient->csvRequest('years', ['query' => ['countryCode' => $country]]);
 
         foreach ($years as $year) {
             yield new Year($year['yearId'], $year['name'], new Model($year['modelId']));
@@ -300,7 +298,7 @@ class IntelimotorClient
      */
     public function getYear(string $brandId, string $modelId, string $yearId): Year
     {
-        return $this->client->itemRequest(
+        return $this->apiClient->itemRequest(
             YearResponse::class,
             "brands/$brandId/models/$modelId/years/$yearId",
         );
@@ -318,7 +316,7 @@ class IntelimotorClient
      */
     public function getTrims(string $brandId, string $modelId, string $yearId): iterable
     {
-        return $this->client->collectionRequest(
+        return $this->apiClient->collectionRequest(
             TrimsResponse::class,
             "brands/$brandId/models/$modelId/years/$yearId/trims",
         );
@@ -334,7 +332,7 @@ class IntelimotorClient
 
     public function getTrimsCsv($country = 'MX'): iterable
     {
-        $trims = $this->client->csvRequest('trims', ['query' => ['countryCode' => $country]]);
+        $trims = $this->apiClient->csvRequest('trims', ['query' => ['countryCode' => $country]]);
 
         foreach ($trims as $trim) {
             yield new Trim($trim['trimId'], $trim['name'], new Year($trim['yearId']));
@@ -354,7 +352,7 @@ class IntelimotorClient
      */
     public function getTrim(string $brandId, string $modelId, string $yearId, string $trimId): Trim
     {
-        return $this->client->itemRequest(
+        return $this->apiClient->itemRequest(
             TrimResponse::class,
             "brands/$brandId/models/$modelId/years/$yearId/trims/$trimId",
         );
@@ -369,7 +367,7 @@ class IntelimotorClient
      */
     public function getUnits(): iterable
     {
-        return $this->client->paginatedRequest(UnitsResponse::class, 'units');
+        return $this->apiClient->paginatedRequest(UnitsResponse::class, 'units');
     }
 
     /**
@@ -382,6 +380,50 @@ class IntelimotorClient
      */
     public function getUnit(string $id): Unit
     {
-        return $this->client->itemRequest(UnitResponse::class, 'units/' . $id);
+        return $this->apiClient->itemRequest(UnitResponse::class, 'units/' . $id);
+    }
+
+    public static function createDefault(string $apiKey, string $apiSecret): self
+    {
+        if (!class_exists(HttpClient::class)) {
+            throw new LogicException(
+                'You must install the Symfony HTTP Client component.' . PHP_EOL .
+                'Please, execute "composer require symfony/http-client" in your project root'
+            );
+        }
+        if (!class_exists(PropertyAccess::class)) {
+            throw new LogicException(
+                'You must install the Property Access component.' . PHP_EOL .
+                'Please, execute "composer require symfony/property-access" in your project root'
+            );
+        }
+        if (PHP_VERSION_ID < 80000 && !class_exists(AnnotationReader::class)) {
+            throw new LogicException(
+                'You must install the Doctrine Annotations.' . PHP_EOL .
+                'Please, execute "composer require doctrine/annotations" in your project root'
+            );
+        }
+
+        $httpClient = HttpClient::create([
+            'base_uri' => 'https://app.intelimotor.com/api/',
+            'query' => [
+                'apiKey' => $apiKey,
+                'apiSecret' => $apiSecret,
+            ],
+        ]);
+
+        $annotationReader = PHP_VERSION_ID < 80000 ? new AnnotationReader() : null;
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader($annotationReader));
+        $nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
+        $propertyTypeExtractor = new ReflectionExtractor();
+        $serializer = new Serializer(
+            [
+                new ObjectNormalizer($classMetadataFactory, $nameConverter, null, $propertyTypeExtractor),
+                new ArrayDenormalizer(),
+            ],
+            ['json' => new JsonEncoder()],
+        );
+
+        return new self($httpClient, $serializer);
     }
 }

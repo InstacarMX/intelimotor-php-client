@@ -31,7 +31,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class HttpClient
+class ApiHttpClient
 {
     /** @var HttpClientInterface */
     private $client;
