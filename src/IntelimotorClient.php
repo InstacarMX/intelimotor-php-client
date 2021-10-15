@@ -44,7 +44,6 @@ use Instacar\IntelimotorApiClient\Response\YearResponse;
 use Instacar\IntelimotorApiClient\Response\YearsResponse;
 use LogicException;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -53,7 +52,6 @@ use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -67,10 +65,37 @@ class IntelimotorClient
 
     /**
      * @param HttpClientInterface $httpClient
-     * @param SerializerInterface $serializer
+     * @param Serializer|null $serializer
      */
-    public function __construct(HttpClientInterface $httpClient, SerializerInterface $serializer)
+    public function __construct(HttpClientInterface $httpClient, ?Serializer $serializer = null)
     {
+        if ($serializer !== null) {
+            trigger_deprecation(
+                'instacar/intelimotor-api-client',
+                '1.1',
+                'Passing a serializer to the %s is depreciated.',
+                self::class
+            );
+        }
+
+        if (PHP_VERSION_ID < 80000 && !class_exists(AnnotationReader::class)) {
+            throw new LogicException(
+                'You must install the Doctrine Annotations.' . PHP_EOL .
+                'Please, execute "composer require doctrine/annotations" in your project root'
+            );
+        }
+
+        $annotationReader = PHP_VERSION_ID < 80000 ? new AnnotationReader() : null;
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader($annotationReader));
+        $nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
+        $propertyTypeExtractor = new ReflectionExtractor();
+        $serializer = new Serializer(
+            [
+                new ObjectNormalizer($classMetadataFactory, $nameConverter, null, $propertyTypeExtractor),
+                new ArrayDenormalizer(),
+            ],
+            ['json' => new JsonEncoder()],
+        );
         $this->apiClient = new ApiHttpClient($httpClient, $serializer);
     }
 
@@ -383,24 +408,15 @@ class IntelimotorClient
         return $this->apiClient->itemRequest(UnitResponse::class, 'units/' . $id);
     }
 
+    /**
+     * @deprecated Use the constructor with no arguments
+     */
     public static function createDefault(string $apiKey, string $apiSecret): self
     {
         if (!class_exists(HttpClient::class)) {
             throw new LogicException(
                 'You must install the Symfony HTTP Client component.' . PHP_EOL .
                 'Please, execute "composer require symfony/http-client" in your project root'
-            );
-        }
-        if (!class_exists(PropertyAccess::class)) {
-            throw new LogicException(
-                'You must install the Property Access component.' . PHP_EOL .
-                'Please, execute "composer require symfony/property-access" in your project root'
-            );
-        }
-        if (PHP_VERSION_ID < 80000 && !class_exists(AnnotationReader::class)) {
-            throw new LogicException(
-                'You must install the Doctrine Annotations.' . PHP_EOL .
-                'Please, execute "composer require doctrine/annotations" in your project root'
             );
         }
 
@@ -412,18 +428,6 @@ class IntelimotorClient
             ],
         ]);
 
-        $annotationReader = PHP_VERSION_ID < 80000 ? new AnnotationReader() : null;
-        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader($annotationReader));
-        $nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
-        $propertyTypeExtractor = new ReflectionExtractor();
-        $serializer = new Serializer(
-            [
-                new ObjectNormalizer($classMetadataFactory, $nameConverter, null, $propertyTypeExtractor),
-                new ArrayDenormalizer(),
-            ],
-            ['json' => new JsonEncoder()],
-        );
-
-        return new self($httpClient, $serializer);
+        return new self($httpClient);
     }
 }

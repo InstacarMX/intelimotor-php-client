@@ -48,32 +48,22 @@ foreach ($marcas as $marca) {
 
 Si desea ver los métodos y modelos implementados, por favor, consulte la documentación.
 ### Avanzado
-Si deseas utilizar tus propias implementaciones del cliente HTTP de Symfony o utilizar otro tipo de serializador para
-esta librería, puedes instanciar directamente el ``IntelimotorClient`` con el cliente y el serializador.
+Si deseas utilizar tus propias implementaciones del cliente HTTP de Symfony, puedes instanciar directamente el 
+``IntelimotorClient`` con el cliente HTTP.
 
 ~~~php
 use Instacar\IntelimotorApiClient\IntelimotorClient
 
-$cliente = new IntelimotorClient($clienteHttp, $serializador);
+$cliente = new IntelimotorClient($clienteHttp);
 ~~~
 
 Nota: Si utiliza esta manera de inicializar el cliente, usted es el responsable de proporcionar la url base junto con la
-apiKey y el apiSecret al cliente, y de instanciar correctamente los aditamentos para el serializador. A continuación se
-anexa la configuración por defecto usada en ``IntelimotorClient::createDefault``:
+apiKey y el apiSecret al cliente. A continuación se anexa la configuración por defecto usada en 
+``IntelimotorClient::createDefault``:
 
 ~~~php
 use Instacar\IntelimotorApiClient\IntelimotorClient;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
-use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 $httpClient = HttpClient::create([
     'base_uri' => 'https://app.intelimotor.com/api/', // La URL base para la API de Intelimotor
@@ -83,21 +73,20 @@ $httpClient = HttpClient::create([
     ],
 ]);
 
-$annotationReader = PHP_VERSION_ID < 80000 ? new AnnotationReader() : null; // El lector de anotaciones de Doctrine o nulo para usar los atributos de PHP 8.0
-$classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader($annotationReader)); // El cargador de metadatos mediante anotaciones
-$nameConverter = new MetadataAwareNameConverter($classMetadataFactory); // El conversor de nombres para soportar nombres no estándares en la serialización
-$propertyTypeExtractor = new ReflectionExtractor(); // El extractor de tipos mediante serialización para soportar tipos estrictos
-$serializer = new Serializer(
-    [
-        new ObjectNormalizer($classMetadataFactory, $nameConverter, null, $propertyTypeExtractor), // El normalizador de objetos para permitir la serialización de objetos
-        new ArrayDenormalizer(), // El denormalizador de arreglos para soportar colecciones
-    ],
-    ['json' => new JsonEncoder()], // El codificador de JSON para leer e interpretar JSON
-);
-
-return new IntelimotorClient($httpClient, $serializer);
+return new IntelimotorClient($httpClient);
 ~~~
 
 ## Licencia
 Esta librería utiliza la licencia Lesser General Public Licence Version 3 (LGPLv3). Puede consultarla en el archivo
 [LICENSE](LICENSE).
+
+## Registro de cambios
+### v1.0.0
+- Soporta BusinessUnits, Colors, Brands, Models, Years, Trims y Units.
+- Soporta operaciones sobre items, colecciones y archivos CSV.
+- Utiliza clases PHP para representar los Modelos.
+
+### v1.0.1
+- Se depreció el configurar manualmente el serializador, debido a que está fuertemente acoplado con el funcionamiento
+interno de la librería, y no hay una necesidad real de reemplazarlo de parte del usuario.
+- Se actualizaron las librerías del proyecto.
