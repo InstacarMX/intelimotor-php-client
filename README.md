@@ -35,6 +35,13 @@ $cliente = IntelimotorClient::createDefault($apiKey, $apiSecret);
 $marcas = $cliente->getBrands();
 ~~~
 
+Nota: Para crear mensajes en el CRM de Intelimotor primero debe obtener una [clave de API](https://app.intelimotor.com/settings) específica para el canal y
+configurar un alias para el canal en el cliente de Intelimotor:
+
+~~~php
+$cliente->setChannel('contacto', 'abcdef1234567890...')
+~~~
+
 Cada entidad de la API está modelada con una clase PHP que tiene getters para cada una de las propiedades, con el fin de
 proporcionar ayuda a los IDEs y autocompletar mejor, además de proporcionar tipos estrictos a cada una de las 
 propiedades. Siguiendo con el ejemplo anterior:
@@ -66,7 +73,10 @@ use Instacar\IntelimotorApiClient\IntelimotorClient;
 use Symfony\Component\HttpClient\HttpClient;
 
 $httpClient = HttpClient::create([
-    'base_uri' => 'https://app.intelimotor.com/api/', // La URL base para la API de Intelimotor
+    'base_uri' => 'https://app.intelimotor.com/api/',
+    'headers' => [
+        'Content-Type' => 'application/json',
+    ],
     'query' => [
         'apiKey' => $apiKey, // La clave de API de Intelimotor
         'apiSecret' => $apiSecret, // El secreto de API de Intelimotor
@@ -90,3 +100,7 @@ Esta librería utiliza la licencia Lesser General Public Licence Version 3 (LGPL
 - Se depreció el configurar manualmente el serializador, debido a que está fuertemente acoplado con el funcionamiento
 interno de la librería, y no hay una necesidad real de reemplazarlo de parte del usuario.
 - Se actualizaron las librerías del proyecto.
+
+### v1.1.0
+- Se agregó la funcionalidad para crear mensajes de contacto en el CRM de Intelimotors.
+- Se mejoró la extracción de información de las unidades con más campos extraídos de Intelimotors.

@@ -21,11 +21,15 @@
 namespace Instacar\IntelimotorApiClient\Test\Integration;
 
 use Instacar\IntelimotorApiClient\IntelimotorClient;
+use Instacar\IntelimotorApiClient\Model\Ad;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
+use Instacar\IntelimotorApiClient\Model\CreatedMessage;
 use Instacar\IntelimotorApiClient\Model\IdNameTrait;
+use Instacar\IntelimotorApiClient\Model\MessageInput;
 use Instacar\IntelimotorApiClient\Model\Model;
+use Instacar\IntelimotorApiClient\Model\ProspectInput;
 use Instacar\IntelimotorApiClient\Model\Trim;
 use Instacar\IntelimotorApiClient\Model\Unit;
 use Instacar\IntelimotorApiClient\Model\Year;
@@ -38,6 +42,9 @@ class IntelimotorClientTest extends TestCase
     protected function setUp(): void
     {
         $this->client = IntelimotorClient::createDefault($_SERVER['API_KEY'], $_SERVER['API_SECRET']);
+        $this->client->setChannels([
+            'contact' => $_SERVER['CHANNEL_KEY']
+        ]);
     }
 
     public function testBusinessUnits(): BusinessUnit
@@ -210,6 +217,20 @@ class IntelimotorClientTest extends TestCase
         $item = $this->client->getUnit($unit->getId());
 
         $this->assertItem(Unit::class, $item, [$this, 'assertUnit']);
+    }
+
+    public function testNewMessage(): void
+    {
+        $ad = new Ad('test', 'https://test.org');
+        $prospect = new ProspectInput('Test', 'test@ci.com', '1234567890', 'This is an automated test');
+        $message = new MessageInput($ad, $prospect);
+
+        $item = $this->client->createMessage('contact', $message);
+
+        $this->assertItem(CreatedMessage::class, $item, function (CreatedMessage $item) {
+            $this->assertNotNull($item->getId());
+            $this->assertNotNull($item->getProspectId());
+        });
     }
 
     private function assertCollection(

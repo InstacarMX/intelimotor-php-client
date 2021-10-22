@@ -24,6 +24,8 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
+use Instacar\IntelimotorApiClient\Model\CreatedMessage;
+use Instacar\IntelimotorApiClient\Model\MessageInput;
 use Instacar\IntelimotorApiClient\Model\Model;
 use Instacar\IntelimotorApiClient\Model\Trim;
 use Instacar\IntelimotorApiClient\Model\Unit;
@@ -35,6 +37,7 @@ use Instacar\IntelimotorApiClient\Response\BusinessUnitResponse;
 use Instacar\IntelimotorApiClient\Response\BusinessUnitsResponse;
 use Instacar\IntelimotorApiClient\Response\ColorResponse;
 use Instacar\IntelimotorApiClient\Response\ColorsResponse;
+use Instacar\IntelimotorApiClient\Response\CreatedMessageResponse;
 use Instacar\IntelimotorApiClient\Response\ModelResponse;
 use Instacar\IntelimotorApiClient\Response\ModelsResponse;
 use Instacar\IntelimotorApiClient\Response\TrimResponse;
@@ -64,6 +67,9 @@ class IntelimotorClient
     /** @var ApiHttpClient */
     private $apiClient;
 
+    /** @var array */
+    private $channels;
+
     /**
      * @param HttpClientInterface $httpClient
      * @param Serializer|null $serializer
@@ -73,7 +79,7 @@ class IntelimotorClient
         if ($serializer !== null) {
             trigger_deprecation(
                 'instacar/intelimotor-api-client',
-                '1.1',
+                '1.0.1',
                 'Passing a serializer to the %s is depreciated.',
                 self::class
             );
@@ -99,6 +105,33 @@ class IntelimotorClient
             ['json' => new JsonEncoder()],
         );
         $this->apiClient = new ApiHttpClient($httpClient, $serializer);
+    }
+
+    /**
+     * @return array
+     */
+    public function getChannels(): array
+    {
+        return $this->channels;
+    }
+
+    /**
+     * @param string $channelName
+     * @param string $channelKey
+     */
+    public function setChannel(string $channelName, string $channelKey): void
+    {
+        $this->channels[$channelName] = $channelKey;
+    }
+
+    /**
+     * @param array $channels
+     * @return self
+     */
+    public function setChannels(array $channels): self
+    {
+        $this->channels = $channels;
+        return $this;
     }
 
     /**
@@ -410,6 +443,22 @@ class IntelimotorClient
         return $this->apiClient->itemRequest(UnitResponse::class, 'units/' . $id);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function createMessage(string $channel, MessageInput $message): CreatedMessage
+    {
+        $channelKey = $this->channels[$channel];
+
+        return $this->apiClient->itemRequest(CreatedMessageResponse::class, 'messages', 'POST', [
+            'extra' => ['payload' => $message],
+            'query' => ['apiKey' => $channelKey],
+        ]);
+    }
+
     public static function createDefault(string $apiKey, string $apiSecret): self
     {
         if (!class_exists(HttpClient::class)) {
@@ -421,6 +470,9 @@ class IntelimotorClient
 
         $httpClient = HttpClient::create([
             'base_uri' => 'https://app.intelimotor.com/api/',
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
             'query' => [
                 'apiKey' => $apiKey,
                 'apiSecret' => $apiSecret,
