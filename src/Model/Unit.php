@@ -20,14 +20,13 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Unit
 {
-    use VehicleInfoTrait;
-
     /**
      * @var string
      */
@@ -39,9 +38,54 @@ class Unit
     private $ref;
 
     /**
+     * @var string|null
+     */
+    protected $vin;
+
+    /**
+     * @var Collection|Brand[]
+     */
+    protected $brands;
+
+    /**
+     * @var Collection|Model[]
+     */
+    protected $models;
+
+    /**
+     * @var Collection|Year[]
+     */
+    protected $years;
+
+    /**
+     * @var Collection|Trim[]
+     */
+    protected $trims;
+
+    /**
+     * @var string|null
+     */
+    private $customTrim;
+
+    /**
      * @var int|null
      */
     private $kms;
+
+    /**
+     * @var string|null
+     */
+    private $type;
+
+    /**
+     * @var int|null
+     */
+    private $consignmentFeeType;
+
+    /**
+     * @var float|null
+     */
+    private $consignmentFee;
 
     /**
      * @var float|null
@@ -49,7 +93,7 @@ class Unit
     private $buyPrice;
 
     /**
-     * @var int|null
+     * @var DateTime|null
      */
     private $buyDate;
 
@@ -66,14 +110,66 @@ class Unit
     private $sold;
 
     /**
-     * @var UnitInfo|null
+     * @var float|null
      */
-    private $listingInfo;
+    private $sellPrice;
+
+    /**
+     * @var DateTime|null
+     */
+    private $sellDate;
+
+    /**
+     * @var string|null
+     */
+    private $sellChannel;
+
+    /**
+     * @var string|null
+     */
+    private $prospectId;
 
     /**
      * @var Collection|string[]
      */
     private $pictures;
+
+    /**
+     * @var UnitInfo|null
+     */
+    private $listingInfo;
+
+    /**
+     * @SerializedName("useExternalCatalog")
+     * @var bool|null
+     */
+    #[SerializedName('useExternalCatalog')]
+    private $externalCatalog;
+
+    /**
+     * @var string|null
+     */
+    private $externalBrand;
+
+    /**
+     * @var string|null
+     */
+    private $externalModel;
+
+    /**
+     * @var string|null
+     */
+    private $externalYear;
+
+    /**
+     * @var string|null
+     */
+    private $externalTrim;
+
+    /**
+     * @var bool|null
+     */
+    private $imported;
 
     public function __construct(string $id)
     {
@@ -85,6 +181,9 @@ class Unit
         $this->pictures = new ArrayCollection();
     }
 
+    /**
+     * @return string
+     */
     public function getId(): string
     {
         return $this->id;
@@ -100,11 +199,156 @@ class Unit
 
     /**
      * @param string|null $ref
-     * @return Unit
+     * @return self
      */
-    public function setRef(?string $ref): Unit
+    public function setRef(?string $ref): self
     {
         $this->ref = $ref;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVin(): ?string
+    {
+        return $this->vin;
+    }
+
+    /**
+     * @param string|null $vin
+     * @return self
+     */
+    public function setVin(?string $vin): self
+    {
+        $this->vin = $vin;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Brand[]
+     */
+    public function getBrands(): Collection
+    {
+        return $this->brands;
+    }
+
+    public function addBrand(Brand $brand): self
+    {
+        $this->brands->add($brand);
+        return $this;
+    }
+
+    public function removeBrand(Brand $brand): self
+    {
+        $this->brands->removeElement($brand);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Model[]
+     */
+    public function getModels(): Collection
+    {
+        return $this->models;
+    }
+
+    /**
+     * @param Model $model
+     * @return self
+     */
+    public function addModel(Model $model): self
+    {
+        $this->models->add($model);
+        return $this;
+    }
+
+    /**
+     * @param Model $model
+     * @return self
+     */
+    public function removeModel(Model $model): self
+    {
+        $this->models->removeElement($model);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Year[]
+     */
+    public function getYears(): Collection
+    {
+        return $this->years;
+    }
+
+    /**
+     * @param Year $year
+     * @return self
+     */
+    public function addYear(Year $year): self
+    {
+        $this->years->add($year);
+        return $this;
+    }
+
+    /**
+     * @param Year $year
+     * @return self
+     */
+    public function removeYear(Year $year): self
+    {
+        $this->years->removeElement($year);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trim[]
+     */
+    public function getTrims(): Collection
+    {
+        return $this->trims;
+    }
+
+    /**
+     * @param Trim $trim
+     * @return self
+     */
+    public function addTrim(Trim $trim): self
+    {
+        $this->trims->add($trim);
+        return $this;
+    }
+
+    /**
+     * @param Trim $trim
+     * @return self
+     */
+    public function removeTrim(Trim $trim): self
+    {
+        $this->trims->removeElement($trim);
+        return $this;
+    }
+
+    private function hasCustomTrim(): bool
+    {
+        return (bool) $this->customTrim;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomTrim(): ?string
+    {
+        return $this->customTrim;
+    }
+
+    /**
+     * @param string|null $customTrim
+     * @return self
+     */
+    public function setCustomTrim(?string $customTrim): self
+    {
+        $this->customTrim = $customTrim;
         return $this;
     }
 
@@ -118,11 +362,65 @@ class Unit
 
     /**
      * @param int|null $kms
-     * @return Unit
+     * @return self
      */
-    public function setKms(?int $kms): Unit
+    public function setKms(?int $kms): self
     {
         $this->kms = $kms;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string|null $type
+     * @return self
+     */
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getConsignmentFeeType(): ?int
+    {
+        return $this->consignmentFeeType;
+    }
+
+    /**
+     * @param int|null $consignmentFeeType
+     * @return self
+     */
+    public function setConsignmentFeeType(?int $consignmentFeeType): self
+    {
+        $this->consignmentFeeType = $consignmentFeeType;
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getConsignmentFee(): ?float
+    {
+        return $this->consignmentFee;
+    }
+
+    /**
+     * @param float|null $consignmentFee
+     * @return self
+     */
+    public function setConsignmentFee(?float $consignmentFee): self
+    {
+        $this->consignmentFee = $consignmentFee;
         return $this;
     }
 
@@ -135,28 +433,28 @@ class Unit
     }
 
     /**
-     * @param float $buyPrice
-     * @return Unit
+     * @param float|null $buyPrice
+     * @return self
      */
-    public function setBuyPrice(float $buyPrice): Unit
+    public function setBuyPrice(?float $buyPrice): self
     {
         $this->buyPrice = $buyPrice;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return DateTime|null
      */
-    public function getBuyDate(): ?int
+    public function getBuyDate(): ?DateTime
     {
         return $this->buyDate;
     }
 
     /**
-     * @param int $buyDate
-     * @return Unit
+     * @param DateTime|null $buyDate
+     * @return self
      */
-    public function setBuyDate(int $buyDate): Unit
+    public function setBuyDate(?DateTime $buyDate): self
     {
         $this->buyDate = $buyDate;
         return $this;
@@ -171,10 +469,10 @@ class Unit
     }
 
     /**
-     * @param float $listPrice
-     * @return Unit
+     * @param float|null $listPrice
+     * @return self
      */
-    public function setListPrice(float $listPrice): Unit
+    public function setListPrice(?float $listPrice): self
     {
         $this->listPrice = $listPrice;
         return $this;
@@ -183,18 +481,118 @@ class Unit
     /**
      * @return bool|null
      */
-    public function isSold(): ?bool
+    public function getSold(): ?bool
     {
         return $this->sold;
     }
 
     /**
-     * @param bool $sold
-     * @return Unit
+     * @param bool|null $sold
+     * @return self
      */
-    public function setSold(bool $sold): Unit
+    public function setSold(?bool $sold): self
     {
         $this->sold = $sold;
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getSellPrice(): ?float
+    {
+        return $this->sellPrice;
+    }
+
+    /**
+     * @param float|null $sellPrice
+     * @return self
+     */
+    public function setSellPrice(?float $sellPrice): self
+    {
+        $this->sellPrice = $sellPrice;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getSellDate(): ?DateTime
+    {
+        return $this->sellDate;
+    }
+
+    /**
+     * @param DateTime|null $sellDate
+     * @return self
+     */
+    public function setSellDate(?DateTime $sellDate): self
+    {
+        $this->sellDate = $sellDate;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSellChannel(): ?string
+    {
+        return $this->sellChannel;
+    }
+
+    /**
+     * @param string|null $sellChannel
+     * @return self
+     */
+    public function setSellChannel(?string $sellChannel): self
+    {
+        $this->sellChannel = $sellChannel;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProspectId(): ?string
+    {
+        return $this->prospectId;
+    }
+
+    /**
+     * @param string|null $prospectId
+     * @return self
+     */
+    public function setProspectId(?string $prospectId): self
+    {
+        $this->prospectId = $prospectId;
+        return $this;
+    }
+
+    /**
+     * @return Collection|string[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    /**
+     * @param string $picture
+     * @return self
+     */
+    public function addPicture(string $picture): self
+    {
+        $this->pictures->add($picture);
+        return $this;
+    }
+
+    /**
+     * @param string $picture
+     * @return self
+     */
+    public function removePicture(string $picture): self
+    {
+        $this->pictures->removeElement($picture);
         return $this;
     }
 
@@ -208,31 +606,119 @@ class Unit
 
     /**
      * @param UnitInfo|null $listingInfo
-     * @return Unit
+     * @return self
      */
-    public function setListingInfo(?UnitInfo $listingInfo): Unit
+    public function setListingInfo(?UnitInfo $listingInfo): self
     {
         $this->listingInfo = $listingInfo;
         return $this;
     }
 
     /**
-     * @return Collection|string[]
+     * @return bool|null
      */
-    public function getPictures(): Collection
+    public function isExternalCatalog(): ?bool
     {
-        return $this->pictures;
+        return $this->externalCatalog;
     }
 
-    public function addPicture(string $picture): self
+    /**
+     * @param bool|null $externalCatalog
+     * @return self
+     */
+    public function setExternalCatalog(?bool $externalCatalog): self
     {
-        $this->pictures->add($picture);
+        $this->externalCatalog = $externalCatalog;
         return $this;
     }
 
-    public function removePicture(string $picture): self
+    /**
+     * @return string|null
+     */
+    public function getExternalBrand(): ?string
     {
-        $this->pictures->removeElement($picture);
+        return $this->externalBrand;
+    }
+
+    /**
+     * @param string|null $externalBrand
+     * @return self
+     */
+    public function setExternalBrand(?string $externalBrand): self
+    {
+        $this->externalBrand = $externalBrand;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalModel(): ?string
+    {
+        return $this->externalModel;
+    }
+
+    /**
+     * @param string|null $externalModel
+     * @return self
+     */
+    public function setExternalModel(?string $externalModel): self
+    {
+        $this->externalModel = $externalModel;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalYear(): ?string
+    {
+        return $this->externalYear;
+    }
+
+    /**
+     * @param string|null $externalYear
+     * @return self
+     */
+    public function setExternalYear(?string $externalYear): self
+    {
+        $this->externalYear = $externalYear;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalTrim(): ?string
+    {
+        return $this->externalTrim;
+    }
+
+    /**
+     * @param string|null $externalTrim
+     * @return self
+     */
+    public function setExternalTrim(?string $externalTrim): self
+    {
+        $this->externalTrim = $externalTrim;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isImported(): ?bool
+    {
+        return $this->imported;
+    }
+
+    /**
+     * @param bool|null $imported
+     * @return self
+     */
+    public function setImported(?bool $imported): self
+    {
+        $this->imported = $imported;
         return $this;
     }
 }

@@ -28,6 +28,7 @@ use Instacar\IntelimotorApiClient\Model\Model;
 use Instacar\IntelimotorApiClient\Model\Trim;
 use Instacar\IntelimotorApiClient\Model\Unit;
 use Instacar\IntelimotorApiClient\Model\Year;
+use Instacar\IntelimotorApiClient\Normalizer\TimestampNormalizer;
 use Instacar\IntelimotorApiClient\Response\BrandResponse;
 use Instacar\IntelimotorApiClient\Response\BrandsResponse;
 use Instacar\IntelimotorApiClient\Response\BusinessUnitResponse;
@@ -91,6 +92,7 @@ class IntelimotorClient
         $propertyTypeExtractor = new ReflectionExtractor();
         $serializer = new Serializer(
             [
+                new TimestampNormalizer([ 'timestamp_format' => 'Uv' ]),
                 new ObjectNormalizer($classMetadataFactory, $nameConverter, null, $propertyTypeExtractor),
                 new ArrayDenormalizer(),
             ],
@@ -408,9 +410,6 @@ class IntelimotorClient
         return $this->apiClient->itemRequest(UnitResponse::class, 'units/' . $id);
     }
 
-    /**
-     * @deprecated Use the constructor with no arguments
-     */
     public static function createDefault(string $apiKey, string $apiSecret): self
     {
         if (!class_exists(HttpClient::class)) {

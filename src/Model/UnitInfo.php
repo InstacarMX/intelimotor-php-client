@@ -25,6 +25,56 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class UnitInfo
 {
     /**
+     * @var string|null
+     */
+    private $title;
+
+    /**
+     * @var string|null
+     */
+    private $transmission;
+
+    /**
+     * @var int|null
+     */
+    private $doors;
+
+    /**
+     * @var string|null
+     */
+    private $fuelType;
+
+    /**
+     * @var string|null
+     */
+    private $steering;
+
+    /**
+     * @var string|null
+     */
+    private $tractionControl;
+
+    /**
+     * @var string|null
+     */
+    private $vehicleBodyType;
+
+    /**
+     * @var string|null
+     */
+    private $engine;
+
+    /**
+     * @var string|null
+     */
+    private $exteriorColor;
+
+    /**
+     * @var string|null
+     */
+    private $interiorColor;
+
+    /**
      * @SerializedName("hasAutopilot")
      * @var bool
      */
@@ -517,6 +567,186 @@ class UnitInfo
         $this->trayMat = $trayMat;
         $this->windscreenWiper = $windscreenWiper;
         $this->singleOwner = $singleOwner;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string|null $title
+     * @return self
+     */
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTransmission(): ?string
+    {
+        return $this->transmission;
+    }
+
+    /**
+     * @param string|null $transmission
+     * @return self
+     */
+    public function setTransmission(?string $transmission): self
+    {
+        $this->transmission = $transmission;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDoors(): ?int
+    {
+        return $this->doors;
+    }
+
+    /**
+     * @param int|null $doors
+     * @return self
+     */
+    public function setDoors(?int $doors): self
+    {
+        $this->doors = $doors;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFuelType(): ?string
+    {
+        return $this->fuelType;
+    }
+
+    /**
+     * @param string|null $fuelType
+     * @return self
+     */
+    public function setFuelType(?string $fuelType): self
+    {
+        $this->fuelType = $fuelType;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSteering(): ?string
+    {
+        return $this->steering;
+    }
+
+    /**
+     * @param string|null $steering
+     * @return self
+     */
+    public function setSteering(?string $steering): self
+    {
+        $this->steering = $steering;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTractionControl(): ?string
+    {
+        return $this->tractionControl;
+    }
+
+    /**
+     * @param string|null $tractionControl
+     * @return self
+     */
+    public function setTractionControl(?string $tractionControl): self
+    {
+        $this->tractionControl = $tractionControl;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVehicleBodyType(): ?string
+    {
+        return $this->vehicleBodyType;
+    }
+
+    /**
+     * @param string|null $vehicleBodyType
+     * @return self
+     */
+    public function setVehicleBodyType(?string $vehicleBodyType): self
+    {
+        $this->vehicleBodyType = $vehicleBodyType;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEngine(): ?string
+    {
+        return $this->engine;
+    }
+
+    /**
+     * @param string|null $engine
+     * @return self
+     */
+    public function setEngine(?string $engine): self
+    {
+        $this->engine = $engine;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExteriorColor(): ?string
+    {
+        return $this->exteriorColor;
+    }
+
+    /**
+     * @param string|null $exteriorColor
+     * @return self
+     */
+    public function setExteriorColor(?string $exteriorColor): self
+    {
+        $this->exteriorColor = $exteriorColor;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInteriorColor(): ?string
+    {
+        return $this->interiorColor;
+    }
+
+    /**
+     * @param string|null $interiorColor
+     * @return self
+     */
+    public function setInteriorColor(?string $interiorColor): self
+    {
+        $this->interiorColor = $interiorColor;
+        return $this;
     }
 
     /**
