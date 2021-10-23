@@ -329,7 +329,7 @@ class Unit
         return $this;
     }
 
-    private function hasCustomTrim(): bool
+    public function hasCustomTrim(): bool
     {
         return (bool) $this->customTrim;
     }
@@ -481,7 +481,7 @@ class Unit
     /**
      * @return bool|null
      */
-    public function getSold(): ?bool
+    public function isSold(): ?bool
     {
         return $this->sold;
     }
