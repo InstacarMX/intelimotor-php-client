@@ -104,3 +104,7 @@ interno de la librería, y no hay una necesidad real de reemplazarlo de parte de
 ### v1.1.0
 - Se agregó la funcionalidad para crear mensajes de contacto en el CRM de Intelimotors.
 - Se mejoró la extracción de información de las unidades con más campos extraídos de Intelimotors.
+
+### v1.1.1
+- Se corrigió el método "hasCustomTrim" para volverlo público y accesible.
+- Se corrigió un getter que decía "getSold" en vez de "isSold".
