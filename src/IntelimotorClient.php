@@ -166,6 +166,45 @@ class IntelimotorClient
     }
 
     /**
+     * @param string $businessUnitId
+     * @return Unit[]
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getBusinessUnitUnits(string $businessUnitId): iterable
+    {
+        return $this->apiClient->paginatedRequest(UnitsResponse::class, "business-units/$businessUnitId/units");
+    }
+
+    /**
+     * @param string $businessUnitId
+     * @return Unit[]
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getBusinessUnitInventoryUnits(string $businessUnitId): iterable
+    {
+        return $this->apiClient->paginatedRequest(UnitsResponse::class, "business-units/$businessUnitId/inventory-units");
+    }
+
+    /**
+     * @param string $businessUnitId
+     * @return Unit[]
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getBusinessUnitSoldUnits(string $businessUnitId): iterable
+    {
+        return $this->apiClient->paginatedRequest(UnitsResponse::class, "business-units/$businessUnitId/sold-units");
+    }
+
+    /**
      * @return Color[]
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -428,6 +467,30 @@ class IntelimotorClient
     public function getUnits(): iterable
     {
         return $this->apiClient->paginatedRequest(UnitsResponse::class, 'units');
+    }
+
+    /**
+     * @return Unit[]
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getInventoryUnits(): iterable
+    {
+        return $this->apiClient->paginatedRequest(UnitsResponse::class, 'inventory-units');
+    }
+
+    /**
+     * @return Unit[]
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getSoldUnits(): iterable
+    {
+        return $this->apiClient->paginatedRequest(UnitsResponse::class, 'sold-units');
     }
 
     /**

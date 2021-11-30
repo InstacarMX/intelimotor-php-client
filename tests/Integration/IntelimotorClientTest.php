@@ -64,6 +64,36 @@ class IntelimotorClientTest extends TestCase
         $this->assertItem(BusinessUnit::class, $businessUnit, [$this, 'assertIdName']);
     }
 
+    /**
+     * @depends testBusinessUnits
+     */
+    public function testBusinessUnitUnits(BusinessUnit $original): Unit
+    {
+        $collection = $this->client->getBusinessUnitUnits($original->getId());
+
+        return $this->assertCollection(Unit::class, $collection, [$this, 'assertUnit']);
+    }
+
+    /**
+     * @depends testBusinessUnits
+     */
+    public function testBusinessUnitInventoryUnits(BusinessUnit $original): Unit
+    {
+        $collection = $this->client->getBusinessUnitInventoryUnits($original->getId());
+
+        return $this->assertCollection(Unit::class, $collection, [$this, 'assertUnit']);
+    }
+
+    /**
+     * @depends testBusinessUnits
+     */
+    public function testBusinessUnitSoldUnits(BusinessUnit $original): Unit
+    {
+        $collection = $this->client->getBusinessUnitSoldUnits($original->getId());
+
+        return $this->assertCollection(Unit::class, $collection, [$this, 'assertUnit']);
+    }
+
     public function testColors(): Color
     {
         $collection = $this->client->getColors();
@@ -205,6 +235,20 @@ class IntelimotorClientTest extends TestCase
     public function testUnits(): Unit
     {
         $collection = $this->client->getUnits();
+
+        return $this->assertCollection(Unit::class, $collection, [$this, 'assertUnit']);
+    }
+
+    public function testInventoryUnits(): Unit
+    {
+        $collection = $this->client->getInventoryUnits();
+
+        return $this->assertCollection(Unit::class, $collection, [$this, 'assertUnit']);
+    }
+
+    public function testSoldUnits(): Unit
+    {
+        $collection = $this->client->getSoldUnits();
 
         return $this->assertCollection(Unit::class, $collection, [$this, 'assertUnit']);
     }
