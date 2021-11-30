@@ -91,20 +91,25 @@ Esta librería utiliza la licencia Lesser General Public Licence Version 3 (LGPL
 [LICENSE](LICENSE).
 
 ## Registro de cambios
-### v1.0.0
-- Soporta BusinessUnits, Colors, Brands, Models, Years, Trims y Units.
-- Soporta operaciones sobre items, colecciones y archivos CSV.
-- Utiliza clases PHP para representar los Modelos.
+### v1.2.0
+- Se implementaron los puntos finales para extraer las unidades vendidas y no vendidas únicamente.
+- Se implementaron los puntos finales para extraer las unidades únicamente de una unidad de negocio.
+
+### v1.1.1
+- Se corrigió el método "hasCustomTrim" para volverlo público y accesible.
+- Se corrigió un getter que decía "getSold" en vez de "isSold".
+
+### v1.1.0
+- Se agregó la funcionalidad para crear mensajes de contacto en el CRM de Intelimotors.
+- Se mejoró la extracción de información de las unidades con más campos extraídos de Intelimotors.
+
 
 ### v1.0.1
 - Se depreció el configurar manualmente el serializador, debido a que está fuertemente acoplado con el funcionamiento
 interno de la librería, y no hay una necesidad real de reemplazarlo de parte del usuario.
 - Se actualizaron las librerías del proyecto.
 
-### v1.1.0
-- Se agregó la funcionalidad para crear mensajes de contacto en el CRM de Intelimotors.
-- Se mejoró la extracción de información de las unidades con más campos extraídos de Intelimotors.
-
-### v1.1.1
-- Se corrigió el método "hasCustomTrim" para volverlo público y accesible.
-- Se corrigió un getter que decía "getSold" en vez de "isSold".
+### v1.0.0
+- Soporta BusinessUnits, Colors, Brands, Models, Years, Trims y Units.
+- Soporta operaciones sobre items, colecciones y archivos CSV.
+- Utiliza clases PHP para representar los Modelos.
