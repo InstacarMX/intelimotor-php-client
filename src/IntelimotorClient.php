@@ -98,7 +98,10 @@ class IntelimotorClient
         $propertyTypeExtractor = new ReflectionExtractor();
         $serializer = new Serializer(
             [
-                new TimestampNormalizer([ 'timestamp_format' => 'Uv' ]),
+                new TimestampNormalizer([
+                    TimestampNormalizer::FORMAT_KEY => 'Uv',
+                    TimestampNormalizer::TIMEZONE_KEY => 'UTC',
+                ]),
                 new ObjectNormalizer($classMetadataFactory, $nameConverter, null, $propertyTypeExtractor),
                 new ArrayDenormalizer(),
             ],

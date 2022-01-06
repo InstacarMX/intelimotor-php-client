@@ -19,43 +19,27 @@
 
 namespace Instacar\IntelimotorApiClient\Normalizer;
 
-use DateTime;
-use DateTimeImmutable;
 use DateTimeInterface;
-use Exception;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class TimestampNormalizer extends DateTimeNormalizer
 {
     public const FORMAT_KEY = 'timestamp_format';
+    public const TIMEZONE_KEY = 'timestamp_timezone';
 
     private $defaultContext = [
         self::FORMAT_KEY => 'U',
+        self::TIMEZONE_KEY => null,
     ];
 
     public function __construct(array $defaultContext = [])
     {
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return string
-     */
-    public function normalize($object, string $format = null, array $context = []): string
-    {
-        if (!$object instanceof DateTimeInterface) {
-            throw new InvalidArgumentException('The object must implement the "\DateTimeInterface".');
-        }
-
-        $dateTimeFormat = $context[self::FORMAT_KEY] ?? $this->defaultContext[self::FORMAT_KEY];
-
-        return $object->format($dateTimeFormat);
+        parent::__construct([
+            parent::FORMAT_KEY => $this->defaultContext[self::FORMAT_KEY],
+            parent::TIMEZONE_KEY => $this->defaultContext[self::TIMEZONE_KEY],
+        ]);
     }
 
     /**
@@ -65,20 +49,16 @@ class TimestampNormalizer extends DateTimeNormalizer
     {
         $dateTimeFormat = $context[self::FORMAT_KEY] ?? $this->defaultContext[self::FORMAT_KEY];
 
-        if (null === $data || (is_string($data) && '' === trim($data))) {
-            throw new NotNormalizableValueException('The data is either an empty string or null, you should pass a string that can be parsed with the passed format or a valid DateTime string.');
+        if (!is_numeric($data)) {
+            throw new NotNormalizableValueException('The data is not a number, you should pass a valid timestamp.');
         }
 
-        if (strpos($dateTimeFormat, 'u') !== false) {
+        if (str_contains($dateTimeFormat, 'u')) {
             $data /= 1000000;
-        } elseif (strpos($dateTimeFormat, 'v') !== false) {
+        } elseif (str_contains($dateTimeFormat, 'v')) {
             $data /= 1000;
         }
 
-        try {
-            return DateTime::class === $type ? new DateTime("@$data") : new DateTimeImmutable("@$data");
-        } catch (Exception $e) {
-            throw new NotNormalizableValueException($e->getMessage(), $e->getCode(), $e);
-        }
+        return parent::denormalize("@$data", $type, $format, $context);
     }
 }
