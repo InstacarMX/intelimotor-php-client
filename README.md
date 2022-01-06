@@ -91,6 +91,15 @@ Esta librería utiliza la licencia Lesser General Public Licence Version 3 (LGPL
 [LICENSE](LICENSE).
 
 ## Registro de cambios
+### v1.2.2
+- Se simplificó el código para normalizar las estampas de tiempo.
+- Se declaró la zona horaria UTC para las estampas de tiempo.
+- Se actualizaron las dependencias a las últimas disponibles.
+
+### v1.2.1
+- Se actualizaron las dependencias de los componentes de Symfony para soportar Symfony 6.
+- Se actualizaron las dependencias de interfaces de Symfony para soportar PHP 8.1.
+
 ### v1.2.0
 - Se implementaron los puntos finales para extraer las unidades vendidas y no vendidas únicamente.
 - Se implementaron los puntos finales para extraer las unidades únicamente de una unidad de negocio.
