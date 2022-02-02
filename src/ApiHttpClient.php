@@ -59,7 +59,7 @@ class ApiHttpClient
         if (isset($options['extra']['payload'])) {
             $options['body'] = $this->serializer->serialize($options['extra']['payload'], 'json');
         }
-        
+
         $response = $this->client->request($method, $endpoint, $options)->getContent();
         /** @var ResponseTrait $dataResponse */
         $dataResponse = $this->serializer->deserialize($response, $responseClass, 'json');

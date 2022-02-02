@@ -24,8 +24,10 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
-use Instacar\IntelimotorApiClient\Model\CreatedMessage;
-use Instacar\IntelimotorApiClient\Model\MessageInput;
+use Instacar\IntelimotorApiClient\Model\CreateMessageInput;
+use Instacar\IntelimotorApiClient\Model\CreateMessageOutput;
+use Instacar\IntelimotorApiClient\Model\CreateValuationInput;
+use Instacar\IntelimotorApiClient\Model\CreateValuationOutput;
 use Instacar\IntelimotorApiClient\Model\Model;
 use Instacar\IntelimotorApiClient\Model\Trim;
 use Instacar\IntelimotorApiClient\Model\Unit;
@@ -37,7 +39,8 @@ use Instacar\IntelimotorApiClient\Response\BusinessUnitResponse;
 use Instacar\IntelimotorApiClient\Response\BusinessUnitsResponse;
 use Instacar\IntelimotorApiClient\Response\ColorResponse;
 use Instacar\IntelimotorApiClient\Response\ColorsResponse;
-use Instacar\IntelimotorApiClient\Response\CreatedMessageResponse;
+use Instacar\IntelimotorApiClient\Response\CreateMessageResponse;
+use Instacar\IntelimotorApiClient\Response\CreateValuationResponse;
 use Instacar\IntelimotorApiClient\Response\ModelResponse;
 use Instacar\IntelimotorApiClient\Response\ModelsResponse;
 use Instacar\IntelimotorApiClient\Response\TrimResponse;
@@ -67,7 +70,7 @@ class IntelimotorClient
     /** @var ApiHttpClient */
     private $apiClient;
 
-    /** @var array */
+    /** @var string[] */
     private $channels;
 
     /**
@@ -111,7 +114,7 @@ class IntelimotorClient
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getChannels(): array
     {
@@ -128,7 +131,7 @@ class IntelimotorClient
     }
 
     /**
-     * @param array $channels
+     * @param string[] $channels
      * @return self
      */
     public function setChannels(array $channels): self
@@ -373,13 +376,14 @@ class IntelimotorClient
     }
 
     /**
+     * @param string $country
      * @return Year[]
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function getYearsCsv($country = 'MX'): iterable
+    public function getYearsCsv(string $country = 'MX'): iterable
     {
         $years = $this->apiClient->csvRequest('years', ['query' => ['countryCode' => $country]]);
 
@@ -425,14 +429,14 @@ class IntelimotorClient
     }
 
     /**
+     * @param string $country
      * @return Trim[]
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-
-    public function getTrimsCsv($country = 'MX'): iterable
+    public function getTrimsCsv(string $country = 'MX'): iterable
     {
         $trims = $this->apiClient->csvRequest('trims', ['query' => ['countryCode' => $country]]);
 
@@ -515,13 +519,26 @@ class IntelimotorClient
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function createMessage(string $channel, MessageInput $message): CreatedMessage
+    public function createMessage(string $channel, CreateMessageInput $message): CreateMessageOutput
     {
         $channelKey = $this->channels[$channel];
 
-        return $this->apiClient->itemRequest(CreatedMessageResponse::class, 'messages', 'POST', [
+        return $this->apiClient->itemRequest(CreateMessageResponse::class, 'messages', 'POST', [
             'extra' => ['payload' => $message],
             'query' => ['apiKey' => $channelKey],
+        ]);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function createValuation(CreateValuationInput $valuation): CreateValuationOutput
+    {
+        return $this->apiClient->itemRequest(CreateValuationResponse::class, 'valuations', 'POST', [
+            'extra' => ['payload' => $valuation],
         ]);
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) Instacar 2021.
  * This file is part of IntelimotorApiClient.
@@ -19,56 +20,61 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
-class MessageInput
+class CreateMessageOutput
 {
     /**
-     * @var Ad
+     * @var string
      */
-    private $ad;
+    private $id;
 
     /**
-     * @var ProspectInput
+     * @var string
      */
-    private $customer;
+    private $prospectId;
 
     /**
-     * @var string|null
+     * @param string $id
+     * @param string $prospectId
      */
-    private $campaign;
-
-    /**
-     * @param Ad $ad
-     * @param ProspectInput $customer
-     * @param string|null $campaign
-     */
-    public function __construct(Ad $ad, ProspectInput $customer, ?string $campaign = null)
+    public function __construct(string $id, string $prospectId)
     {
-        $this->ad = $ad;
-        $this->customer = $customer;
-        $this->campaign = $campaign;
+        $this->id = $id;
+        $this->prospectId = $prospectId;
     }
 
     /**
-     * @return Ad
+     * @return string
      */
-    public function getAd(): Ad
+    public function getId(): string
     {
-        return $this->ad;
+        return $this->id;
     }
 
     /**
-     * @return ProspectInput
+     * @param string $id
+     * @return self
      */
-    public function getCustomer(): ProspectInput
+    public function setId(string $id): self
     {
-        return $this->customer;
+        $this->id = $id;
+        return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCampaign(): ?string
+    public function getProspectId(): string
     {
-        return $this->campaign;
+        return $this->prospectId;
+    }
+
+    /**
+     * @param string $prospectId
+     * @return self
+     */
+    public function setProspectId(string $prospectId): self
+    {
+        $this->prospectId = $prospectId;
+        return $this;
     }
 }

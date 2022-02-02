@@ -22,10 +22,16 @@ namespace Instacar\IntelimotorApiClient\Model;
 
 trait IdNameTrait
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $id;
-    /** @var string|null */
+
+    /**
+     * @var string|null
+     */
     protected $name;
+
     public function getId(): string
     {
         return $this->id;

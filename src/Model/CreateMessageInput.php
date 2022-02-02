@@ -20,36 +20,56 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
-class Ad
+class CreateMessageInput
 {
-    /** @var string The ad’s title */
-    private $title;
-    /** @var string The ad’s URL */
-    private $url;
+    /**
+     * @var Ad
+     */
+    private $ad;
 
     /**
-     * @param string $title
-     * @param string $url
+     * @var ProspectInput
      */
-    public function __construct(string $title, string $url)
+    private $customer;
+
+    /**
+     * @var string|null
+     */
+    private $campaign;
+
+    /**
+     * @param Ad $ad
+     * @param ProspectInput $customer
+     * @param string|null $campaign
+     */
+    public function __construct(Ad $ad, ProspectInput $customer, ?string $campaign = null)
     {
-        $this->title = $title;
-        $this->url = $url;
+        $this->ad = $ad;
+        $this->customer = $customer;
+        $this->campaign = $campaign;
     }
 
     /**
-     * @return string
+     * @return Ad
      */
-    public function getTitle(): string
+    public function getAd(): Ad
     {
-        return $this->title;
+        return $this->ad;
     }
 
     /**
-     * @return string
+     * @return ProspectInput
      */
-    public function getUrl(): string
+    public function getCustomer(): ProspectInput
     {
-        return $this->url;
+        return $this->customer;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCampaign(): ?string
+    {
+        return $this->campaign;
     }
 }

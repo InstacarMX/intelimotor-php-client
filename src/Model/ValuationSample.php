@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) Instacar 2021.
  * This file is part of IntelimotorApiClient.
@@ -19,61 +20,35 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
-class CreatedMessage
+class ValuationSample
 {
     /**
-     * @var string
+     * @var VehicleSample
      */
-    private $id;
+    private $vehicle;
 
-    /**
-     * @var string
-     */
-    private $prospectId;
-
-    /**
-     * @param string $id
-     * @param string $prospectId
-     */
-    public function __construct(string $id, string $prospectId)
-    {
-        $this->id = $id;
-        $this->prospectId = $prospectId;
+    public function __construct(
+        VehicleSample $vehicle
+    ) {
+        $this->vehicle = $vehicle;
     }
 
     /**
-     * @return string
+     * @return VehicleSample
      */
-    public function getId(): string
+    public function getVehicle(): VehicleSample
     {
-        return $this->id;
+        return $this->vehicle;
     }
 
     /**
-     * @param string $id
+     * @param VehicleSample $vehicle
      * @return self
      */
-    public function setId(string $id): self
+    public function setVehicle(VehicleSample $vehicle): self
     {
-        $this->id = $id;
-        return $this;
-    }
+        $this->vehicle = $vehicle;
 
-    /**
-     * @return string
-     */
-    public function getProspectId(): string
-    {
-        return $this->prospectId;
-    }
-
-    /**
-     * @param string $prospectId
-     * @return self
-     */
-    public function setProspectId(string $prospectId): self
-    {
-        $this->prospectId = $prospectId;
         return $this;
     }
 }

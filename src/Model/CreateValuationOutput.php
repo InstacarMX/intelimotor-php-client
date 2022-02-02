@@ -20,76 +20,76 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
-class ProspectInput
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+class CreateValuationOutput
 {
     /**
      * @var string
      */
-    private $name;
+    private $id;
 
     /**
-     * @var string
+     * @var Collection<int, Region>
      */
-    private $email;
+    private $regions;
 
     /**
-     * @var string
+     * @param string $id
      */
-    private $phone;
-
-    /**
-     * @var string
-     */
-    private $message;
-
-    /**
-     * @param string|null $name
-     * @param string|null $email
-     * @param string|null $phone
-     * @param string|null $message
-     */
-    public function __construct(
-        ?string $name = null,
-        ?string $email = null,
-        ?string $phone = null,
-        ?string $message = null
-    ) {
-        $this->name = $name ?? '';
-        $this->email = $email ?? '';
-        $this->phone = $phone ?? '';
-        $this->message = $message ?? '';
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getName(): string
+    public function __construct(string $id)
     {
-        return $this->name;
+        $this->id = $id;
+        $this->regions = new ArrayCollection();
     }
 
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getId(): string
     {
-        return $this->email;
+        return $this->id;
     }
 
     /**
-     * @return string
+     * @param string $id
+     * @return self
      */
-    public function getPhone(): string
+    public function setId(string $id): self
     {
-        return $this->phone;
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return Collection<int, Region>
      */
-    public function getMessage(): string
+    public function getRegions(): Collection
     {
-        return $this->message;
+        return $this->regions;
+    }
+
+    /**
+     * @param Region $region
+     * @return self
+     */
+    public function addRegion(Region $region): self
+    {
+        $this->regions->add($region);
+
+        return $this;
+    }
+
+    /**
+     * @param Region $region
+     * @return self
+     */
+    public function removeRegion(Region $region): self
+    {
+        $this->regions->removeElement($region);
+
+        return $this;
     }
 }

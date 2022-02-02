@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) Instacar 2021.
  * This file is part of IntelimotorApiClient.
@@ -19,47 +20,21 @@
 
 namespace Instacar\IntelimotorApiClient\Response;
 
-use Instacar\IntelimotorApiClient\Model\CreatedMessage;
-use Symfony\Component\Serializer\Annotation\SerializedName;
+use Instacar\IntelimotorApiClient\Model\CreateValuationOutput;
 
-class CreatedMessageResponse
+class CreateValuationResponse
 {
     use ResponseTrait {
         getData as private responseGetData;
         setData as private responseSetData;
     }
 
-    /**
-     * @SerializedName("success")
-     * @var bool
-     */
-    #[SerializedName('success')]
-    private $successful;
-
-    /**
-     * @return bool
-     */
-    public function isSuccessful(): bool
-    {
-        return $this->successful;
-    }
-
-    /**
-     * @param bool $success
-     * @return self
-     */
-    public function setSuccessful(bool $success): self
-    {
-        $this->successful = $success;
-        return $this;
-    }
-
-    public function getData(): CreatedMessage
+    public function getData(): CreateValuationOutput
     {
         return $this->responseGetData();
     }
 
-    public function setData(CreatedMessage $data): self
+    public function setData(CreateValuationOutput $data): self
     {
         return $this->responseSetData($data);
     }

@@ -20,36 +20,13 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
-class Ad
+class RegionInfo
 {
-    /** @var string The ad’s title */
-    private $title;
-    /** @var string The ad’s URL */
-    private $url;
+    use IdNameTrait;
 
-    /**
-     * @param string $title
-     * @param string $url
-     */
-    public function __construct(string $title, string $url)
+    public function __construct(string $id, string $name)
     {
-        $this->title = $title;
-        $this->url = $url;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return $this->url;
+        $this->id = $id;
+        $this->name = $name;
     }
 }
