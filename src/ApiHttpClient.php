@@ -20,9 +20,9 @@
 
 namespace Instacar\IntelimotorApiClient;
 
-use Instacar\IntelimotorApiClient\Response\ResponseCollectionTrait;
-use Instacar\IntelimotorApiClient\Response\ResponsePaginatedTrait;
-use Instacar\IntelimotorApiClient\Response\ResponseTrait;
+use Instacar\IntelimotorApiClient\Response\ApiResponseCollectionInterface;
+use Instacar\IntelimotorApiClient\Response\ApiResponseInterface;
+use Instacar\IntelimotorApiClient\Response\ApiResponsePaginatedInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -45,6 +45,12 @@ class ApiHttpClient
     }
 
     /**
+     * @template T of object
+     * @param class-string<ApiResponseInterface<T>> $responseClass
+     * @param string $endpoint
+     * @param string $method
+     * @param array<mixed> $options
+     * @return T
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -55,19 +61,25 @@ class ApiHttpClient
         string $endpoint,
         string $method = 'GET',
         array $options = []
-    ) {
+    ): object {
         if (isset($options['extra']['payload'])) {
             $options['body'] = $this->serializer->serialize($options['extra']['payload'], 'json');
         }
 
         $response = $this->client->request($method, $endpoint, $options)->getContent();
-        /** @var ResponseTrait $dataResponse */
+        /** @var ApiResponseInterface<T> $dataResponse */
         $dataResponse = $this->serializer->deserialize($response, $responseClass, 'json');
 
         return $dataResponse->getData();
     }
 
     /**
+     * @template T of object
+     * @param class-string<ApiResponseCollectionInterface<T>> $responseClass
+     * @param string $endpoint
+     * @param string $method
+     * @param array<mixed> $options
+     * @return iterable<T>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -80,13 +92,19 @@ class ApiHttpClient
         array $options = []
     ): iterable {
         $response = $this->client->request($method, $endpoint, $options)->getContent();
-        /** @var ResponseCollectionTrait $collectionResponse */
+        /** @var ApiResponseCollectionInterface<T> $collectionResponse */
         $collectionResponse = $this->serializer->deserialize($response, $responseClass, 'json');
 
         return $collectionResponse->getData();
     }
 
     /**
+     * @template T of object
+     * @param class-string<ApiResponsePaginatedInterface<T>> $responseClass
+     * @param string $endpoint
+     * @param string $method
+     * @param array<mixed> $options
+     * @return iterable<T>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -107,7 +125,7 @@ class ApiHttpClient
             $requestOptions['query']['pageSize'] = $pageSize;
 
             $response = $this->client->request($method, $endpoint, $requestOptions)->getContent();
-            /** @var ResponsePaginatedTrait $paginatedResponse */
+            /** @var ApiResponsePaginatedInterface<T> $paginatedResponse */
             $paginatedResponse = $this->serializer->deserialize($response, $responseClass, 'json');
             $items = $paginatedResponse->getData();
 
@@ -119,6 +137,9 @@ class ApiHttpClient
     }
 
     /**
+     * @param string $endpoint
+     * @param array<mixed> $options
+     * @return iterable<array<string, string>>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -147,7 +168,7 @@ class ApiHttpClient
 
     /**
      * @param ResponseInterface $response
-     * @return iterable|string[]
+     * @return iterable<string>
      * @throws TransportExceptionInterface
      */
     private function streamLines(ResponseInterface $response): iterable

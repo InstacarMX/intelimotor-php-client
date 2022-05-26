@@ -22,8 +22,12 @@ namespace Instacar\IntelimotorApiClient\Response;
 
 use Instacar\IntelimotorApiClient\Model\Trim;
 
-class TrimResponse
+/**
+ * @implements ApiResponseInterface<Trim>
+ */
+class TrimResponse implements ApiResponseInterface
 {
+    /** @use ResponseTrait<Trim> */
     use ResponseTrait {
         getData as private responseGetData;
         setData as private responseSetData;

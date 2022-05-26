@@ -43,22 +43,22 @@ class Unit
     protected $vin;
 
     /**
-     * @var Collection|Brand[]
+     * @var Collection<int, Brand>
      */
     protected $brands;
 
     /**
-     * @var Collection|Model[]
+     * @var Collection<int, Model>
      */
     protected $models;
 
     /**
-     * @var Collection|Year[]
+     * @var Collection<int, Year>
      */
     protected $years;
 
     /**
-     * @var Collection|Trim[]
+     * @var Collection<int, Trim>
      */
     protected $trims;
 
@@ -130,7 +130,7 @@ class Unit
     private $prospectId;
 
     /**
-     * @var Collection|string[]
+     * @var Collection<int, string>
      */
     private $pictures;
 
@@ -226,7 +226,7 @@ class Unit
     }
 
     /**
-     * @return Collection|Brand[]
+     * @return Collection<int, Brand>
      */
     public function getBrands(): Collection
     {
@@ -246,7 +246,7 @@ class Unit
     }
 
     /**
-     * @return Collection|Model[]
+     * @return Collection<int, Model>
      */
     public function getModels(): Collection
     {
@@ -274,7 +274,7 @@ class Unit
     }
 
     /**
-     * @return Collection|Year[]
+     * @return Collection<int, Year>
      */
     public function getYears(): Collection
     {
@@ -302,7 +302,7 @@ class Unit
     }
 
     /**
-     * @return Collection|Trim[]
+     * @return Collection<int, Trim>
      */
     public function getTrims(): Collection
     {
@@ -569,7 +569,7 @@ class Unit
     }
 
     /**
-     * @return Collection|string[]
+     * @return Collection<int, string>
      */
     public function getPictures(): Collection
     {

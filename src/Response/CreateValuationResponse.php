@@ -22,8 +22,12 @@ namespace Instacar\IntelimotorApiClient\Response;
 
 use Instacar\IntelimotorApiClient\Model\CreateValuationOutput;
 
-class CreateValuationResponse
+/**
+ * @implements ApiResponseInterface<CreateValuationOutput>
+ */
+class CreateValuationResponse implements ApiResponseInterface
 {
+    /** @use ResponseTrait<CreateValuationOutput> */
     use ResponseTrait {
         getData as private responseGetData;
         setData as private responseSetData;

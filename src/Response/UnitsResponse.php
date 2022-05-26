@@ -23,15 +23,18 @@ namespace Instacar\IntelimotorApiClient\Response;
 use Doctrine\Common\Collections\Collection;
 use Instacar\IntelimotorApiClient\Model\Unit;
 
-class UnitsResponse
+/**
+ * @implements ApiResponsePaginatedInterface<Unit>
+ */
+class UnitsResponse implements ApiResponsePaginatedInterface
 {
+    /** @use ResponsePaginatedTrait<Unit> */
     use ResponsePaginatedTrait {
         getData as private responseGetData;
         addData as private responseAddData;
         removeData as private responseRemoveData;
     }
 
-    /** @return Collection|Unit[] */
     public function getData(): Collection
     {
         return $this->responseGetData();

@@ -20,15 +20,28 @@
 
 namespace Instacar\IntelimotorApiClient\Response;
 
+/**
+ * @template T
+ */
 trait ResponseTrait
 {
+    /**
+     * @var T $data
+     */
     protected $data;
 
+    /**
+     * @return T
+     */
     public function getData()
     {
         return $this->data;
     }
 
+    /**
+     * @param T $data
+     * @return self
+     */
     public function setData($data): self
     {
         $this->data = $data;

@@ -21,6 +21,7 @@
 namespace Instacar\IntelimotorApiClient\Normalizer;
 
 use DateTimeInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
@@ -29,11 +30,17 @@ class TimestampNormalizer extends DateTimeNormalizer
     public const FORMAT_KEY = 'timestamp_format';
     public const TIMEZONE_KEY = 'timestamp_timezone';
 
+    /**
+     * @var array<string, mixed>
+     */
     private $defaultContext = [
         self::FORMAT_KEY => 'U',
         self::TIMEZONE_KEY => null,
     ];
 
+    /**
+     * @param array<string, mixed> $defaultContext
+     */
     public function __construct(array $defaultContext = [])
     {
         $this->defaultContext = array_merge($this->defaultContext, $defaultContext);
@@ -44,7 +51,12 @@ class TimestampNormalizer extends DateTimeNormalizer
     }
 
     /**
-     * @inheritDoc
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @param array<mixed> $context
+     * @return DateTimeInterface
+     * @throws ExceptionInterface
      */
     public function denormalize($data, string $type, string $format = null, array $context = []): DateTimeInterface
     {

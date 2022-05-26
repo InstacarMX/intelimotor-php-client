@@ -24,7 +24,7 @@ namespace Instacar\IntelimotorApiClient\Model;
  * @property string $id ID of the brand
  * @property string|null $name Name of the brand
  */
-class Brand
+class Brand implements IdNameInterface
 {
     use IdNameTrait;
 

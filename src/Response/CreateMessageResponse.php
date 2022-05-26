@@ -23,8 +23,12 @@ namespace Instacar\IntelimotorApiClient\Response;
 use Instacar\IntelimotorApiClient\Model\CreateMessageOutput;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class CreateMessageResponse
+/**
+ * @implements ApiResponseInterface<CreateMessageOutput>
+ */
+class CreateMessageResponse implements ApiResponseInterface
 {
+    /** @use ResponseTrait<CreateMessageOutput> */
     use ResponseTrait {
         getData as private responseGetData;
         setData as private responseSetData;

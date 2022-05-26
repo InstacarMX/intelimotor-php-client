@@ -23,15 +23,18 @@ namespace Instacar\IntelimotorApiClient\Response;
 use Doctrine\Common\Collections\Collection;
 use Instacar\IntelimotorApiClient\Model\Color;
 
-class ColorsResponse
+/**
+ * @implements ApiResponseCollectionInterface<Color>
+ */
+class ColorsResponse implements ApiResponseCollectionInterface
 {
+    /** @use ResponseCollectionTrait<Color> */
     use ResponseCollectionTrait {
         getData as private responseGetData;
         addData as private responseAddData;
         removeData as private responseRemoveData;
     }
 
-    /** @return Collection|Color[] */
     public function getData(): Collection
     {
         return $this->responseGetData();

@@ -20,7 +20,7 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
-class RegionInfo
+class RegionInfo implements IdNameInterface
 {
     use IdNameTrait;
 

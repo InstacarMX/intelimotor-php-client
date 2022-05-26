@@ -22,8 +22,12 @@ namespace Instacar\IntelimotorApiClient\Response;
 
 use Instacar\IntelimotorApiClient\Model\Color;
 
-class ColorResponse
+/**
+ * @implements ApiResponseInterface<Color>
+ */
+class ColorResponse implements ApiResponseInterface
 {
+    /** @use ResponseTrait<Color> */
     use ResponseTrait {
         getData as private responseGetData;
         setData as private responseSetData;

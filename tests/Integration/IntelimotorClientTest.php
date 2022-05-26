@@ -25,9 +25,8 @@ use Instacar\IntelimotorApiClient\Model\Ad;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
-use Instacar\IntelimotorApiClient\Model\CreatedMessage;
-use Instacar\IntelimotorApiClient\Model\IdNameTrait;
-use Instacar\IntelimotorApiClient\Model\MessageInput;
+use Instacar\IntelimotorApiClient\Model\CreateMessageInput;
+use Instacar\IntelimotorApiClient\Model\CreateMessageOutput;
 use Instacar\IntelimotorApiClient\Model\Model;
 use Instacar\IntelimotorApiClient\Model\ProspectInput;
 use Instacar\IntelimotorApiClient\Model\Trim;
@@ -37,6 +36,9 @@ use PHPUnit\Framework\TestCase;
 
 class IntelimotorClientTest extends TestCase
 {
+    /**
+     * @var IntelimotorClient $client
+     */
     private $client;
 
     protected function setUp(): void
@@ -101,7 +103,7 @@ class IntelimotorClientTest extends TestCase
         return $this->assertCollection(Color::class, $collection, [$this, 'assertIdName']);
     }
 
-    public function testColorsCsv()
+    public function testColorsCsv(): void
     {
         $collection = $this->client->getColorsCsv();
 
@@ -267,19 +269,27 @@ class IntelimotorClientTest extends TestCase
     {
         $ad = new Ad('test', 'https://test.org');
         $prospect = new ProspectInput('Test', 'test@ci.com', '1234567890', 'This is an automated test');
-        $message = new MessageInput($ad, $prospect);
+        $message = new CreateMessageInput($ad, $prospect);
 
         $item = $this->client->createMessage('contact', $message);
 
-        $this->assertItem(CreatedMessage::class, $item, function (CreatedMessage $item) {
+        $this->assertItem(CreateMessageOutput::class, $item, function (CreateMessageOutput $item) {
             $this->assertNotNull($item->getId());
             $this->assertNotNull($item->getProspectId());
         });
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @param iterable<T> $collection
+     * @param callable(T $item): void $extraAssertions
+     * @param bool $earlyStop
+     * @return T
+     */
     private function assertCollection(
         string $className,
-        $collection,
+        iterable $collection,
         callable $extraAssertions,
         bool $earlyStop = false
     ) {
@@ -302,6 +312,13 @@ class IntelimotorClientTest extends TestCase
         return $first;
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @param T $item
+     * @param callable(T $item): void $extraAssertions
+     * @return void
+     */
     private function assertItem(string $className, $item, callable $extraAssertions): void
     {
         $this->assertNotNull($item);
@@ -310,7 +327,8 @@ class IntelimotorClientTest extends TestCase
     }
 
     /**
-     * @param object|IdNameTrait $data
+     * @template T of IdNameInterface
+     * @param T $data
      */
     private function assertIdName(object $data): void
     {

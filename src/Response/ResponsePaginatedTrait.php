@@ -20,8 +20,12 @@
 
 namespace Instacar\IntelimotorApiClient\Response;
 
+/**
+ * @template T of object
+ */
 trait ResponsePaginatedTrait
 {
+    /** @use ResponseCollectionTrait<T> */
     use ResponseCollectionTrait {
         __construct as private responseConstruct;
     }

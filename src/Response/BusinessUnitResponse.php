@@ -22,8 +22,12 @@ namespace Instacar\IntelimotorApiClient\Response;
 
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 
-class BusinessUnitResponse
+/**
+ * @implements ApiResponseInterface<BusinessUnit>
+ */
+class BusinessUnitResponse implements ApiResponseInterface
 {
+    /** @use ResponseTrait<BusinessUnit> */
     use ResponseTrait {
         getData as private responseGetData;
         setData as private responseSetData;

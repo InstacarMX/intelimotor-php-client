@@ -24,7 +24,7 @@ namespace Instacar\IntelimotorApiClient\Model;
  * @property string $id ID of the year
  * @property string|null $name Name of the year
  */
-class Year
+class Year implements IdNameInterface
 {
     use IdNameTrait;
 

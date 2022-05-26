@@ -18,34 +18,19 @@
  * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Instacar\IntelimotorApiClient\Model;
+namespace Instacar\IntelimotorApiClient\Response;
+
+use Doctrine\Common\Collections\Collection;
 
 /**
- * @property string $id ID of the model
- * @property string|null $name Name of the model
+ * @template T of object
+ * @method void addData(T $data)
+ * @method void removeData(T $data)
  */
-class Model implements IdNameInterface
+interface ApiResponseCollectionInterface
 {
-    use IdNameTrait;
-
-    /** @var Brand|null */
-    private $brand;
-
-    public function __construct(string $id, ?string $name = null, ?Brand $brand = null)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->brand = $brand;
-    }
-
-    public function getBrand(): ?Brand
-    {
-        return $this->brand;
-    }
-
-    public function setBrand(Brand $brand): self
-    {
-        $this->brand = $brand;
-        return $this;
-    }
+    /**
+     * @return Collection<int, T>
+     */
+    public function getData(): Collection;
 }

@@ -23,15 +23,18 @@ namespace Instacar\IntelimotorApiClient\Response;
 use Doctrine\Common\Collections\Collection;
 use Instacar\IntelimotorApiClient\Model\Model;
 
-class ModelsResponse
+/**
+ * @implements ApiResponseCollectionInterface<Model>
+ */
+class ModelsResponse implements ApiResponseCollectionInterface
 {
+    /** @use ResponseCollectionTrait<Model> */
     use ResponseCollectionTrait {
         getData as private responseGetData;
         addData as private responseAddData;
         removeData as private responseRemoveData;
     }
 
-    /** @return Collection|Model[] */
     public function getData(): Collection
     {
         return $this->responseGetData();

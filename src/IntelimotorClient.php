@@ -141,7 +141,7 @@ class IntelimotorClient
     }
 
     /**
-     * @return BusinessUnit[]
+     * @return iterable<BusinessUnit>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -173,7 +173,7 @@ class IntelimotorClient
 
     /**
      * @param string $businessUnitId
-     * @return Unit[]
+     * @return iterable<Unit>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -181,12 +181,15 @@ class IntelimotorClient
      */
     public function getBusinessUnitUnits(string $businessUnitId): iterable
     {
-        return $this->apiClient->paginatedRequest(UnitsResponse::class, "business-units/$businessUnitId/units");
+        return $this->apiClient->paginatedRequest(
+            UnitsResponse::class,
+            "business-units/$businessUnitId/units"
+        );
     }
 
     /**
      * @param string $businessUnitId
-     * @return Unit[]
+     * @return iterable<Unit>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -194,12 +197,15 @@ class IntelimotorClient
      */
     public function getBusinessUnitInventoryUnits(string $businessUnitId): iterable
     {
-        return $this->apiClient->paginatedRequest(UnitsResponse::class, "business-units/$businessUnitId/inventory-units");
+        return $this->apiClient->paginatedRequest(
+            UnitsResponse::class,
+            "business-units/$businessUnitId/inventory-units"
+        );
     }
 
     /**
      * @param string $businessUnitId
-     * @return Unit[]
+     * @return iterable<Unit>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -207,11 +213,14 @@ class IntelimotorClient
      */
     public function getBusinessUnitSoldUnits(string $businessUnitId): iterable
     {
-        return $this->apiClient->paginatedRequest(UnitsResponse::class, "business-units/$businessUnitId/sold-units");
+        return $this->apiClient->paginatedRequest(
+            UnitsResponse::class,
+            "business-units/$businessUnitId/sold-units"
+        );
     }
 
     /**
-     * @return Color[]
+     * @return iterable<Color>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -226,7 +235,7 @@ class IntelimotorClient
     }
 
     /**
-     * @return Color[]
+     * @return iterable<Color>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -259,7 +268,7 @@ class IntelimotorClient
 
     /**
      * @param string $country
-     * @return Brand[]
+     * @return iterable<Brand>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -277,7 +286,7 @@ class IntelimotorClient
 
     /**
      * @param string $country
-     * @return Brand[]
+     * @return iterable<Brand>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -310,7 +319,7 @@ class IntelimotorClient
 
     /**
      * @param string $brandId
-     * @return Model[]
+     * @return iterable<Model>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -326,7 +335,7 @@ class IntelimotorClient
 
     /**
      * @param string $country
-     * @return Model[]
+     * @return iterable<Model>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -361,7 +370,7 @@ class IntelimotorClient
     /**
      * @param string $brandId
      * @param string $modelId
-     * @return Model[]
+     * @return iterable<Year>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -377,7 +386,7 @@ class IntelimotorClient
 
     /**
      * @param string $country
-     * @return Year[]
+     * @return iterable<Year>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -414,7 +423,7 @@ class IntelimotorClient
      * @param string $brandId
      * @param string $modelId
      * @param string $yearId
-     * @return Trim[]
+     * @return iterable<Trim>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -430,7 +439,7 @@ class IntelimotorClient
 
     /**
      * @param string $country
-     * @return Trim[]
+     * @return iterable<Trim>
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -465,7 +474,7 @@ class IntelimotorClient
     }
 
     /**
-     * @return Unit[]
+     * @return iterable<Unit>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -477,7 +486,7 @@ class IntelimotorClient
     }
 
     /**
-     * @return Unit[]
+     * @return iterable<Unit>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -489,7 +498,7 @@ class IntelimotorClient
     }
 
     /**
-     * @return Unit[]
+     * @return iterable<Unit>
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface

@@ -86,3 +86,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+### IDE template
+.idea
+.vscode
+nbproject

@@ -24,9 +24,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use LogicException;
 
+/**
+ * @template T of object
+ */
 trait ResponseCollectionTrait
 {
-    /** @var Collection */
+    /** @var Collection<int, T> */
     protected $data;
 
     public function __construct()
@@ -35,7 +38,7 @@ trait ResponseCollectionTrait
     }
 
     /**
-     * @return Collection|array[]
+     * @return Collection<int, T>
      */
     public function getData(): Collection
     {

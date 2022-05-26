@@ -23,15 +23,18 @@ namespace Instacar\IntelimotorApiClient\Response;
 use Doctrine\Common\Collections\Collection;
 use Instacar\IntelimotorApiClient\Model\Year;
 
-class YearsResponse
+/**
+ * @implements ApiResponseCollectionInterface<Year>
+ */
+class YearsResponse implements ApiResponseCollectionInterface
 {
+    /** @use ResponseCollectionTrait<Year> */
     use ResponseCollectionTrait {
         getData as private responseGetData;
         addData as private responseAddData;
         removeData as private responseRemoveData;
     }
 
-    /** @return Collection|Year[] */
     public function getData(): Collection
     {
         return $this->responseGetData();

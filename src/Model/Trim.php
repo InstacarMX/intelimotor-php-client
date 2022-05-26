@@ -24,7 +24,7 @@ namespace Instacar\IntelimotorApiClient\Model;
  * @property string $id ID of the trim
  * @property string|null $name Name of the trim
  */
-class Trim
+class Trim implements IdNameInterface
 {
     use IdNameTrait;
 

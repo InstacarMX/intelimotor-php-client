@@ -22,8 +22,12 @@ namespace Instacar\IntelimotorApiClient\Response;
 
 use Instacar\IntelimotorApiClient\Model\Year;
 
-class YearResponse
+/**
+ * @implements ApiResponseInterface<Year>
+ */
+class YearResponse implements ApiResponseInterface
 {
+    /** @use ResponseTrait<Year> */
     use ResponseTrait {
         getData as private responseGetData;
         setData as private responseSetData;
