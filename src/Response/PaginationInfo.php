@@ -41,6 +41,6 @@ class PaginationInfo
 
     public function hasMore(): bool
     {
-        return ($this->pageNumber - 1) * $this->pageSize + $this->count < $this->total;
+        return $this->pageNumber * $this->pageSize + $this->count < $this->total;
     }
 }

@@ -98,7 +98,7 @@ class ApiHttpClient
         string $method = 'GET',
         array $options = []
     ): iterable {
-        $pageNumber = 1;
+        $pageNumber = 0;
         $pageSize = 10;
 
         do {
