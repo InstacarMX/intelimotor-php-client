@@ -75,182 +75,156 @@ class UnitInfo
     private $interiorColor;
 
     /**
-     * @SerializedName("hasAutopilot")
      * @var bool
      */
     #[SerializedName('hasAutopilot')]
     private $autopilot;
 
     /**
-     * @SerializedName("hasLightOnReminder")
      * @var bool
      */
     #[SerializedName('hasLightOnReminder')]
     private $lightOnReminder;
 
     /**
-     * @SerializedName("hasOnboardComputer")
      * @var bool
      */
     #[SerializedName('hasOnboardComputer')]
     private $onboardComputer;
 
     /**
-     * @SerializedName("hasRearFoldingSeat")
      * @var bool
      */
     #[SerializedName('hasRearFoldingSeat')]
     private $rearFoldingSeat;
 
     /**
-     * @SerializedName("hasSlidingRoof")
      * @var bool
      */
     #[SerializedName('hasSlidingRoof')]
     private $slidingRoof;
 
     /**
-     * @SerializedName("hasXenonHeadlights")
      * @var bool
      */
     #[SerializedName('hasXenonHeadlights')]
     private $xenonHeadlights;
 
     /**
-     * @SerializedName("hasCoasters")
      * @var bool
      */
     #[SerializedName('hasCoasters')]
     private $coasters;
 
     /**
-     * @SerializedName("hasClimateControl")
      * @var bool
      */
     #[SerializedName('hasClimateControl')]
     private $climateControl;
 
     /**
-     * @SerializedName("hasAbsBrakes")
      * @var bool
      */
     #[SerializedName('hasAbsBrakes')]
     private $absBrakes;
 
     /**
-     * @SerializedName("hasAlarm")
      * @var bool
      */
     #[SerializedName('hasAlarm')]
     private $alarm;
 
     /**
-     * @SerializedName("hasAlloyWheels")
      * @var bool
      */
     #[SerializedName('hasAlloyWheels')]
     private $alloyWheels;
 
     /**
-     * @SerializedName("hasDriverAirbag")
      * @var bool
      */
     #[SerializedName('hasDriverAirbag')]
     private $driverAirbag;
 
     /**
-     * @SerializedName("hasElectronicBrakeAssist")
      * @var bool
      */
     #[SerializedName('hasElectronicBrakeAssist')]
     private $electronicBrakeAssist;
 
     /**
-     * @SerializedName("hasEngineInmovilizer")
      * @var bool
      */
     #[SerializedName('hasEngineInmovilizer')]
     private $engineInmovilizer;
 
     /**
-     * @SerializedName("hasFogLight")
      * @var bool
      */
     #[SerializedName('hasFogLight')]
     private $fogLight;
 
     /**
-     * @SerializedName("hasFrontFoglights")
      * @var bool
      */
     #[SerializedName('hasFrontFoglights')]
     private $frontFoglights;
 
     /**
-     * @SerializedName("hasPassengerAirbag")
      * @var bool
      */
     #[SerializedName('hasPassengerAirbag')]
     private $passengerAirbag;
 
     /**
-     * @SerializedName("hasRainSensor")
      * @var bool
      */
     #[SerializedName('hasRainSensor')]
     private $rainSensor;
 
     /**
-     * @SerializedName("hasRearFoglights")
      * @var bool
      */
     #[SerializedName('hasRearFoglights')]
     private $rearFoglights;
 
     /**
-     * @SerializedName("hasRearWindowDefogger")
      * @var bool
      */
     #[SerializedName('hasRearWindowDefogger')]
     private $rearWindowDefogger;
 
     /**
-     * @SerializedName("hasRollBar")
      * @var bool
      */
     #[SerializedName('hasRollBar')]
     private $rollBar;
 
     /**
-     * @SerializedName("hasSideImpactAirbag")
      * @var bool
      */
     #[SerializedName('hasSideImpactAirbag')]
     private $sideImpactAirbag;
 
     /**
-     * @SerializedName("hasStabilityControl")
      * @var bool
      */
     #[SerializedName('hasStabilityControl')]
     private $stabilityControl;
 
     /**
-     * @SerializedName("hasSteeringWheelControl")
      * @var bool
      */
     #[SerializedName('hasSteeringWheelControl')]
     private $steeringWheelControl;
 
     /**
-     * @SerializedName("hasThirdStop")
      * @var bool
      */
     #[SerializedName('hasThirdStop')]
     private $thirdStop;
 
     /**
-     * @SerializedName("hasCurtainAirbag")
      * @var bool
      */
     #[SerializedName('hasCurtainAirbag')]
@@ -262,189 +236,162 @@ class UnitInfo
     private $armored;
 
     /**
-     * @SerializedName("hasAirConditioning")
      * @var bool
      */
     #[SerializedName('hasAirConditioning')]
     private $airConditioning;
 
     /**
-     * @SerializedName("hasElectricMirrors")
      * @var bool
      */
     #[SerializedName('hasElectricMirrors')]
     private $electricMirrors;
 
     /**
-     * @SerializedName("hasGps")
      * @var bool
      */
     #[SerializedName('hasGps')]
     private $gps;
 
     /**
-     * @SerializedName("hasHeadlightControl")
      * @var bool
      */
     #[SerializedName('hasHeadlightControl')]
     private $headlightControl;
 
     /**
-     * @SerializedName("hasHeadrestRearSeat")
      * @var bool
      */
     #[SerializedName('hasHeadrestRearSeat')]
     private $headrestRearSeat;
 
     /**
-     * @SerializedName("hasHeightAdjustableDriverSeat")
      * @var bool
      */
     #[SerializedName('hasHeightAdjustableDriverSeat')]
     private $heightAdjustableDriverSeat;
 
     /**
-     * @SerializedName("hasLeatherUpholstery")
      * @var bool
      */
     #[SerializedName('hasLeatherUpholstery')]
     private $leatherUpholstery;
 
     /**
-     * @SerializedName("hasLightSensor")
      * @var bool
      */
     #[SerializedName('hasLightSensor')]
     private $lightSensor;
 
     /**
-     * @SerializedName("hasPaintedBumper")
      * @var bool
      */
     #[SerializedName('hasPaintedBumper')]
     private $paintedBumper;
 
     /**
-     * @SerializedName("hasParkingSensor")
      * @var bool
      */
     #[SerializedName('hasParkingSensor')]
     private $parkingSensor;
 
     /**
-     * @SerializedName("hasPowerWindows")
      * @var bool
      */
     #[SerializedName('hasPowerWindows')]
     private $powerWindows;
 
     /**
-     * @SerializedName("hasRemoteTrunkRelease")
      * @var bool
      */
     #[SerializedName('hasRemoteTrunkRelease')]
     private $remoteTrunkRelease;
 
     /**
-     * @SerializedName("hasElectricSeats")
      * @var bool
      */
     #[SerializedName('hasElectricSeats')]
     private $electricSeats;
 
     /**
-     * @SerializedName("hasRearBackrest")
      * @var bool
      */
     #[SerializedName('hasRearBackrest')]
     private $rearBackrest;
 
     /**
-     * @SerializedName("hasCentralPowerDoorLocks")
      * @var bool
      */
     #[SerializedName('hasCentralPowerDoorLocks')]
     private $centralPowerDoorLocks;
 
     /**
-     * @SerializedName("hasAmfmRadio")
      * @var bool
      */
     #[SerializedName('hasAmfmRadio')]
     private $amfmRadio;
 
     /**
-     * @SerializedName("hasBluetooth")
      * @var bool
      */
     #[SerializedName('hasBluetooth')]
     private $bluetooth;
 
     /**
-     * @SerializedName("hasCdPlayer")
      * @var bool
      */
     #[SerializedName('hasCdPlayer')]
     private $cdPlayer;
 
     /**
-     * @SerializedName("hasDvd")
      * @var bool
      */
     #[SerializedName('hasDvd')]
     private $dvd;
 
     /**
-     * @SerializedName("hasMp3Player")
      * @var bool
      */
     #[SerializedName('hasMp3Player')]
     private $mp3Player;
 
     /**
-     * @SerializedName("hasSdCard")
      * @var bool
      */
     #[SerializedName('hasSdCard')]
     private $sdCard;
 
     /**
-     * @SerializedName("hasUsb")
      * @var bool
      */
     #[SerializedName('hasUsb')]
     private $usb;
 
     /**
-     * @SerializedName("hasBullBar")
      * @var bool
      */
     #[SerializedName('hasBullBar')]
     private $bullBar;
 
     /**
-     * @SerializedName("hasSpareTyreSupport")
      * @var bool
      */
     #[SerializedName('hasSpareTyreSupport')]
     private $spareTyreSupport;
 
     /**
-     * @SerializedName("hasTrayCover")
      * @var bool
      */
     #[SerializedName('hasTrayCover')]
     private $trayCover;
 
     /**
-     * @SerializedName("hasTrayMat")
      * @var bool
      */
     #[SerializedName('hasTrayMat')]
     private $trayMat;
 
     /**
-     * @SerializedName("hasWindscreenWiper")
      * @var bool
      */
     #[SerializedName('hasWindscreenWiper')]

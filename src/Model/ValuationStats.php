@@ -26,21 +26,18 @@ class ValuationStats
 {
     /**
      * @var float
-     * @SerializedName("avgMarketValue")
      */
     #[SerializedName('avgMarketValue')]
     private $averageMarketValue;
 
     /**
      * @var float
-     * @SerializedName("lowMarketValue")
      */
     #[SerializedName('lowMarketValue')]
     private $lowerMarketValue;
 
     /**
      * @var float
-     * @SerializedName("highMarketValue")
      */
     #[SerializedName('highMarketValue')]
     private $higherMarketValue;
@@ -52,14 +49,12 @@ class ValuationStats
 
     /**
      * @var int
-     * @SerializedName("avgDaysOnMarket")
      */
     #[SerializedName('avgDaysOnMarket')]
     private $averageDaysOnMarket;
 
     /**
      * @var int
-     * @SerializedName("avgKms")
      */
     #[SerializedName('avgKms')]
     private $averageKilometers;

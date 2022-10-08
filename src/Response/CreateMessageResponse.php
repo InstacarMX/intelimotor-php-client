@@ -35,7 +35,6 @@ class CreateMessageResponse implements ApiResponseInterface
     }
 
     /**
-     * @SerializedName("success")
      * @var bool
      */
     #[SerializedName('success')]

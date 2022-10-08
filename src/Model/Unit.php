@@ -103,7 +103,6 @@ class Unit
     private $listPrice;
 
     /**
-     * @SerializedName("isSold")
      * @var bool|null
      */
     #[SerializedName('isSold')]
@@ -140,7 +139,6 @@ class Unit
     private $listingInfo;
 
     /**
-     * @SerializedName("useExternalCatalog")
      * @var bool|null
      */
     #[SerializedName('useExternalCatalog')]

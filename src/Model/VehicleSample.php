@@ -57,7 +57,6 @@ class VehicleSample
 
     /**
      * @var bool
-     * @SerializedName("isDealer")
      */
     #[SerializedName('isDealer')]
     private $fromDealer;
