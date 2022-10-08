@@ -32,14 +32,14 @@ interface HttpRequestInterface extends RequestInterface
      * @param string $apiSecret
      * @return static
      */
-    public function withAuthentication(string $apiKey, string $apiSecret): static;
+    public function withAuthentication(string $apiKey, string $apiSecret);
 
     /**
      * @phpstan-param array<string, string> $params
      * @param array $params
      * @return static
      */
-    public function withParams(array $params): static;
+    public function withParams(array $params);
 
     /**
      * @phpstan-template T
@@ -47,12 +47,12 @@ interface HttpRequestInterface extends RequestInterface
      * @param mixed $payload
      * @return static
      */
-    public function withPayload(mixed $payload): static;
+    public function withPayload(mixed $payload);
 
     /**
      * @phpstan-param array<string, string|array<string>> $headers
      * @param array $headers
      * @return static
      */
-    public function withHeaders(array $headers): static;
+    public function withHeaders(array $headers);
 }

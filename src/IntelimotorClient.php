@@ -20,6 +20,7 @@
 
 namespace Instacar\IntelimotorApiClient;
 
+use Instacar\IntelimotorApiClient\Client\HttpClient;
 use Instacar\IntelimotorApiClient\Exceptions\BadRequestHttpException;
 use Instacar\IntelimotorApiClient\Exceptions\ForbiddenHttpException;
 use Instacar\IntelimotorApiClient\Exceptions\UnauthorizedHttpException;
@@ -36,7 +37,7 @@ use Instacar\IntelimotorApiClient\Model\Trim;
 use Instacar\IntelimotorApiClient\Model\Unit;
 use Instacar\IntelimotorApiClient\Model\Year;
 use Instacar\IntelimotorApiClient\Normalizer\TimestampNormalizer;
-use Instacar\IntelimotorApiClient\Request\HttpRequest;
+use Instacar\IntelimotorApiClient\Request\HttpRequestFactory;
 use Instacar\IntelimotorApiClient\Request\HttpRequestInterface;
 use Instacar\IntelimotorApiClient\Response\ApiResponseCollectionInterface;
 use Instacar\IntelimotorApiClient\Response\ApiResponseInterface;
@@ -49,7 +50,6 @@ use Instacar\IntelimotorApiClient\Response\ColorResponse;
 use Instacar\IntelimotorApiClient\Response\ColorsResponse;
 use Instacar\IntelimotorApiClient\Response\CreateMessageResponse;
 use Instacar\IntelimotorApiClient\Response\CreateValuationResponse;
-use Instacar\IntelimotorApiClient\Response\HttpResponse;
 use Instacar\IntelimotorApiClient\Response\HttpResponseInterface;
 use Instacar\IntelimotorApiClient\Response\ModelResponse;
 use Instacar\IntelimotorApiClient\Response\ModelsResponse;
@@ -66,7 +66,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\HttpClient as SymfonyHttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -76,19 +76,14 @@ use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class IntelimotorClient
 {
     private const BASE_URL = 'https://app.intelimotor.com/api/';
 
-    private ClientInterface $client;
+    private HttpClient $client;
 
-    private StreamFactoryInterface $streamFactory;
-
-    private RequestFactoryInterface $requestFactory;
-
-    private SerializerInterface $serializer;
+    private HttpRequestFactory $requestFactory;
 
     private string $apiKey;
 
@@ -99,28 +94,22 @@ class IntelimotorClient
 
     /**
      * @param ClientInterface $client
-     * @param StreamFactoryInterface $streamFactory
      * @param RequestFactoryInterface $requestFactory
+     * @param StreamFactoryInterface $streamFactory
      * @param string $apiKey
      * @param string $apiSecret
      */
     public function __construct(
         ClientInterface $client,
-        StreamFactoryInterface $streamFactory,
         RequestFactoryInterface $requestFactory,
+        StreamFactoryInterface $streamFactory,
         string $apiKey,
         string $apiSecret,
     ) {
-        $this->client = $client;
-        $this->streamFactory = $streamFactory;
-        $this->requestFactory = $requestFactory;
-        $this->apiKey = $apiKey;
-        $this->apiSecret = $apiSecret;
-
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(null));
         $nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
         $propertyTypeExtractor = new ReflectionExtractor();
-        $this->serializer = new Serializer(
+        $serializer = new Serializer(
             [
                 new TimestampNormalizer([
                     TimestampNormalizer::FORMAT_KEY => 'Uv',
@@ -131,6 +120,11 @@ class IntelimotorClient
             ],
             ['json' => new JsonEncoder()],
         );
+
+        $this->client = new HttpClient($client, $serializer);
+        $this->requestFactory = new HttpRequestFactory($requestFactory, $streamFactory, $serializer);
+        $this->apiKey = $apiKey;
+        $this->apiSecret = $apiSecret;
     }
 
     /**
@@ -608,11 +602,11 @@ class IntelimotorClient
             );
         }
 
-        $httpClient = HttpClient::create();
-        $httpFactory = new Psr17Factory();
+        $httpClient = SymfonyHttpClient::create();
         $psr18Client = new Psr18Client($httpClient);
+        $psr17Factory = new Psr17Factory();
 
-        return new self($psr18Client, $httpFactory, $httpFactory, $apiKey, $apiSecret);
+        return new self($psr18Client, $psr17Factory, $psr17Factory, $apiKey, $apiSecret);
     }
 
     /**
@@ -637,7 +631,7 @@ class IntelimotorClient
      * @throws ForbiddenHttpException
      * @throws UnknownHttpException
      */
-    public function itemRequest(
+    private function itemRequest(
         string $responseClass,
         string $endpoint,
         string $method = 'GET',
@@ -674,7 +668,7 @@ class IntelimotorClient
      * @throws ForbiddenHttpException
      * @throws UnknownHttpException
      */
-    public function collectionRequest(
+    private function collectionRequest(
         string $responseClass,
         string $endpoint,
         string $method = 'GET',
@@ -708,7 +702,7 @@ class IntelimotorClient
      * @throws ForbiddenHttpException
      * @throws UnknownHttpException
      */
-    public function paginatedRequest(
+    private function paginatedRequest(
         string $responseClass,
         string $endpoint,
         string $method = 'GET',
@@ -750,7 +744,7 @@ class IntelimotorClient
      * @throws ForbiddenHttpException
      * @throws UnknownHttpException
      */
-    public function csvRequest(
+    private function csvRequest(
         string $endpoint,
         array $params = [],
         bool $authenticated = true,
@@ -795,8 +789,7 @@ class IntelimotorClient
         bool $authenticated = true,
         array $headers = [],
     ): HttpRequestInterface {
-        $baseRequest = $this->requestFactory->createRequest($method, self::BASE_URL . $endpoint);
-        $request = new HttpRequest($baseRequest, $this->serializer, $this->streamFactory);
+        $request = $this->requestFactory->createRequest($method, self::BASE_URL . $endpoint);
         $request = $request->withParams($params);
         $request = $request->withPayload($payload);
         $request = $request->withHeaders($headers);
@@ -819,8 +812,7 @@ class IntelimotorClient
      */
     private function sendRequest(HttpRequestInterface $request): HttpResponseInterface
     {
-        $baseResponse = $this->client->sendRequest($request);
-        $response = new HttpResponse($baseResponse, $this->serializer);
+        $response = $this->client->sendRequest($request);
         $statusCode = $response->getStatusCode();
 
         if ($statusCode === 400) {
