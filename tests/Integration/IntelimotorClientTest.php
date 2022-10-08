@@ -27,6 +27,7 @@ use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
 use Instacar\IntelimotorApiClient\Model\CreateMessageInput;
 use Instacar\IntelimotorApiClient\Model\CreateMessageOutput;
+use Instacar\IntelimotorApiClient\Model\IdNameInterface;
 use Instacar\IntelimotorApiClient\Model\Model;
 use Instacar\IntelimotorApiClient\Model\ProspectInput;
 use Instacar\IntelimotorApiClient\Model\Trim;
@@ -36,10 +37,7 @@ use PHPUnit\Framework\TestCase;
 
 class IntelimotorClientTest extends TestCase
 {
-    /**
-     * @var IntelimotorClient $client
-     */
-    private $client;
+    private IntelimotorClient $client;
 
     protected function setUp(): void
     {
@@ -280,10 +278,13 @@ class IntelimotorClientTest extends TestCase
     }
 
     /**
-     * @template T of object
-     * @param class-string<T> $className
-     * @param iterable<T> $collection
-     * @param callable(T $item): void $extraAssertions
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $className
+     * @param string $className
+     * @phpstan-param iterable<T> $collection
+     * @param iterable $collection
+     * @phpstan-param callable(T $item): void $extraAssertions
+     * @param callable $extraAssertions
      * @param bool $earlyStop
      * @return T
      */
@@ -313,13 +314,16 @@ class IntelimotorClientTest extends TestCase
     }
 
     /**
-     * @template T of object
-     * @param class-string<T> $className
-     * @param T $item
-     * @param callable(T $item): void $extraAssertions
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $className
+     * @param string $className
+     * @phpstan-param T $item
+     * @param object $item
+     * @phpstan-param callable(T $item): void $extraAssertions
+     * @param callable $extraAssertions
      * @return void
      */
-    private function assertItem(string $className, $item, callable $extraAssertions): void
+    private function assertItem(string $className, object $item, callable $extraAssertions): void
     {
         $this->assertNotNull($item);
         $this->assertInstanceOf($className, $item);
@@ -327,8 +331,9 @@ class IntelimotorClientTest extends TestCase
     }
 
     /**
-     * @template T of IdNameInterface
-     * @param T $data
+     * @phpstan-template T of IdNameInterface
+     * @phpstan-param T $data
+     * @param object $data
      */
     private function assertIdName(object $data): void
     {

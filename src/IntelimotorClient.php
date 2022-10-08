@@ -20,7 +20,10 @@
 
 namespace Instacar\IntelimotorApiClient;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use Instacar\IntelimotorApiClient\Exceptions\BadRequestHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\ForbiddenHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\UnauthorizedHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\UnknownHttpException;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
@@ -33,6 +36,11 @@ use Instacar\IntelimotorApiClient\Model\Trim;
 use Instacar\IntelimotorApiClient\Model\Unit;
 use Instacar\IntelimotorApiClient\Model\Year;
 use Instacar\IntelimotorApiClient\Normalizer\TimestampNormalizer;
+use Instacar\IntelimotorApiClient\Request\HttpRequest;
+use Instacar\IntelimotorApiClient\Request\HttpRequestInterface;
+use Instacar\IntelimotorApiClient\Response\ApiResponseCollectionInterface;
+use Instacar\IntelimotorApiClient\Response\ApiResponseInterface;
+use Instacar\IntelimotorApiClient\Response\ApiResponsePaginatedInterface;
 use Instacar\IntelimotorApiClient\Response\BrandResponse;
 use Instacar\IntelimotorApiClient\Response\BrandsResponse;
 use Instacar\IntelimotorApiClient\Response\BusinessUnitResponse;
@@ -41,6 +49,8 @@ use Instacar\IntelimotorApiClient\Response\ColorResponse;
 use Instacar\IntelimotorApiClient\Response\ColorsResponse;
 use Instacar\IntelimotorApiClient\Response\CreateMessageResponse;
 use Instacar\IntelimotorApiClient\Response\CreateValuationResponse;
+use Instacar\IntelimotorApiClient\Response\HttpResponse;
+use Instacar\IntelimotorApiClient\Response\HttpResponseInterface;
 use Instacar\IntelimotorApiClient\Response\ModelResponse;
 use Instacar\IntelimotorApiClient\Response\ModelsResponse;
 use Instacar\IntelimotorApiClient\Response\TrimResponse;
@@ -50,7 +60,14 @@ use Instacar\IntelimotorApiClient\Response\UnitsResponse;
 use Instacar\IntelimotorApiClient\Response\YearResponse;
 use Instacar\IntelimotorApiClient\Response\YearsResponse;
 use LogicException;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7\Request;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -59,47 +76,51 @@ use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class IntelimotorClient
 {
-    /** @var ApiHttpClient */
-    private $apiClient;
+    private const BASE_URL = 'https://app.intelimotor.com/api/';
+
+    private ClientInterface $client;
+
+    private StreamFactoryInterface $streamFactory;
+
+    private RequestFactoryInterface $requestFactory;
+
+    private SerializerInterface $serializer;
+
+    private string $apiKey;
+
+    private string $apiSecret;
 
     /** @var string[] */
-    private $channels;
+    private array $channels;
 
     /**
-     * @param HttpClientInterface $httpClient
-     * @param Serializer|null $serializer
+     * @param ClientInterface $client
+     * @param StreamFactoryInterface $streamFactory
+     * @param RequestFactoryInterface $requestFactory
+     * @param string $apiKey
+     * @param string $apiSecret
      */
-    public function __construct(HttpClientInterface $httpClient, ?Serializer $serializer = null)
-    {
-        if ($serializer !== null) {
-            trigger_deprecation(
-                'instacar/intelimotor-api-client',
-                '1.0.1',
-                'Passing a serializer to the %s is depreciated.',
-                self::class
-            );
-        }
+    public function __construct(
+        ClientInterface $client,
+        StreamFactoryInterface $streamFactory,
+        RequestFactoryInterface $requestFactory,
+        string $apiKey,
+        string $apiSecret,
+    ) {
+        $this->client = $client;
+        $this->streamFactory = $streamFactory;
+        $this->requestFactory = $requestFactory;
+        $this->apiKey = $apiKey;
+        $this->apiSecret = $apiSecret;
 
-        if (PHP_VERSION_ID < 80000 && !class_exists(AnnotationReader::class)) {
-            throw new LogicException(
-                'You must install the Doctrine Annotations.' . PHP_EOL .
-                'Please, execute "composer require doctrine/annotations" in your project root'
-            );
-        }
-
-        $annotationReader = PHP_VERSION_ID < 80000 ? new AnnotationReader() : null;
-        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader($annotationReader));
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(null));
         $nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
         $propertyTypeExtractor = new ReflectionExtractor();
-        $serializer = new Serializer(
+        $this->serializer = new Serializer(
             [
                 new TimestampNormalizer([
                     TimestampNormalizer::FORMAT_KEY => 'Uv',
@@ -110,7 +131,6 @@ class IntelimotorClient
             ],
             ['json' => new JsonEncoder()],
         );
-        $this->apiClient = new ApiHttpClient($httpClient, $serializer);
     }
 
     /**
@@ -137,19 +157,21 @@ class IntelimotorClient
     public function setChannels(array $channels): self
     {
         $this->channels = $channels;
+
         return $this;
     }
 
     /**
      * @return iterable<BusinessUnit>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBusinessUnits(): iterable
     {
-        return $this->apiClient->collectionRequest(
+        return $this->collectionRequest(
             BusinessUnitsResponse::class,
             'business-units',
         );
@@ -159,13 +181,14 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return BusinessUnit
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBusinessUnit(string $businessUnitId): BusinessUnit
     {
-        return $this->apiClient->itemRequest(
+        return $this->itemRequest(
             BusinessUnitResponse::class,
             "business-units/$businessUnitId",
         );
@@ -175,13 +198,14 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBusinessUnitUnits(string $businessUnitId): iterable
     {
-        return $this->apiClient->paginatedRequest(
+        return $this->paginatedRequest(
             UnitsResponse::class,
             "business-units/$businessUnitId/units"
         );
@@ -191,13 +215,14 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBusinessUnitInventoryUnits(string $businessUnitId): iterable
     {
-        return $this->apiClient->paginatedRequest(
+        return $this->paginatedRequest(
             UnitsResponse::class,
             "business-units/$businessUnitId/inventory-units"
         );
@@ -207,13 +232,14 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBusinessUnitSoldUnits(string $businessUnitId): iterable
     {
-        return $this->apiClient->paginatedRequest(
+        return $this->paginatedRequest(
             UnitsResponse::class,
             "business-units/$businessUnitId/sold-units"
         );
@@ -222,13 +248,14 @@ class IntelimotorClient
     /**
      * @return iterable<Color>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getColors(): iterable
     {
-        return $this->apiClient->collectionRequest(
+        return $this->collectionRequest(
             ColorsResponse::class,
             'colors',
         );
@@ -236,14 +263,15 @@ class IntelimotorClient
 
     /**
      * @return iterable<Color>
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getColorsCsv(): iterable
     {
-        $colors = $this->apiClient->csvRequest('colors');
+        $colors = $this->csvRequest('colors');
 
         foreach ($colors as $color) {
             yield new Color($color['colorId'], $color['name']);
@@ -254,13 +282,14 @@ class IntelimotorClient
      * @param string $colorId
      * @return Color
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getColor(string $colorId): Color
     {
-        return $this->apiClient->itemRequest(
+        return $this->itemRequest(
             ColorResponse::class,
             "colors/$colorId",
         );
@@ -269,32 +298,34 @@ class IntelimotorClient
     /**
      * @param string $country
      * @return iterable<Brand>
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBrands(string $country = 'MX'): iterable
     {
-        return $this->apiClient->collectionRequest(
+        return $this->collectionRequest(
             BrandsResponse::class,
             'brands',
             'GET',
-            ['query' => ['countryCode' => $country]],
+            ['countryCode' => $country],
         );
     }
 
     /**
      * @param string $country
      * @return iterable<Brand>
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBrandsCsv(string $country = 'MX'): iterable
     {
-        $brands = $this->apiClient->csvRequest('brands', ['query' => ['countryCode' => $country]]);
+        $brands = $this->csvRequest('brands', ['countryCode' => $country]);
 
         foreach ($brands as $brand) {
             yield new Brand($brand['brandId'], $brand['name']);
@@ -305,13 +336,14 @@ class IntelimotorClient
      * @param string $brandId
      * @return Brand
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getBrand(string $brandId): Brand
     {
-        return $this->apiClient->itemRequest(
+        return $this->itemRequest(
             BrandResponse::class,
             "brands/$brandId",
         );
@@ -321,13 +353,14 @@ class IntelimotorClient
      * @param string $brandId
      * @return iterable<Model>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getModels(string $brandId): iterable
     {
-        return $this->apiClient->collectionRequest(
+        return $this->collectionRequest(
             ModelsResponse::class,
             "brands/$brandId/models",
         );
@@ -336,14 +369,15 @@ class IntelimotorClient
     /**
      * @param string $country
      * @return iterable<Model>
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getModelsCsv(string $country = 'MX'): iterable
     {
-        $models = $this->apiClient->csvRequest('models', ['query' => ['countryCode' => $country]]);
+        $models = $this->csvRequest('models', ['countryCode' => $country]);
 
         foreach ($models as $model) {
             yield new Model($model['modelId'], $model['name'], new Brand($model['brandId']));
@@ -355,13 +389,14 @@ class IntelimotorClient
      * @param string $modelId
      * @return Model
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getModel(string $brandId, string $modelId): Model
     {
-        return $this->apiClient->itemRequest(
+        return $this->itemRequest(
             ModelResponse::class,
             "brands/$brandId/models/$modelId",
         );
@@ -372,13 +407,14 @@ class IntelimotorClient
      * @param string $modelId
      * @return iterable<Year>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getYears(string $brandId, string $modelId): iterable
     {
-        return $this->apiClient->collectionRequest(
+        return $this->collectionRequest(
             YearsResponse::class,
             "brands/$brandId/models/$modelId/years",
         );
@@ -387,14 +423,15 @@ class IntelimotorClient
     /**
      * @param string $country
      * @return iterable<Year>
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getYearsCsv(string $country = 'MX'): iterable
     {
-        $years = $this->apiClient->csvRequest('years', ['query' => ['countryCode' => $country]]);
+        $years = $this->csvRequest('years', ['countryCode' => $country]);
 
         foreach ($years as $year) {
             yield new Year($year['yearId'], $year['name'], new Model($year['modelId']));
@@ -407,13 +444,14 @@ class IntelimotorClient
      * @param string $yearId
      * @return Year
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getYear(string $brandId, string $modelId, string $yearId): Year
     {
-        return $this->apiClient->itemRequest(
+        return $this->itemRequest(
             YearResponse::class,
             "brands/$brandId/models/$modelId/years/$yearId",
         );
@@ -425,13 +463,14 @@ class IntelimotorClient
      * @param string $yearId
      * @return iterable<Trim>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getTrims(string $brandId, string $modelId, string $yearId): iterable
     {
-        return $this->apiClient->collectionRequest(
+        return $this->collectionRequest(
             TrimsResponse::class,
             "brands/$brandId/models/$modelId/years/$yearId/trims",
         );
@@ -440,14 +479,15 @@ class IntelimotorClient
     /**
      * @param string $country
      * @return iterable<Trim>
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getTrimsCsv(string $country = 'MX'): iterable
     {
-        $trims = $this->apiClient->csvRequest('trims', ['query' => ['countryCode' => $country]]);
+        $trims = $this->csvRequest('trims', ['countryCode' => $country]);
 
         foreach ($trims as $trim) {
             yield new Trim($trim['trimId'], $trim['name'], new Year($trim['yearId']));
@@ -461,13 +501,14 @@ class IntelimotorClient
      * @param string $trimId
      * @return Trim
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getTrim(string $brandId, string $modelId, string $yearId, string $trimId): Trim
     {
-        return $this->apiClient->itemRequest(
+        return $this->itemRequest(
             TrimResponse::class,
             "brands/$brandId/models/$modelId/years/$yearId/trims/$trimId",
         );
@@ -476,79 +517,80 @@ class IntelimotorClient
     /**
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getUnits(): iterable
     {
-        return $this->apiClient->paginatedRequest(UnitsResponse::class, 'units');
+        return $this->paginatedRequest(UnitsResponse::class, 'units');
     }
 
     /**
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getInventoryUnits(): iterable
     {
-        return $this->apiClient->paginatedRequest(UnitsResponse::class, 'inventory-units');
+        return $this->paginatedRequest(UnitsResponse::class, 'inventory-units');
     }
 
     /**
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getSoldUnits(): iterable
     {
-        return $this->apiClient->paginatedRequest(UnitsResponse::class, 'sold-units');
+        return $this->paginatedRequest(UnitsResponse::class, 'sold-units');
     }
 
     /**
      * @param string $id
      * @return Unit
      * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function getUnit(string $id): Unit
     {
-        return $this->apiClient->itemRequest(UnitResponse::class, 'units/' . $id);
+        return $this->itemRequest(UnitResponse::class, 'units/' . $id);
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function createMessage(string $channel, CreateMessageInput $message): CreateMessageOutput
     {
         $channelKey = $this->channels[$channel];
 
-        return $this->apiClient->itemRequest(CreateMessageResponse::class, 'messages', 'POST', [
-            'extra' => ['payload' => $message],
-            'query' => ['apiKey' => $channelKey],
-        ]);
+        return $this->itemRequest(CreateMessageResponse::class, 'messages', 'POST', ['apiKey' => $channelKey], $message, false);
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
      */
     public function createValuation(CreateValuationInput $valuation): CreateValuationOutput
     {
-        return $this->apiClient->itemRequest(CreateValuationResponse::class, 'valuations', 'POST', [
-            'extra' => ['payload' => $valuation],
-        ]);
+        return $this->itemRequest(CreateValuationResponse::class, 'valuations', 'POST', [], $valuation);
     }
 
     public static function createDefault(string $apiKey, string $apiSecret): self
@@ -559,18 +601,244 @@ class IntelimotorClient
                 'Please, execute "composer require symfony/http-client" in your project root'
             );
         }
+        if (!class_exists(Request::class)) {
+            throw new LogicException(
+                'You must install the Nyholm PSR-7 implementation.' . PHP_EOL .
+                'Please, execute "composer require nyholm/psr7" in your project root'
+            );
+        }
 
-        $httpClient = HttpClient::create([
-            'base_uri' => 'https://app.intelimotor.com/api/',
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'query' => [
-                'apiKey' => $apiKey,
-                'apiSecret' => $apiSecret,
-            ],
-        ]);
+        $httpClient = HttpClient::create();
+        $httpFactory = new Psr17Factory();
+        $psr18Client = new Psr18Client($httpClient);
 
-        return new self($httpClient);
+        return new self($psr18Client, $httpFactory, $httpFactory, $apiKey, $apiSecret);
+    }
+
+    /**
+     * @template TPayload of object
+     * @template TResponse of object
+     * @phpstan-param class-string<ApiResponseInterface<TResponse>> $responseClass
+     * @param string $responseClass
+     * @param string $endpoint
+     * @param string $method
+     * @phpstan-param array<string, string> $params
+     * @param array $params
+     * @phpstan-param TPayload|null $payload
+     * @param TPayload $payload
+     * @param bool $authenticated
+     * @phpstan-param array<string, string|array<string>> $headers
+     * @param array $headers
+     * @phpstan-return TResponse
+     * @return object
+     * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
+     */
+    public function itemRequest(
+        string $responseClass,
+        string $endpoint,
+        string $method = 'GET',
+        array $params = [],
+        mixed $payload = null,
+        bool $authenticated = true,
+        array $headers = [],
+    ): object {
+        $request = $this->makeRequest($endpoint, $method, $params, $payload, $authenticated, $headers);
+        $response = $this->sendRequest($request);
+
+        return $response->deserializeResponse($responseClass)->getData();
+    }
+
+    /**
+     * @template TPayload of object
+     * @template TResponse of object
+     * @phpstan-param class-string<ApiResponseCollectionInterface<TResponse>> $responseClass
+     * @param string $responseClass
+     * @param string $endpoint
+     * @param string $method
+     * @phpstan-param array<string, string> $params
+     * @param array $params
+     * @phpstan-param TPayload|null $payload
+     * @param mixed $payload
+     * @param bool $authenticated
+     * @phpstan-param array<string, string|array<string>> $headers
+     * @param array $headers
+     * @phpstan-return iterable<TResponse>
+     * @return iterable
+     * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
+     */
+    public function collectionRequest(
+        string $responseClass,
+        string $endpoint,
+        string $method = 'GET',
+        array $params = [],
+        mixed $payload = null,
+        bool $authenticated = true,
+        array $headers = [],
+    ): iterable {
+        $request = $this->makeRequest($endpoint, $method, $params, $payload, $authenticated, $headers);
+        $response = $this->sendRequest($request);
+
+        return $response->deserializeResponse($responseClass)->getData();
+    }
+
+    /**
+     * @template T of object
+     * @phpstan-param class-string<ApiResponsePaginatedInterface<T>> $responseClass
+     * @param string $responseClass
+     * @param string $endpoint
+     * @param string $method
+     * @phpstan-param array<string, string> $params
+     * @param array $params
+     * @param bool $authenticated
+     * @phpstan-param array<string, string|array<string>> $headers
+     * @param array $headers
+     * @phpstan-return iterable<T>
+     * @return iterable
+     * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
+     */
+    public function paginatedRequest(
+        string $responseClass,
+        string $endpoint,
+        string $method = 'GET',
+        array $params = [],
+        bool $authenticated = true,
+        array $headers = [],
+    ): iterable {
+        $pageNumber = 0;
+        $pageSize = 10;
+
+        do {
+            $params['pageNumber'] = (string) $pageNumber;
+            $params['pageSize'] = (string) $pageSize;
+
+            $request = $this->makeRequest($endpoint, $method, $params, null, $authenticated, $headers);
+            $response = $this->sendRequest($request);
+            $paginatedResponse = $response->deserializeResponse($responseClass);
+            $items = $paginatedResponse->getData();
+
+            foreach ($items as $item) {
+                yield $item;
+            }
+            $pageNumber++;
+        } while ($paginatedResponse->hasMore());
+    }
+
+    /**
+     * @param string $endpoint
+     * @phpstan-param array<string, string> $params
+     * @param array $params
+     * @param bool $authenticated
+     * @phpstan-param array<string, string|array<string>> $headers
+     * @param array $headers
+     * @phpstan-return iterable<array<string, string>>
+     * @return iterable
+     * @throws ClientExceptionInterface
+     * @throws BadRequestHttpException
+     * @throws UnauthorizedHttpException
+     * @throws ForbiddenHttpException
+     * @throws UnknownHttpException
+     */
+    public function csvRequest(
+        string $endpoint,
+        array $params = [],
+        bool $authenticated = true,
+        array $headers = [],
+    ): iterable {
+        $request = $this->makeRequest("$endpoint/csv", 'GET', $params, null, $authenticated, $headers);
+        $response = $this->sendRequest($request);
+
+        $columns = null;
+        foreach ($response->streamLines() as $row) {
+            if (!$columns) {
+                // The Intelimotor API has a bug that send 3 unicode control characters (/uef, /ubb, /ubf),
+                // so we strip it.
+                $sanitizedRow = substr($row, 3);
+                $columns = str_getcsv($sanitizedRow);
+            } else {
+                $data = str_getcsv($row);
+
+                yield array_combine($columns, $data);
+            }
+        }
+    }
+
+    /**
+     * @phpstan-template TPayload of object
+     * @param string $endpoint
+     * @param string $method
+     * @phpstan-param array<string, string> $params
+     * @param array $params
+     * @phpstan-param TPayload|null $payload
+     * @param mixed $payload
+     * @param bool $authenticated
+     * @phpstan-param array<string, string|array<string>> $headers
+     * @param array $headers
+     * @return HttpRequestInterface
+     */
+    private function makeRequest(
+        string $endpoint,
+        string $method = 'GET',
+        array $params = [],
+        mixed $payload = null,
+        bool $authenticated = true,
+        array $headers = [],
+    ): HttpRequestInterface {
+        $baseRequest = $this->requestFactory->createRequest($method, self::BASE_URL . $endpoint);
+        $request = new HttpRequest($baseRequest, $this->serializer, $this->streamFactory);
+        $request = $request->withParams($params);
+        $request = $request->withPayload($payload);
+        $request = $request->withHeaders($headers);
+
+        if ($authenticated) {
+            $request = $request->withAuthentication($this->apiKey, $this->apiSecret);
+        }
+
+        return $request;
+    }
+
+    /**
+     * @param HttpRequestInterface $request
+     * @return HttpResponseInterface
+     * @throws BadRequestHttpException
+     * @throws ClientExceptionInterface
+     * @throws ForbiddenHttpException
+     * @throws UnauthorizedHttpException
+     * @throws UnknownHttpException
+     */
+    private function sendRequest(HttpRequestInterface $request): HttpResponseInterface
+    {
+        $baseResponse = $this->client->sendRequest($request);
+        $response = new HttpResponse($baseResponse, $this->serializer);
+        $statusCode = $response->getStatusCode();
+
+        if ($statusCode === 400) {
+            throw new BadRequestHttpException($response->getReasonPhrase());
+        }
+
+        if ($statusCode === 401) {
+            throw new UnauthorizedHttpException($response->getReasonPhrase());
+        }
+
+        if ($statusCode === 403) {
+            throw new ForbiddenHttpException($response->getReasonPhrase());
+        }
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new UnknownHttpException($response->getReasonPhrase());
+        }
+
+        return $response;
     }
 }

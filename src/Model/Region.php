@@ -31,7 +31,8 @@ class Region
     private $region;
 
     /**
-     * @var Collection<int, ValuationSample>
+     * @phpstan-var Collection<int, ValuationSample>
+     * @var Collection
      */
     private $samples;
 
@@ -42,6 +43,7 @@ class Region
 
     /**
      * @param RegionInfo $region
+     * @phpstan-param array<int, ValuationSample> $samples
      * @param ValuationSample[] $samples
      * @param ValuationStats $stats
      */
