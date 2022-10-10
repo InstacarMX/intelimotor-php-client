@@ -1,0 +1,401 @@
+{
+  "pagination": {
+    "pageNumber": 1,
+    "pageSize": 10,
+    "total": 1,
+    "count": 1
+  },
+  "data": [
+    {
+      "id": "62a262142437e52e05543aaa",
+      "businessUnit": {
+        "id": "5cc335590b04d10096fd5ad7",
+        "name": "Pruebas",
+        "state": "Nuevo León",
+        "city": "San Pedro Garza García"
+      },
+      "ref": null,
+      "vin": "4T2GB11E6SU049411",
+      "brands": [
+        {
+          "id": "5cdc48b7a6ca044a76082268",
+          "name": "Audi"
+        }
+      ],
+      "models": [
+        {
+          "id": "5cdc48bfa6ca044a76082305",
+          "name": "A4"
+        }
+      ],
+      "years": [
+        {
+          "id": "5cdc48bfa6ca044a76082307",
+          "name": "2018"
+        }
+      ],
+      "trims": [
+        {
+          "id": "5d4dd3c5bb4c2a4e9abf9829",
+          "name": "2.0 S Line Quattro At"
+        }
+      ],
+      "useCustomTrim": false,
+      "customTrim": null,
+      "kms": 20000,
+      "type": "owned",
+      "consignmentFeeType": null,
+      "consignmentFee": null,
+      "buyPrice": 909000,
+      "buyPriceIva": null,
+      "buyDate": 1654809079939,
+      "listPrice": 900000,
+      "isSold": false,
+      "sellDate": null,
+      "sellChannel": null,
+      "prospectId": null,
+      "amExtras": [],
+      "amOnDemandValues": [],
+      "stats": [
+        {
+          "region": {
+            "id": "5d1a87f59ea87400a65ea18a",
+            "name": "Nuevo León"
+          },
+          "values": {
+            "avgMarketValue": 0,
+            "lowMarketValue": 0,
+            "highMarketValue": 0,
+            "offerLevel": 0,
+            "avgDaysOnMarket": 0,
+            "avgKms": 0,
+            "suggestedOffer": 0,
+            "suggestedOffers": [
+              {
+                "name": "Test X1",
+                "suggestedOffer": 0,
+                "match": false
+              },
+              {
+                "name": "chevrolet",
+                "suggestedOffer": 0,
+                "match": false
+              },
+              {
+                "name": "test numero de muestras",
+                "suggestedOffer": 0,
+                "match": false
+              }
+            ]
+          }
+        },
+        {
+          "region": {
+            "id": "5d1a890e9ea87400a65ea18c",
+            "name": "Zona Centro"
+          },
+          "values": {
+            "avgMarketValue": 550999,
+            "lowMarketValue": 550999,
+            "highMarketValue": 550999,
+            "offerLevel": 1,
+            "avgDaysOnMarket": 138.45414374228395,
+            "avgKms": 43000,
+            "suggestedOffer": 463349.15,
+            "suggestedOffers": [
+              {
+                "name": "Test X1",
+                "suggestedOffer": 463349.15,
+                "match": false
+              },
+              {
+                "name": "chevrolet",
+                "suggestedOffer": 495889.1,
+                "match": false
+              },
+              {
+                "name": "test numero de muestras",
+                "suggestedOffer": 482879.12,
+                "match": false
+              }
+            ]
+          }
+        },
+        {
+          "region": {
+            "id": "5d1a892e9ea87400a65ea18d",
+            "name": "Nacional "
+          },
+          "values": {
+            "avgMarketValue": 521666.3333333333,
+            "lowMarketValue": 465000,
+            "highMarketValue": 550999,
+            "offerLevel": 3,
+            "avgDaysOnMarket": 68.11351455169753,
+            "avgKms": 56571,
+            "suggestedOffer": 438416.3833333333,
+            "suggestedOffers": [
+              {
+                "name": "Test X1",
+                "suggestedOffer": 438416.3833333333,
+                "match": false
+              },
+              {
+                "name": "chevrolet",
+                "suggestedOffer": 418490,
+                "match": false
+              },
+              {
+                "name": "test numero de muestras",
+                "suggestedOffer": 457066.3733333333,
+                "match": false
+              }
+            ]
+          }
+        }
+      ],
+      "pictures": [
+        "70ba0e03-38ad-416d-87f0-12000503f043.jpeg",
+        "006f96e1-706d-42f4-96e5-c51ea67e8946.jpeg",
+        "18c9f212-32b1-437d-ba5d-ffe397d1a61a.jpeg",
+        "61c710b9-9f16-4e43-9760-78dccac218d2.jpeg"
+      ],
+      "listingInfo": {
+        "title": "Audi A4 2018 2.0 S Line Quattro At",
+        "descriptions": {
+          "avisosdeocasion": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "mercadolibre": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "intelimotorWebsite": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "intelimotorGroupWebsite": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "neoauto": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "segundamano": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "seminuevos": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "soloautos": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "autocosmos": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "vivanuncios": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "facebook": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "sharedInventory": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "facebookCatalog": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "olx": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "facebookMarketplace": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "generalmotors": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "dealeron": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "netcar": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "carcentral": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información.",
+          "instagram": "Excelente oportunidad. Contamos con planes de financiamiento con los principales bancos a tasas preferenciales. Contacta a nuestros asesores para más información."
+        },
+        "brand": "Audi",
+        "model": "A4",
+        "year": 2018,
+        "trim": "2.0 S Line Quattro At",
+        "transmission": "Automática",
+        "doors": 4,
+        "fuelType": "Gasolina",
+        "steering": "Eléctrica",
+        "tractionControl": "4x4",
+        "vehicleBodyType": "Sedán",
+        "engine": "2.0",
+        "exteriorColor": "Café",
+        "interiorColor": "Azul marino",
+        "licensePlate": "",
+        "vin": "4T1GB11E6SU049411",
+        "gummy": "",
+        "hologram": "",
+        "hasAutopilot": false,
+        "hasLightOnReminder": false,
+        "hasOnboardComputer": true,
+        "hasRearFoldingSeat": false,
+        "hasSlidingRoof": true,
+        "hasXenonHeadlights": false,
+        "hasCoasters": false,
+        "hasClimateControl": false,
+        "hasAbsBrakes": true,
+        "hasAlarm": false,
+        "hasAlloyWheels": true,
+        "hasDriverAirbag": false,
+        "hasElectronicBrakeAssist": false,
+        "hasEngineInmovilizer": false,
+        "hasFogLight": false,
+        "hasFrontFoglights": false,
+        "hasPassengerAirbag": true,
+        "hasRainSensor": true,
+        "hasRearFoglights": false,
+        "hasRearWindowDefogger": false,
+        "hasRollBar": false,
+        "hasSideImpactAirbag": false,
+        "hasStabilityControl": true,
+        "hasSteeringWheelControl": true,
+        "hasThirdStop": false,
+        "hasCurtainAirbag": false,
+        "armored": false,
+        "hasAirConditioning": true,
+        "hasElectricMirrors": false,
+        "hasGps": false,
+        "hasHeadlightControl": false,
+        "hasHeadrestRearSeat": false,
+        "hasHeightAdjustableDriverSeat": false,
+        "hasLeatherUpholstery": true,
+        "hasLightSensor": false,
+        "hasPaintedBumper": false,
+        "hasParkingSensor": true,
+        "hasPowerWindows": true,
+        "hasRemoteTrunkRelease": false,
+        "hasElectricSeats": false,
+        "hasRearBackrest": false,
+        "hasCentralPowerDoorLocks": false,
+        "hasAmfmRadio": true,
+        "hasBluetooth": false,
+        "hasCdPlayer": false,
+        "hasDvd": false,
+        "hasMp3Player": true,
+        "hasSdCard": false,
+        "hasUsb": true,
+        "hasBullBar": false,
+        "hasSpareTyreSupport": false,
+        "hasTrayCover": false,
+        "hasTrayMat": false,
+        "hasWindscreenWiper": false,
+        "singleOwner": false,
+        "youtubeVideoUrl": "",
+        "pictures": [
+          "https://intelimotor.s3.amazonaws.com/70ba0e03-38ad-416d-87f0-12000503f043.jpeg",
+          "https://intelimotor.s3.amazonaws.com/006f96e1-706d-42f4-96e5-c51ea67e8946.jpeg",
+          "https://intelimotor.s3.amazonaws.com/18c9f212-32b1-437d-ba5d-ffe397d1a61a.jpeg",
+          "https://intelimotor.s3.amazonaws.com/61c710b9-9f16-4e43-9760-78dccac218d2.jpeg"
+        ],
+        "spincarId": null,
+        "spincarUrl": null
+      },
+      "ads": {
+        "avisosdeocasion": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": 1654895574546,
+          "url": null
+        },
+        "mercadolibre": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "segundamano": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "seminuevos": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "soloautos": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "autocosmos": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "vivanuncios": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "facebook": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "sharedInventory": {
+          "status": "published",
+          "publishedAt": 1657646567580,
+          "unpublishedAt": null,
+          "url": "/shared-inventory/62a2627e2437e52e05543df4"
+        },
+        "facebookCatalog": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": "undefined"
+        },
+        "olx": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "facebookMarketplace": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "generalmotors": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "dealeron": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "netcar": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "motormatch": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "carcentral": {
+          "status": "none",
+          "publishedAt": 1655138405100,
+          "unpublishedAt": 1655150560296,
+          "url": "https://abcars.mx/compra-tu-auto/detail/4T2GB11E6SU049411"
+        },
+        "instagram": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        }
+      },
+      "customValues": [
+        {
+          "customField": {
+            "id": "626ad66dd4823402c8e2c79e",
+            "name": "test api",
+            "type": "text",
+            "options": [],
+            "multi": true
+          },
+          "value": []
+        }
+      ],
+      "imported": true,
+      "useExternalCatalog": false,
+      "externalBrand": null,
+      "externalModel": null,
+      "externalYear": null,
+      "externalTrim": null,
+      "status": "Activo",
+      "fleet": false
+    }
+  ]
+}

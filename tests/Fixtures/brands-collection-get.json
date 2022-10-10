@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "id": "5cdc488ba6ca044a76082150",
+      "name": "Acura"
+    },
+    {
+      "id": "5cdc489da6ca044a760821cf",
+      "name": "Alfa Romeo"
+    },
+    {
+      "id": "5cdc48a9a6ca044a76082221",
+      "name": "Aston Martin"
+    },
+    {
+      "id": "5cdc48b7a6ca044a76082268",
+      "name": "Audi"
+    }
+  ]
+}

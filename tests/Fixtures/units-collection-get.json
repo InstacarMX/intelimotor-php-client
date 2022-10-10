@@ -1,0 +1,268 @@
+{
+  "pagination": {
+    "pageNumber": 1,
+    "pageSize": 10,
+    "total": 1,
+    "count": 1
+  },
+  "data": [
+    {
+      "id": "5ebc29a66912cb0013fb73bc",
+      "businessUnit": {
+        "id": "5cc335590b04d10096fd5ad7",
+        "name": "Pruebas",
+        "state": "Nuevo León",
+        "city": "San Pedro Garza García"
+      },
+      "ref": null,
+      "vin": null,
+      "brands": [
+        {
+          "id": "5cdc48b7a6ca044a76082268",
+          "name": "Audi"
+        }
+      ],
+      "models": [
+        {
+          "id": "5cdc48bfa6ca044a76082305",
+          "name": "A4"
+        }
+      ],
+      "years": [
+        {
+          "id": "5cdc48bfa6ca044a76082307",
+          "name": "2018"
+        }
+      ],
+      "trims": [
+        {
+          "id": "5d4dd3c3bb4c2a4e9abf981d",
+          "name": "2.0 Elite Quattro At"
+        }
+      ],
+      "useCustomTrim": false,
+      "customTrim": null,
+      "kms": 20000,
+      "type": "owned",
+      "consignmentFeeType": null,
+      "consignmentFee": null,
+      "buyPrice": 300000,
+      "buyPriceIva": null,
+      "buyDate": 1589389715928,
+      "listPrice": 400000,
+      "isSold": true,
+      "sellPrice": 300000,
+      "sellDate": 1650471377500,
+      "sellChannel": "vivanuncios",
+      "prospectId": "626031e0052a660d206f1e52",
+      "amExtras": [],
+      "amOnDemandValues": [
+        {
+          "extras": [],
+          "_id": "606b67ff167d630013be7f55",
+          "date": "2021-04-05T19:41:51.950Z",
+          "c": 404800,
+          "v": 465500,
+          "kms": 35600
+        },
+        {
+          "extras": [],
+          "_id": "608d7b29d785b4001a015193",
+          "date": "2021-05-01T16:00:41.570Z",
+          "c": 398900,
+          "v": 458700,
+          "kms": 35600
+        }
+      ],
+      "stats": [
+        {
+          "region": {
+            "id": "5d1a87f59ea87400a65ea18a",
+            "name": "Nuevo León"
+          },
+          "values": {
+            "avgMarketValue": 0,
+            "lowMarketValue": 0,
+            "highMarketValue": 0,
+            "offerLevel": 0,
+            "avgDaysOnMarket": 151.31586244212963,
+            "avgKms": 0,
+            "suggestedOffer": 0,
+            "suggestedOffers": [
+              {
+                "name": "Test X1",
+                "suggestedOffer": 0,
+                "match": false
+              }
+            ]
+          }
+        },
+        {
+          "region": {
+            "id": "5d1a890e9ea87400a65ea18c",
+            "name": "Zona Centro"
+          },
+          "values": {
+            "avgMarketValue": 0,
+            "lowMarketValue": 0,
+            "highMarketValue": 0,
+            "offerLevel": 0,
+            "avgDaysOnMarket": 45.759513921598234,
+            "avgKms": 0,
+            "suggestedOffer": 0,
+            "suggestedOffers": [
+              {
+                "name": "Test X1",
+                "suggestedOffer": 0,
+                "match": false
+              }
+            ]
+          }
+        },
+        {
+          "region": {
+            "id": "5d1a892e9ea87400a65ea18d",
+            "name": "Nacional "
+          },
+          "values": {
+            "avgMarketValue": 545000,
+            "lowMarketValue": 545000,
+            "highMarketValue": 545000,
+            "offerLevel": 1,
+            "avgDaysOnMarket": 59.19098594076449,
+            "avgKms": 35300,
+            "suggestedOffer": 458250,
+            "suggestedOffers": [
+              {
+                "name": "Test X1",
+                "suggestedOffer": 458250,
+                "match": false
+              }
+            ]
+          }
+        }
+      ],
+      "pictures": [],
+      "listingInfo": null,
+      "ads": {
+        "avisosdeocasion": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "mercadolibre": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "segundamano": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "seminuevos": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "soloautos": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "autocosmos": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "vivanuncios": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "facebook": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "sharedInventory": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "facebookCatalog": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "olx": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "facebookMarketplace": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "generalmotors": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "dealeron": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "netcar": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "motormatch": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "carcentral": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        },
+        "instagram": {
+          "status": "none",
+          "publishedAt": null,
+          "unpublishedAt": null,
+          "url": null
+        }
+      },
+      "customValues": [],
+      "imported": true,
+      "useExternalCatalog": false,
+      "externalBrand": null,
+      "externalModel": null,
+      "externalYear": null,
+      "externalTrim": null,
+      "status": "Activo",
+      "fleet": false
+    }
+  ]
+}
