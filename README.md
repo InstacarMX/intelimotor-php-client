@@ -7,17 +7,12 @@ poder utilizar la API de Intelimotor de una manera práctica y sencilla mediante
 
 ## Instalación
 ### Dependencias
-Esta librería depende de un cliente HTTP que implemente la interfaz de Symfony. Puede instalar el cliente de referencia
-para esta implementación de la siguiente manera:
+Esta librería depende de un cliente HTTP que implemente el estándar PSR-18 y una librería que implemente el estándar 
+PSR-7 y PSR-17. Puede instalar las librerías de referencia para esta implementación de la siguiente manera:
 
     composer require symfony/http-client
+    composer require nyholm/psr7
 
-Igualmente, se requiere una librería para leer anotaciones. Se recomienda instalar la librería de Doctrine para esta
-tarea de la siguiente manera:
-
-    composer require doctrine/annotations
-
-Nota: Si utilizas PHP 8.0, no requieres instalar la librería de anotaciones.
 ### Librería
 La instalación del cliente es simple, solo debes ejecutar el siguiente comando:
 
@@ -25,8 +20,8 @@ La instalación del cliente es simple, solo debes ejecutar el siguiente comando:
 
 ## Uso
 Para usar el cliente puedes crear una instancia por defecto que se encargará de crear el cliente HTTP basado en Symfony
-y el serializador con las configuraciones recomendadas. El cliente tiene un método por cada punto final de la API de 
-Intelimotors. Por ejemplo, para solicitar las marcas de vehículos:
+y la implementación PSR-7 de Nyholm con las configuraciones recomendadas. El cliente tiene un método por cada punto 
+final de la API de Intelimotors. Por ejemplo, para solicitar las marcas de vehículos:
 
 ~~~php
 use Instacar\IntelimotorApiClient\IntelimotorClient;
@@ -35,8 +30,8 @@ $cliente = IntelimotorClient::createDefault($apiKey, $apiSecret);
 $marcas = $cliente->getBrands();
 ~~~
 
-Nota: Para crear mensajes en el CRM de Intelimotor primero debe obtener una [clave de API](https://app.intelimotor.com/settings) específica para el canal y
-configurar un alias para el canal en el cliente de Intelimotor:
+Nota: Para crear mensajes en el CRM de Intelimotor primero debe obtener una [clave de API](https://app.intelimotor.com/settings) 
+específica para el canal y configurar un alias para el canal en el cliente de Intelimotor:
 
 ~~~php
 $cliente->setChannel('contacto', 'abcdef1234567890...')
@@ -55,35 +50,13 @@ foreach ($marcas as $marca) {
 
 Si desea ver los métodos y modelos implementados, por favor, consulte la documentación.
 ### Avanzado
-Si deseas utilizar tus propias implementaciones del cliente HTTP de Symfony, puedes instanciar directamente el 
-``IntelimotorClient`` con el cliente HTTP.
+Si deseas utilizar tus propias implementaciones del cliente HTTP PSR-18 o PSR-7, puedes instanciar directamente el 
+``IntelimotorClient`` con las dependencias necesarias.
 
 ~~~php
 use Instacar\IntelimotorApiClient\IntelimotorClient
 
-$cliente = new IntelimotorClient($clienteHttp);
-~~~
-
-Nota: Si utiliza esta manera de inicializar el cliente, usted es el responsable de proporcionar la url base junto con la
-apiKey y el apiSecret al cliente. A continuación se anexa la configuración por defecto usada en 
-``IntelimotorClient::createDefault``:
-
-~~~php
-use Instacar\IntelimotorApiClient\IntelimotorClient;
-use Symfony\Component\HttpClient\HttpClient;
-
-$httpClient = HttpClient::create([
-    'base_uri' => 'https://app.intelimotor.com/api/',
-    'headers' => [
-        'Content-Type' => 'application/json',
-    ],
-    'query' => [
-        'apiKey' => $apiKey, // La clave de API de Intelimotor
-        'apiSecret' => $apiSecret, // El secreto de API de Intelimotor
-    ],
-]);
-
-return new IntelimotorClient($httpClient);
+$cliente = new IntelimotorClient($psr18HttpClient, $psr17RequestFactory, $psr17StreamFactory, $apiKey, $apiSecret);
 ~~~
 
 ## Licencia
@@ -91,6 +64,10 @@ Esta librería utiliza la licencia Lesser General Public Licence Version 3 (LGPL
 [LICENSE](LICENSE).
 
 ## Registro de cambios
+### v2.0.0
+- Se migró el código para utilizar los estándares PSR-7, PSR-17 y PSR-18 para las llamadas HTTP a la API de Intelimotor.
+- Se actualizó la versión mínima de PHP a 8.1 y de Symfony a 5.4.
+
 ### v1.2.2
 - Se simplificó el código para normalizar las estampas de tiempo.
 - Se declaró la zona horaria UTC para las estampas de tiempo.
