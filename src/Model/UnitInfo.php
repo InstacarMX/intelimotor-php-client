@@ -20,6 +20,8 @@
 
 namespace Instacar\IntelimotorApiClient\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class UnitInfo
@@ -28,6 +30,26 @@ class UnitInfo
      * @var string|null
      */
     private $title;
+
+    /**
+     * @var string
+     */
+    private $brand;
+
+    /**
+     * @var string
+     */
+    private $model;
+
+    /**
+     * @var string
+     */
+    private $year;
+
+    /**
+     * @var string
+     */
+    private $trim;
 
     /**
      * @var string|null
@@ -73,6 +95,26 @@ class UnitInfo
      * @var string|null
      */
     private $interiorColor;
+
+    /**
+     * @var string
+     */
+    private $licensePlate;
+
+    /**
+     * @var string
+     */
+    private $vin;
+
+    /**
+     * @var string
+     */
+    private $gummy;
+
+    /**
+     * @var string
+     */
+    private $hologram;
 
     /**
      * @var bool
@@ -402,6 +444,27 @@ class UnitInfo
      */
     private $singleOwner;
 
+    /**
+     * @var string
+     */
+    private $youtubeVideoUrl;
+
+    /**
+     * @phpstan-var Collection<int, string>
+     * @var Collection
+     */
+    private $pictures;
+
+    /**
+     * @var string|null
+     */
+    private $spincarId;
+
+    /**
+     * @var string|null
+     */
+    private $spincarUrl;
+
     public function __construct(
         bool $autopilot,
         bool $lightOnReminder,
@@ -514,6 +577,7 @@ class UnitInfo
         $this->trayMat = $trayMat;
         $this->windscreenWiper = $windscreenWiper;
         $this->singleOwner = $singleOwner;
+        $this->pictures = new ArrayCollection();
     }
 
     /**
@@ -531,6 +595,79 @@ class UnitInfo
     public function setTitle(?string $title): self
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrand(): string
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param string $brand
+     * @return self
+     */
+    public function setBrand(string $brand): self
+    {
+        $this->brand = $brand;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModel(): string
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param string $model
+     * @return self
+     */
+    public function setModel(string $model): self
+    {
+        $this->model = $model;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYear(): string
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param string|int $year
+     * @return self
+     */
+    public function setYear(string|int $year): self
+    {
+        // To correct a bug in Intelimotor that return a number
+        $this->year = (string) $year;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrim(): string
+    {
+        return $this->trim;
+    }
+
+    /**
+     * @param string $trim
+     * @return self
+     */
+    public function setTrim(string $trim): self
+    {
+        $this->trim = $trim;
         return $this;
     }
 
@@ -693,6 +830,78 @@ class UnitInfo
     public function setInteriorColor(?string $interiorColor): self
     {
         $this->interiorColor = $interiorColor;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLicensePlate(): string
+    {
+        return $this->licensePlate;
+    }
+
+    /**
+     * @param string $licensePlate
+     * @return self
+     */
+    public function setLicensePlate(string $licensePlate): self
+    {
+        $this->licensePlate = $licensePlate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVin(): string
+    {
+        return $this->vin;
+    }
+
+    /**
+     * @param string $vin
+     * @return self
+     */
+    public function setVin(string $vin): self
+    {
+        $this->vin = $vin;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGummy(): string
+    {
+        return $this->gummy;
+    }
+
+    /**
+     * @param string $gummy
+     * @return self
+     */
+    public function setGummy(string $gummy): self
+    {
+        $this->gummy = $gummy;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHologram(): string
+    {
+        return $this->hologram;
+    }
+
+    /**
+     * @param string $hologram
+     * @return self
+     */
+    public function setHologram(string $hologram): self
+    {
+        $this->hologram = $hologram;
         return $this;
     }
 
@@ -1134,5 +1343,87 @@ class UnitInfo
     public function isSingleOwner(): bool
     {
         return $this->singleOwner;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYoutubeVideoUrl(): string
+    {
+        return $this->youtubeVideoUrl;
+    }
+
+    /**
+     * @param string $youtubeVideoUrl
+     * @return self
+     */
+    public function setYoutubeVideoUrl(string $youtubeVideoUrl): self
+    {
+        $this->youtubeVideoUrl = $youtubeVideoUrl;
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    /**
+     * @param string $picture
+     * @return self
+     */
+    public function addPicture(string $picture): self
+    {
+        $this->pictures->add($picture);
+        return $this;
+    }
+
+    /**
+     * @param string $picture
+     * @return self
+     */
+    public function removePicture(string $picture): self
+    {
+        $this->pictures->removeElement($picture);
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSpincarId(): ?string
+    {
+        return $this->spincarId;
+    }
+
+    /**
+     * @param string|null $spincarId
+     * @return self
+     */
+    public function setSpincarId(?string $spincarId): self
+    {
+        $this->spincarId = $spincarId;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSpincarUrl(): ?string
+    {
+        return $this->spincarUrl;
+    }
+
+    /**
+     * @param string|null $spincarUrl
+     * @return self
+     */
+    public function setSpincarUrl(?string $spincarUrl): self
+    {
+        $this->spincarUrl = $spincarUrl;
+        return $this;
     }
 }

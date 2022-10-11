@@ -33,6 +33,11 @@ class Unit
     private $id;
 
     /**
+     * @var BusinessUnit
+     */
+    private $businessUnit;
+
+    /**
      * @var string|null
      */
     private $ref;
@@ -91,6 +96,11 @@ class Unit
      * @var float|null
      */
     private $buyPrice;
+
+    /**
+     * @var float|null
+     */
+    private $buyPriceIva;
 
     /**
      * @var DateTime|null
@@ -185,6 +195,24 @@ class Unit
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getBusinessUnit(): BusinessUnit
+    {
+        return $this->businessUnit;
+    }
+
+    /**
+     * @param BusinessUnit $businessUnit
+     * @return self
+     */
+    public function setBusinessUnit(BusinessUnit $businessUnit): self
+    {
+        $this->businessUnit = $businessUnit;
+        return $this;
     }
 
     /**
@@ -438,6 +466,22 @@ class Unit
     {
         $this->buyPrice = $buyPrice;
         return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getBuyPriceIva(): ?float
+    {
+        return $this->buyPriceIva;
+    }
+
+    /**
+     * @param float|null $buyPriceIva
+     */
+    public function setBuyPriceIva(?float $buyPriceIva): void
+    {
+        $this->buyPriceIva = $buyPriceIva;
     }
 
     /**

@@ -85,9 +85,11 @@ class IntelimotorClientTest extends TestCase
         $this->assertEquals('5ebc29a66912cb0013fb73bc', $unit->getId());
 
         // Business Unit
-        // $businessUnit = $unit->getBusinessUnit();
-        // $this->assertEquals('5cc335590b04d10096fd5ad7', $businessUnit->getId());
-        // $this->assertEquals('Pruebas', $businessUnit->getName());
+        $businessUnit = $unit->getBusinessUnit();
+        $this->assertEquals('5cc335590b04d10096fd5ad7', $businessUnit->getId());
+        $this->assertEquals('Pruebas', $businessUnit->getName());
+        $this->assertEquals('Nuevo León', $businessUnit->getState());
+        $this->assertEquals('San Pedro Garza García', $businessUnit->getCity());
 
         $this->assertNull($unit->getRef());
         $this->assertNull($unit->getVin());
@@ -135,7 +137,7 @@ class IntelimotorClientTest extends TestCase
         $this->assertNull($unit->getConsignmentFeeType());
         $this->assertNull($unit->getConsignmentFee());
         $this->assertEquals(300_000, $unit->getBuyPrice());
-        // $this->assertNull($unit->getBuyPriceIva());
+        $this->assertNull($unit->getBuyPriceIva());
         $this->assertEqualsWithDelta(1589389715.928, $unit->getBuyDate()?->getTimestamp(), 1);
         $this->assertEquals(400_000, $unit->getListPrice());
         $this->assertTrue($unit->isSold());
@@ -180,9 +182,11 @@ class IntelimotorClientTest extends TestCase
         $this->assertEquals('62a262142437e52e05543aaa', $unit->getId());
 
         // Business Unit
-        // $businessUnit = $unit->getBusinessUnit();
-        // $this->assertEquals('5cc335590b04d10096fd5ad7', $businessUnit->getId());
-        // $this->assertEquals('Pruebas', $businessUnit->getName());
+        $businessUnit = $unit->getBusinessUnit();
+        $this->assertEquals('5cc335590b04d10096fd5ad7', $businessUnit->getId());
+        $this->assertEquals('Pruebas', $businessUnit->getName());
+        $this->assertEquals('Nuevo León', $businessUnit->getState());
+        $this->assertEquals('San Pedro Garza García', $businessUnit->getCity());
 
         $this->assertNull($unit->getRef());
         $this->assertEquals('4T2GB11E6SU049411', $unit->getVin());
@@ -230,7 +234,7 @@ class IntelimotorClientTest extends TestCase
         $this->assertNull($unit->getConsignmentFeeType());
         $this->assertNull($unit->getConsignmentFee());
         $this->assertEquals(909_000, $unit->getBuyPrice());
-        // $this->assertNull($unit->getBuyPriceIva());
+        $this->assertNull($unit->getBuyPriceIva());
         $this->assertEqualsWithDelta(1654809079.939, $unit->getBuyDate()?->getTimestamp(), 1);
         $this->assertEquals(900_000, $unit->getListPrice());
         $this->assertFalse($unit->isSold());
@@ -254,10 +258,10 @@ class IntelimotorClientTest extends TestCase
         // Listing Info
         $listingInfo = $unit->getListingInfo();
         $this->assertEquals('Audi A4 2018 2.0 S Line Quattro At', $listingInfo->getTitle());
-        // $this->assertEquals('Audi', $listingInfo->getBrand());
-        // $this->assertEquals('A4', $listingInfo->getModel());
-        // $this->assertEquals('2018', $listingInfo->getYear());
-        // $this->assertEquals('2.0 S Line Quattro At', $listingInfo->getTrim());
+        $this->assertEquals('Audi', $listingInfo->getBrand());
+        $this->assertEquals('A4', $listingInfo->getModel());
+        $this->assertEquals('2018', $listingInfo->getYear());
+        $this->assertEquals('2.0 S Line Quattro At', $listingInfo->getTrim());
         $this->assertEquals('Automática', $listingInfo->getTransmission());
         $this->assertEquals(4, $listingInfo->getDoors());
         $this->assertEquals('Gasolina', $listingInfo->getFuelType());
@@ -267,10 +271,10 @@ class IntelimotorClientTest extends TestCase
         $this->assertEquals('2.0', $listingInfo->getEngine());
         $this->assertEquals('Café', $listingInfo->getExteriorColor());
         $this->assertEquals('Azul marino', $listingInfo->getInteriorColor());
-        // $this->assertEquals('', $listingInfo->getLicensePlate());
-        // $this->assertEquals('4T1GB11E6SU049411', $listingInfo->getVin());
-        // $this->assertEquals('', $listingInfo->getGummy());
-        // $this->assertEquals('', $listingInfo->getHologram());
+        $this->assertEquals('', $listingInfo->getLicensePlate());
+        $this->assertEquals('4T1GB11E6SU049411', $listingInfo->getVin());
+        $this->assertEquals('', $listingInfo->getGummy());
+        $this->assertEquals('', $listingInfo->getHologram());
         $this->assertFalse($listingInfo->hasAutopilot());
         $this->assertFalse($listingInfo->hasLightOnReminder());
         $this->assertTrue($listingInfo->hasOnboardComputer());
@@ -326,18 +330,18 @@ class IntelimotorClientTest extends TestCase
         $this->assertFalse($listingInfo->hasTrayMat());
         $this->assertFalse($listingInfo->hasWindscreenWiper());
         $this->assertFalse($listingInfo->isSingleOwner());
-        // $this->assertEquals('', $listingInfo->getYoutubeVideoUrl());
+        $this->assertEquals('', $listingInfo->getYoutubeVideoUrl());
 
         // Listing Pictures
-        // $listingPictures = ArrayUtil::fromIterable($listingInfo->getPictures());
-        // $this->assertCount(4, $listingPictures);
-        // $this->assertEquals('https://intelimotor.s3.amazonaws.com/70ba0e03-38ad-416d-87f0-12000503f043.jpeg', $listingPictures[0]);
-        // $this->assertEquals('https://intelimotor.s3.amazonaws.com/006f96e1-706d-42f4-96e5-c51ea67e8946.jpeg', $listingPictures[1]);
-        // $this->assertEquals('https://intelimotor.s3.amazonaws.com/18c9f212-32b1-437d-ba5d-ffe397d1a61a.jpeg', $listingPictures[2]);
-        // $this->assertEquals('https://intelimotor.s3.amazonaws.com/61c710b9-9f16-4e43-9760-78dccac218d2.jpeg', $listingPictures[3]);
+        $listingPictures = ArrayUtil::fromIterable($listingInfo->getPictures());
+        $this->assertCount(4, $listingPictures);
+        $this->assertEquals('https://intelimotor.s3.amazonaws.com/70ba0e03-38ad-416d-87f0-12000503f043.jpeg', $listingPictures[0]);
+        $this->assertEquals('https://intelimotor.s3.amazonaws.com/006f96e1-706d-42f4-96e5-c51ea67e8946.jpeg', $listingPictures[1]);
+        $this->assertEquals('https://intelimotor.s3.amazonaws.com/18c9f212-32b1-437d-ba5d-ffe397d1a61a.jpeg', $listingPictures[2]);
+        $this->assertEquals('https://intelimotor.s3.amazonaws.com/61c710b9-9f16-4e43-9760-78dccac218d2.jpeg', $listingPictures[3]);
 
-        // $this->assertNull($listingInfo->getSpincarId());
-        // $this->assertNull($listingInfo->getSpincarUrl());
+        $this->assertNull($listingInfo->getSpincarId());
+        $this->assertNull($listingInfo->getSpincarUrl());
 
         // Ads
         // $ads = $unit->getAds();

@@ -28,9 +28,55 @@ class BusinessUnit implements IdNameInterface
 {
     use IdNameTrait;
 
+    /**
+     * @var string|null
+     */
+    private $state;
+
+    /**
+     * @var string|null
+     */
+    private $city;
+
     public function __construct(string $id, string $name)
     {
         $this->id = $id;
         $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string|null $state
+     * @return self
+     */
+    public function setState(?string $state): self
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string|null $city
+     * @return self
+     */
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+        return $this;
     }
 }
