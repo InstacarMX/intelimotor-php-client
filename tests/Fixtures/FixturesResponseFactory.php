@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) Instacar 2021.
  * This file is part of IntelimotorApiClient.
@@ -75,12 +76,21 @@ class FixturesResponseFactory
         ],
     ];
 
+    /**
+     * @param string $method
+     * @param string $url
+     * @param mixed[] $option
+     * @return MockResponse
+     */
     public function __invoke(string $method, string $url, array $option): MockResponse
     {
         $uri = new Uri($url);
 
         $fixture = self::FIXTURES[$uri->getPath()][$method];
         $payload = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . $fixture);
+        if ($payload === false) {
+            throw new \UnexpectedValueException(sprintf('Could not read file %s', $fixture));
+        }
 
         return new MockResponse($payload, ['response_headers' => ['Content-Type' => 'application/json']]);
     }

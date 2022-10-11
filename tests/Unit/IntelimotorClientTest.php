@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) Instacar 2021.
  * This file is part of IntelimotorApiClient.
@@ -98,7 +99,7 @@ class IntelimotorClientTest extends TestCase
         $brands = ArrayUtil::fromIterable($unit->getBrands());
         $this->assertCount(1, $brands);
 
-        /** @var Brand $brand1 */
+        /** @var Brand $brand */
         $brand = $brands[0];
         $this->assertEquals('5cdc48b7a6ca044a76082268', $brand->getId());
         $this->assertEquals('Audi', $brand->getName());
@@ -195,7 +196,7 @@ class IntelimotorClientTest extends TestCase
         $brands = ArrayUtil::fromIterable($unit->getBrands());
         $this->assertCount(1, $brands);
 
-        /** @var Brand $brand1 */
+        /** @var Brand $brand */
         $brand = $brands[0];
         $this->assertEquals('5cdc48b7a6ca044a76082268', $brand->getId());
         $this->assertEquals('Audi', $brand->getName());
@@ -257,6 +258,7 @@ class IntelimotorClientTest extends TestCase
 
         // Listing Info
         $listingInfo = $unit->getListingInfo();
+        $this->assertNotNull($listingInfo);
         $this->assertEquals('Audi A4 2018 2.0 S Line Quattro At', $listingInfo->getTitle());
         $this->assertEquals('Audi', $listingInfo->getBrand());
         $this->assertEquals('A4', $listingInfo->getModel());

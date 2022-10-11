@@ -1364,6 +1364,7 @@ class UnitInfo
     }
 
     /**
+     * @phpstan-return Collection<int, string>
      * @return Collection
      */
     public function getPictures(): Collection
