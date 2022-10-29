@@ -6,9 +6,9 @@
 /.phpstan-cache
 /phpstan.neon
 
-### squizlabs/php_codesniffer template
-/.phpcs-cache
-/phpcs.xml
+### friendsofphp/php-cs-fixer template
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
 
 ### Composer template
 composer.phar

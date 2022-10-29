@@ -1,4 +1,23 @@
 <?php
+/*
+ * Copyright (c) Instacar 2021.
+ * This file is part of IntelimotorApiClient.
+ *
+ * IntelimotorApiClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IntelimotorApiClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU  Lesser General Public License
+ * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
 
 /*
  * Copyright (c) Instacar 2021.
@@ -43,7 +62,7 @@ class IntelimotorClientTest extends TestCase
     {
         $this->client = IntelimotorClient::createDefault($_SERVER['API_KEY'], $_SERVER['API_SECRET']);
         $this->client->setChannels([
-            'contact' => $_SERVER['CHANNEL_KEY']
+            'contact' => $_SERVER['CHANNEL_KEY'],
         ]);
     }
 
@@ -271,7 +290,7 @@ class IntelimotorClientTest extends TestCase
 
         $item = $this->client->createMessage('contact', $message);
 
-        $this->assertItem(CreateMessageOutput::class, $item, function (CreateMessageOutput $item) {
+        $this->assertItem(CreateMessageOutput::class, $item, function (CreateMessageOutput $item): void {
             $this->assertNotNull($item->getId());
             $this->assertNotNull($item->getProspectId());
         });
@@ -279,21 +298,19 @@ class IntelimotorClientTest extends TestCase
 
     /**
      * @phpstan-template T of object
+     *
      * @phpstan-param class-string<T> $className
-     * @param string $className
      * @phpstan-param iterable<T> $collection
-     * @param iterable $collection
      * @phpstan-param callable(T $item): void $extraAssertions
-     * @param callable $extraAssertions
-     * @param bool $earlyStop
-     * @return T
+     *
+     * @phpstan-return T
      */
     private function assertCollection(
         string $className,
         iterable $collection,
         callable $extraAssertions,
-        bool $earlyStop = false
-    ) {
+        bool $earlyStop = false,
+    ): object {
         $this->assertIsIterable($collection);
 
         $i = 0;
@@ -310,18 +327,16 @@ class IntelimotorClientTest extends TestCase
         }
 
         $this->assertNotNull($first, 'The collection must have at least one item');
+
         return $first;
     }
 
     /**
      * @phpstan-template T of object
+     *
      * @phpstan-param class-string<T> $className
-     * @param string $className
      * @phpstan-param T $item
-     * @param object $item
      * @phpstan-param callable(T $item): void $extraAssertions
-     * @param callable $extraAssertions
-     * @return void
      */
     private function assertItem(string $className, object $item, callable $extraAssertions): void
     {
@@ -332,8 +347,8 @@ class IntelimotorClientTest extends TestCase
 
     /**
      * @phpstan-template T of IdNameInterface
+     *
      * @phpstan-param T $data
-     * @param object $data
      */
     private function assertIdName(object $data): void
     {

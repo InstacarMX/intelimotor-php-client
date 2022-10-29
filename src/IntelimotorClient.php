@@ -1,4 +1,23 @@
 <?php
+/*
+ * Copyright (c) Instacar 2021.
+ * This file is part of IntelimotorApiClient.
+ *
+ * IntelimotorApiClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IntelimotorApiClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU  Lesser General Public License
+ * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
 
 /*
  * Copyright (c) Instacar 2021.
@@ -87,13 +106,6 @@ class IntelimotorClient
     /** @var string[] */
     private array $channels;
 
-    /**
-     * @param ClientInterface $client
-     * @param RequestFactoryInterface $requestFactory
-     * @param StreamFactoryInterface $streamFactory
-     * @param string $apiKey
-     * @param string $apiSecret
-     */
     public function __construct(
         ClientInterface $client,
         RequestFactoryInterface $requestFactory,
@@ -130,10 +142,6 @@ class IntelimotorClient
         return $this->channels;
     }
 
-    /**
-     * @param string $channelName
-     * @param string $channelKey
-     */
     public function setChannel(string $channelName, string $channelKey): void
     {
         $this->channels[$channelName] = $channelKey;
@@ -141,7 +149,6 @@ class IntelimotorClient
 
     /**
      * @param string[] $channels
-     * @return self
      */
     public function setChannels(array $channels): self
     {
@@ -151,7 +158,8 @@ class IntelimotorClient
     }
 
     /**
-     * @return iterable<BusinessUnit>
+     * @phpstan-return iterable<BusinessUnit>
+     *
      * @throws ClientExceptionInterface
      */
     public function getBusinessUnits(): iterable
@@ -163,8 +171,6 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $businessUnitId
-     * @return BusinessUnit
      * @throws ClientExceptionInterface
      */
     public function getBusinessUnit(string $businessUnitId): BusinessUnit
@@ -176,46 +182,47 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $businessUnitId
-     * @return iterable<Unit>
+     * @phpstan-return iterable<Unit>
+     *
      * @throws ClientExceptionInterface
      */
     public function getBusinessUnitUnits(string $businessUnitId): iterable
     {
         return $this->paginatedRequest(
             UnitsResponse::class,
-            "business-units/$businessUnitId/units"
+            "business-units/$businessUnitId/units",
         );
     }
 
     /**
-     * @param string $businessUnitId
-     * @return iterable<Unit>
+     * @phpstan-return iterable<Unit>
+     *
      * @throws ClientExceptionInterface
      */
     public function getBusinessUnitInventoryUnits(string $businessUnitId): iterable
     {
         return $this->paginatedRequest(
             UnitsResponse::class,
-            "business-units/$businessUnitId/inventory-units"
+            "business-units/$businessUnitId/inventory-units",
         );
     }
 
     /**
-     * @param string $businessUnitId
-     * @return iterable<Unit>
+     * @phpstan-return iterable<Unit>
+     *
      * @throws ClientExceptionInterface
      */
     public function getBusinessUnitSoldUnits(string $businessUnitId): iterable
     {
         return $this->paginatedRequest(
             UnitsResponse::class,
-            "business-units/$businessUnitId/sold-units"
+            "business-units/$businessUnitId/sold-units",
         );
     }
 
     /**
-     * @return iterable<Color>
+     * @phpstan-return iterable<Color>
+     *
      * @throws ClientExceptionInterface
      */
     public function getColors(): iterable
@@ -227,7 +234,8 @@ class IntelimotorClient
     }
 
     /**
-     * @return iterable<Color>
+     * @phpstan-return iterable<Color>
+     *
      * @throws ClientExceptionInterface
      */
     public function getColorsCsv(): iterable
@@ -240,8 +248,6 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $colorId
-     * @return Color
      * @throws ClientExceptionInterface
      */
     public function getColor(string $colorId): Color
@@ -253,8 +259,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $country
-     * @return iterable<Brand>
+     * @phpstan-return iterable<Brand>
+     *
      * @throws ClientExceptionInterface
      */
     public function getBrands(string $country = 'MX'): iterable
@@ -268,8 +274,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $country
-     * @return iterable<Brand>
+     * @phpstan-return iterable<Brand>
+     *
      * @throws ClientExceptionInterface
      */
     public function getBrandsCsv(string $country = 'MX'): iterable
@@ -282,8 +288,6 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $brandId
-     * @return Brand
      * @throws ClientExceptionInterface
      */
     public function getBrand(string $brandId): Brand
@@ -295,8 +299,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $brandId
-     * @return iterable<Model>
+     * @phpstan-return iterable<Model>
+     *
      * @throws ClientExceptionInterface
      */
     public function getModels(string $brandId): iterable
@@ -308,8 +312,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $country
-     * @return iterable<Model>
+     * @phpstan-return iterable<Model>
+     *
      * @throws ClientExceptionInterface
      */
     public function getModelsCsv(string $country = 'MX'): iterable
@@ -322,9 +326,6 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $brandId
-     * @param string $modelId
-     * @return Model
      * @throws ClientExceptionInterface
      */
     public function getModel(string $brandId, string $modelId): Model
@@ -336,9 +337,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $brandId
-     * @param string $modelId
-     * @return iterable<Year>
+     * @phpstan-return iterable<Year>
+     *
      * @throws ClientExceptionInterface
      */
     public function getYears(string $brandId, string $modelId): iterable
@@ -350,8 +350,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $country
-     * @return iterable<Year>
+     * @phpstan-return iterable<Year>
+     *
      * @throws ClientExceptionInterface
      */
     public function getYearsCsv(string $country = 'MX'): iterable
@@ -364,10 +364,6 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $brandId
-     * @param string $modelId
-     * @param string $yearId
-     * @return Year
      * @throws ClientExceptionInterface
      */
     public function getYear(string $brandId, string $modelId, string $yearId): Year
@@ -379,10 +375,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $brandId
-     * @param string $modelId
-     * @param string $yearId
-     * @return iterable<Trim>
+     * @phpstan-return iterable<Trim>
+     *
      * @throws ClientExceptionInterface
      */
     public function getTrims(string $brandId, string $modelId, string $yearId): iterable
@@ -394,8 +388,8 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $country
-     * @return iterable<Trim>
+     * @phpstan-return iterable<Trim>
+     *
      * @throws ClientExceptionInterface
      */
     public function getTrimsCsv(string $country = 'MX'): iterable
@@ -408,11 +402,6 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $brandId
-     * @param string $modelId
-     * @param string $yearId
-     * @param string $trimId
-     * @return Trim
      * @throws ClientExceptionInterface
      */
     public function getTrim(string $brandId, string $modelId, string $yearId, string $trimId): Trim
@@ -424,7 +413,8 @@ class IntelimotorClient
     }
 
     /**
-     * @return iterable<Unit>
+     * @phpstan-return iterable<Unit>
+     *
      * @throws ClientExceptionInterface
      */
     public function getUnits(): iterable
@@ -433,7 +423,8 @@ class IntelimotorClient
     }
 
     /**
-     * @return iterable<Unit>
+     * @phpstan-return iterable<Unit>
+     *
      * @throws ClientExceptionInterface
      */
     public function getInventoryUnits(): iterable
@@ -442,7 +433,8 @@ class IntelimotorClient
     }
 
     /**
-     * @return iterable<Unit>
+     * @phpstan-return iterable<Unit>
+     *
      * @throws ClientExceptionInterface
      */
     public function getSoldUnits(): iterable
@@ -451,8 +443,6 @@ class IntelimotorClient
     }
 
     /**
-     * @param string $id
-     * @return Unit
      * @throws ClientExceptionInterface
      */
     public function getUnit(string $id): Unit
@@ -481,16 +471,10 @@ class IntelimotorClient
     public static function createDefault(string $apiKey, string $apiSecret): self
     {
         if (!class_exists(SymfonyHttpClient::class)) {
-            throw new LogicException(
-                'You must install the Symfony HTTP Client component.' . PHP_EOL .
-                'Please, execute "composer require symfony/http-client" in your project root'
-            );
+            throw new LogicException('You must install the Symfony HTTP Client component.' . \PHP_EOL . 'Please, execute "composer require symfony/http-client" in your project root');
         }
         if (!class_exists(Request::class)) {
-            throw new LogicException(
-                'You must install the Nyholm PSR-7 implementation.' . PHP_EOL .
-                'Please, execute "composer require nyholm/psr7" in your project root'
-            );
+            throw new LogicException('You must install the Nyholm PSR-7 implementation.' . \PHP_EOL . 'Please, execute "composer require nyholm/psr7" in your project root');
         }
 
         $httpClient = SymfonyHttpClient::create();
@@ -501,21 +485,16 @@ class IntelimotorClient
     }
 
     /**
-     * @template TPayload of object
-     * @template TResponse of object
+     * @phpstan-template TPayload of object
+     * @phpstan-template TResponse of object
+     *
      * @phpstan-param class-string<ApiResponseInterface<TResponse>> $responseClass
-     * @param string $responseClass
-     * @param string $endpoint
-     * @param string $method
      * @phpstan-param array<string, string> $params
-     * @param array $params
      * @phpstan-param TPayload|null $payload
-     * @param TPayload $payload
-     * @param bool $authenticated
      * @phpstan-param array<string, string|array<string>> $headers
-     * @param array $headers
+     *
      * @phpstan-return TResponse
-     * @return object
+     *
      * @throws ClientExceptionInterface
      */
     private function itemRequest(
@@ -534,21 +513,16 @@ class IntelimotorClient
     }
 
     /**
-     * @template TPayload of object
-     * @template TResponse of object
+     * @phpstan-template TPayload of object
+     * @phpstan-template TResponse of object
+     *
      * @phpstan-param class-string<ApiResponseCollectionInterface<TResponse>> $responseClass
-     * @param string $responseClass
-     * @param string $endpoint
-     * @param string $method
      * @phpstan-param array<string, string> $params
-     * @param array $params
      * @phpstan-param TPayload|null $payload
-     * @param mixed $payload
-     * @param bool $authenticated
      * @phpstan-param array<string, string|array<string>> $headers
-     * @param array $headers
+     *
      * @phpstan-return iterable<TResponse>
-     * @return iterable
+     *
      * @throws ClientExceptionInterface
      */
     private function collectionRequest(
@@ -567,18 +541,14 @@ class IntelimotorClient
     }
 
     /**
-     * @template T of object
+     * @phpstan-template T of object
+     *
      * @phpstan-param class-string<ApiResponsePaginatedInterface<T>> $responseClass
-     * @param string $responseClass
-     * @param string $endpoint
-     * @param string $method
      * @phpstan-param array<string, string> $params
-     * @param array $params
-     * @param bool $authenticated
      * @phpstan-param array<string, string|array<string>> $headers
-     * @param array $headers
+     *
      * @phpstan-return iterable<T>
-     * @return iterable
+     *
      * @throws ClientExceptionInterface
      */
     private function paginatedRequest(
@@ -604,19 +574,16 @@ class IntelimotorClient
             foreach ($items as $item) {
                 yield $item;
             }
-            $pageNumber++;
+            ++$pageNumber;
         } while ($paginatedResponse->hasMore());
     }
 
     /**
-     * @param string $endpoint
      * @phpstan-param array<string, string> $params
-     * @param array $params
-     * @param bool $authenticated
      * @phpstan-param array<string, string|array<string>> $headers
-     * @param array $headers
+     *
      * @phpstan-return iterable<array<string, string>>
-     * @return iterable
+     *
      * @throws ClientExceptionInterface
      */
     private function csvRequest(
@@ -645,16 +612,10 @@ class IntelimotorClient
 
     /**
      * @phpstan-template TPayload of object
-     * @param string $endpoint
-     * @param string $method
+     *
      * @phpstan-param array<string, string> $params
-     * @param array $params
      * @phpstan-param TPayload|null $payload
-     * @param mixed $payload
-     * @param bool $authenticated
      * @phpstan-param array<string, string|array<string>> $headers
-     * @param array $headers
-     * @return HttpRequestInterface
      */
     private function makeRequest(
         string $endpoint,

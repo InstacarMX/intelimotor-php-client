@@ -1,4 +1,23 @@
 <?php
+/*
+ * Copyright (c) Instacar 2021.
+ * This file is part of IntelimotorApiClient.
+ *
+ * IntelimotorApiClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IntelimotorApiClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU  Lesser General Public License
+ * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
 
 /*
  * Copyright (c) Instacar 2021.
@@ -35,27 +54,17 @@ class CreateValuationOutput
      */
     private $regions;
 
-    /**
-     * @param string $id
-     */
     public function __construct(string $id)
     {
         $this->id = $id;
         $this->regions = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     * @return self
-     */
     public function setId(string $id): self
     {
         $this->id = $id;
@@ -71,10 +80,6 @@ class CreateValuationOutput
         return $this->regions;
     }
 
-    /**
-     * @param Region $region
-     * @return self
-     */
     public function addRegion(Region $region): self
     {
         $this->regions->add($region);
@@ -82,10 +87,6 @@ class CreateValuationOutput
         return $this;
     }
 
-    /**
-     * @param Region $region
-     * @return self
-     */
     public function removeRegion(Region $region): self
     {
         $this->regions->removeElement($region);

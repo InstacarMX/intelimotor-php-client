@@ -1,4 +1,23 @@
 <?php
+/*
+ * Copyright (c) Instacar 2021.
+ * This file is part of IntelimotorApiClient.
+ *
+ * IntelimotorApiClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IntelimotorApiClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU  Lesser General Public License
+ * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
 
 /*
  * Copyright (c) Instacar 2021.
@@ -451,6 +470,7 @@ class UnitInfo
 
     /**
      * @phpstan-var Collection<int, string>
+     *
      * @var Collection
      */
     private $pictures;
@@ -520,7 +540,7 @@ class UnitInfo
         bool $trayCover,
         bool $trayMat,
         bool $windscreenWiper,
-        bool $singleOwner
+        bool $singleOwner,
     ) {
         $this->autopilot = $autopilot;
         $this->lightOnReminder = $lightOnReminder;
@@ -580,851 +600,553 @@ class UnitInfo
         $this->pictures = new ArrayCollection();
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string|null $title
-     * @return self
-     */
     public function setTitle(?string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getBrand(): string
     {
         return $this->brand;
     }
 
-    /**
-     * @param string $brand
-     * @return self
-     */
     public function setBrand(string $brand): self
     {
         $this->brand = $brand;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getModel(): string
     {
         return $this->model;
     }
 
-    /**
-     * @param string $model
-     * @return self
-     */
     public function setModel(string $model): self
     {
         $this->model = $model;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getYear(): string
     {
         return $this->year;
     }
 
-    /**
-     * @param string|int $year
-     * @return self
-     */
     public function setYear(string|int $year): self
     {
         // To correct a bug in Intelimotor that return a number
         $this->year = (string) $year;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTrim(): string
     {
         return $this->trim;
     }
 
-    /**
-     * @param string $trim
-     * @return self
-     */
     public function setTrim(string $trim): self
     {
         $this->trim = $trim;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTransmission(): ?string
     {
         return $this->transmission;
     }
 
-    /**
-     * @param string|null $transmission
-     * @return self
-     */
     public function setTransmission(?string $transmission): self
     {
         $this->transmission = $transmission;
+
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getDoors(): ?int
     {
         return $this->doors;
     }
 
-    /**
-     * @param int|null $doors
-     * @return self
-     */
     public function setDoors(?int $doors): self
     {
         $this->doors = $doors;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFuelType(): ?string
     {
         return $this->fuelType;
     }
 
-    /**
-     * @param string|null $fuelType
-     * @return self
-     */
     public function setFuelType(?string $fuelType): self
     {
         $this->fuelType = $fuelType;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSteering(): ?string
     {
         return $this->steering;
     }
 
-    /**
-     * @param string|null $steering
-     * @return self
-     */
     public function setSteering(?string $steering): self
     {
         $this->steering = $steering;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTractionControl(): ?string
     {
         return $this->tractionControl;
     }
 
-    /**
-     * @param string|null $tractionControl
-     * @return self
-     */
     public function setTractionControl(?string $tractionControl): self
     {
         $this->tractionControl = $tractionControl;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getVehicleBodyType(): ?string
     {
         return $this->vehicleBodyType;
     }
 
-    /**
-     * @param string|null $vehicleBodyType
-     * @return self
-     */
     public function setVehicleBodyType(?string $vehicleBodyType): self
     {
         $this->vehicleBodyType = $vehicleBodyType;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEngine(): ?string
     {
         return $this->engine;
     }
 
-    /**
-     * @param string|null $engine
-     * @return self
-     */
     public function setEngine(?string $engine): self
     {
         $this->engine = $engine;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getExteriorColor(): ?string
     {
         return $this->exteriorColor;
     }
 
-    /**
-     * @param string|null $exteriorColor
-     * @return self
-     */
     public function setExteriorColor(?string $exteriorColor): self
     {
         $this->exteriorColor = $exteriorColor;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getInteriorColor(): ?string
     {
         return $this->interiorColor;
     }
 
-    /**
-     * @param string|null $interiorColor
-     * @return self
-     */
     public function setInteriorColor(?string $interiorColor): self
     {
         $this->interiorColor = $interiorColor;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLicensePlate(): string
     {
         return $this->licensePlate;
     }
 
-    /**
-     * @param string $licensePlate
-     * @return self
-     */
     public function setLicensePlate(string $licensePlate): self
     {
         $this->licensePlate = $licensePlate;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getVin(): string
     {
         return $this->vin;
     }
 
-    /**
-     * @param string $vin
-     * @return self
-     */
     public function setVin(string $vin): self
     {
         $this->vin = $vin;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getGummy(): string
     {
         return $this->gummy;
     }
 
-    /**
-     * @param string $gummy
-     * @return self
-     */
     public function setGummy(string $gummy): self
     {
         $this->gummy = $gummy;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getHologram(): string
     {
         return $this->hologram;
     }
 
-    /**
-     * @param string $hologram
-     * @return self
-     */
     public function setHologram(string $hologram): self
     {
         $this->hologram = $hologram;
+
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAutopilot(): bool
     {
         return $this->autopilot;
     }
 
-    /**
-     * @return bool
-     */
     public function hasLightOnReminder(): bool
     {
         return $this->lightOnReminder;
     }
 
-    /**
-     * @return bool
-     */
     public function hasOnboardComputer(): bool
     {
         return $this->onboardComputer;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRearFoldingSeat(): bool
     {
         return $this->rearFoldingSeat;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSlidingRoof(): bool
     {
         return $this->slidingRoof;
     }
 
-    /**
-     * @return bool
-     */
     public function hasXenonHeadlights(): bool
     {
         return $this->xenonHeadlights;
     }
 
-    /**
-     * @return bool
-     */
     public function hasCoasters(): bool
     {
         return $this->coasters;
     }
 
-    /**
-     * @return bool
-     */
     public function hasClimateControl(): bool
     {
         return $this->climateControl;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAbsBrakes(): bool
     {
         return $this->absBrakes;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAlarm(): bool
     {
         return $this->alarm;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAlloyWheels(): bool
     {
         return $this->alloyWheels;
     }
 
-    /**
-     * @return bool
-     */
     public function hasDriverAirbag(): bool
     {
         return $this->driverAirbag;
     }
 
-    /**
-     * @return bool
-     */
     public function hasElectronicBrakeAssist(): bool
     {
         return $this->electronicBrakeAssist;
     }
 
-    /**
-     * @return bool
-     */
     public function hasEngineInmovilizer(): bool
     {
         return $this->engineInmovilizer;
     }
 
-    /**
-     * @return bool
-     */
     public function hasFogLight(): bool
     {
         return $this->fogLight;
     }
 
-    /**
-     * @return bool
-     */
     public function hasFrontFoglights(): bool
     {
         return $this->frontFoglights;
     }
 
-    /**
-     * @return bool
-     */
     public function hasPassengerAirbag(): bool
     {
         return $this->passengerAirbag;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRainSensor(): bool
     {
         return $this->rainSensor;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRearFoglights(): bool
     {
         return $this->rearFoglights;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRearWindowDefogger(): bool
     {
         return $this->rearWindowDefogger;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRollBar(): bool
     {
         return $this->rollBar;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSideImpactAirbag(): bool
     {
         return $this->sideImpactAirbag;
     }
 
-    /**
-     * @return bool
-     */
     public function hasStabilityControl(): bool
     {
         return $this->stabilityControl;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSteeringWheelControl(): bool
     {
         return $this->steeringWheelControl;
     }
 
-    /**
-     * @return bool
-     */
     public function hasThirdStop(): bool
     {
         return $this->thirdStop;
     }
 
-    /**
-     * @return bool
-     */
     public function hasCurtainAirbag(): bool
     {
         return $this->curtainAirbag;
     }
 
-    /**
-     * @return bool
-     */
     public function isArmored(): bool
     {
         return $this->armored;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAirConditioning(): bool
     {
         return $this->airConditioning;
     }
 
-    /**
-     * @return bool
-     */
     public function hasElectricMirrors(): bool
     {
         return $this->electricMirrors;
     }
 
-    /**
-     * @return bool
-     */
     public function hasGps(): bool
     {
         return $this->gps;
     }
 
-    /**
-     * @return bool
-     */
     public function hasHeadlightControl(): bool
     {
         return $this->headlightControl;
     }
 
-    /**
-     * @return bool
-     */
     public function hasHeadrestRearSeat(): bool
     {
         return $this->headrestRearSeat;
     }
 
-    /**
-     * @return bool
-     */
     public function hasHeightAdjustableDriverSeat(): bool
     {
         return $this->heightAdjustableDriverSeat;
     }
 
-    /**
-     * @return bool
-     */
     public function hasLeatherUpholstery(): bool
     {
         return $this->leatherUpholstery;
     }
 
-    /**
-     * @return bool
-     */
     public function hasLightSensor(): bool
     {
         return $this->lightSensor;
     }
 
-    /**
-     * @return bool
-     */
     public function hasPaintedBumper(): bool
     {
         return $this->paintedBumper;
     }
 
-    /**
-     * @return bool
-     */
     public function hasParkingSensor(): bool
     {
         return $this->parkingSensor;
     }
 
-    /**
-     * @return bool
-     */
     public function hasPowerWindows(): bool
     {
         return $this->powerWindows;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRemoteTrunkRelease(): bool
     {
         return $this->remoteTrunkRelease;
     }
 
-    /**
-     * @return bool
-     */
     public function hasElectricSeats(): bool
     {
         return $this->electricSeats;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRearBackrest(): bool
     {
         return $this->rearBackrest;
     }
 
-    /**
-     * @return bool
-     */
     public function hasCentralPowerDoorLocks(): bool
     {
         return $this->centralPowerDoorLocks;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAmfmRadio(): bool
     {
         return $this->amfmRadio;
     }
 
-    /**
-     * @return bool
-     */
     public function hasBluetooth(): bool
     {
         return $this->bluetooth;
     }
 
-    /**
-     * @return bool
-     */
     public function hasCdPlayer(): bool
     {
         return $this->cdPlayer;
     }
 
-    /**
-     * @return bool
-     */
     public function hasDvd(): bool
     {
         return $this->dvd;
     }
 
-    /**
-     * @return bool
-     */
     public function hasMp3Player(): bool
     {
         return $this->mp3Player;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSdCard(): bool
     {
         return $this->sdCard;
     }
 
-    /**
-     * @return bool
-     */
     public function hasUsb(): bool
     {
         return $this->usb;
     }
 
-    /**
-     * @return bool
-     */
     public function hasBullBar(): bool
     {
         return $this->bullBar;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSpareTyreSupport(): bool
     {
         return $this->spareTyreSupport;
     }
 
-    /**
-     * @return bool
-     */
     public function hasTrayCover(): bool
     {
         return $this->trayCover;
     }
 
-    /**
-     * @return bool
-     */
     public function hasTrayMat(): bool
     {
         return $this->trayMat;
     }
 
-    /**
-     * @return bool
-     */
     public function hasWindscreenWiper(): bool
     {
         return $this->windscreenWiper;
     }
 
-    /**
-     * @return bool
-     */
     public function isSingleOwner(): bool
     {
         return $this->singleOwner;
     }
 
-    /**
-     * @return string
-     */
     public function getYoutubeVideoUrl(): string
     {
         return $this->youtubeVideoUrl;
     }
 
-    /**
-     * @param string $youtubeVideoUrl
-     * @return self
-     */
     public function setYoutubeVideoUrl(string $youtubeVideoUrl): self
     {
         $this->youtubeVideoUrl = $youtubeVideoUrl;
+
         return $this;
     }
 
     /**
      * @phpstan-return Collection<int, string>
-     * @return Collection
      */
     public function getPictures(): Collection
     {
         return $this->pictures;
     }
 
-    /**
-     * @param string $picture
-     * @return self
-     */
     public function addPicture(string $picture): self
     {
         $this->pictures->add($picture);
+
         return $this;
     }
 
-    /**
-     * @param string $picture
-     * @return self
-     */
     public function removePicture(string $picture): self
     {
         $this->pictures->removeElement($picture);
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSpincarId(): ?string
     {
         return $this->spincarId;
     }
 
-    /**
-     * @param string|null $spincarId
-     * @return self
-     */
     public function setSpincarId(?string $spincarId): self
     {
         $this->spincarId = $spincarId;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSpincarUrl(): ?string
     {
         return $this->spincarUrl;
     }
 
-    /**
-     * @param string|null $spincarUrl
-     * @return self
-     */
     public function setSpincarUrl(?string $spincarUrl): self
     {
         $this->spincarUrl = $spincarUrl;
+
         return $this;
     }
 }

@@ -1,4 +1,23 @@
 <?php
+/*
+ * Copyright (c) Instacar 2021.
+ * This file is part of IntelimotorApiClient.
+ *
+ * IntelimotorApiClient is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IntelimotorApiClient is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU  Lesser General Public License
+ * along with IntelimotorApiClient.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
 
 /*
  * Copyright (c) Instacar 2021.
@@ -70,13 +89,6 @@ class ValuationStats
     private $formulas;
 
     /**
-     * @param float $averageMarketValue
-     * @param float $lowerMarketValue
-     * @param float $higherMarketValue
-     * @param int $offerLevel
-     * @param int $averageDaysOnMarket
-     * @param int $averageKilometers
-     * @param float $suggestedOffer
      * @param array<string, float> $formulas
      */
     public function __construct(
@@ -87,7 +99,7 @@ class ValuationStats
         int $averageDaysOnMarket,
         int $averageKilometers,
         float $suggestedOffer,
-        array $formulas
+        array $formulas,
     ) {
         $this->averageMarketValue = $averageMarketValue;
         $this->lowerMarketValue = $lowerMarketValue;
@@ -99,18 +111,11 @@ class ValuationStats
         $this->formulas = $formulas;
     }
 
-    /**
-     * @return float
-     */
     public function getAverageMarketValue(): float
     {
         return $this->averageMarketValue;
     }
 
-    /**
-     * @param float $averageMarketValue
-     * @return self
-     */
     public function setAverageMarketValue(float $averageMarketValue): self
     {
         $this->averageMarketValue = $averageMarketValue;
@@ -118,18 +123,11 @@ class ValuationStats
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getLowerMarketValue(): float
     {
         return $this->lowerMarketValue;
     }
 
-    /**
-     * @param float $lowerMarketValue
-     * @return self
-     */
     public function setLowerMarketValue(float $lowerMarketValue): self
     {
         $this->lowerMarketValue = $lowerMarketValue;
@@ -137,18 +135,11 @@ class ValuationStats
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getHigherMarketValue(): float
     {
         return $this->higherMarketValue;
     }
 
-    /**
-     * @param float $higherMarketValue
-     * @return self
-     */
     public function setHigherMarketValue(float $higherMarketValue): self
     {
         $this->higherMarketValue = $higherMarketValue;
@@ -156,18 +147,11 @@ class ValuationStats
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getOfferLevel(): int
     {
         return $this->offerLevel;
     }
 
-    /**
-     * @param int $offerLevel
-     * @return self
-     */
     public function setOfferLevel(int $offerLevel): self
     {
         $this->offerLevel = $offerLevel;
@@ -175,18 +159,11 @@ class ValuationStats
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getAverageDaysOnMarket(): int
     {
         return $this->averageDaysOnMarket;
     }
 
-    /**
-     * @param int $averageDaysOnMarket
-     * @return self
-     */
     public function setAverageDaysOnMarket(int $averageDaysOnMarket): self
     {
         $this->averageDaysOnMarket = $averageDaysOnMarket;
@@ -194,18 +171,11 @@ class ValuationStats
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getAverageKilometers(): int
     {
         return $this->averageKilometers;
     }
 
-    /**
-     * @param int $averageKilometers
-     * @return self
-     */
     public function setAverageKilometers(int $averageKilometers): self
     {
         $this->averageKilometers = $averageKilometers;
@@ -213,18 +183,11 @@ class ValuationStats
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getSuggestedOffer(): float
     {
         return $this->suggestedOffer;
     }
 
-    /**
-     * @param float $suggestedOffer
-     * @return self
-     */
     public function setSuggestedOffer(float $suggestedOffer): self
     {
         $this->suggestedOffer = $suggestedOffer;
@@ -242,7 +205,6 @@ class ValuationStats
 
     /**
      * @param array<string, float> $formulas
-     * @return self
      */
     public function setFormulas(array $formulas): self
     {
