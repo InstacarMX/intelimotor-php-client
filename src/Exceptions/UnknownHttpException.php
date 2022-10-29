@@ -20,6 +20,8 @@
 
 namespace Instacar\IntelimotorApiClient\Exceptions;
 
-class UnknownHttpException extends \Exception
+use Psr\Http\Client\ClientExceptionInterface;
+
+class UnknownHttpException extends \Exception implements ClientExceptionInterface
 {
 }

@@ -20,6 +20,10 @@
 
 namespace Instacar\IntelimotorApiClient\Client;
 
+use Instacar\IntelimotorApiClient\Exceptions\BadRequestHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\ForbiddenHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\UnauthorizedHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\UnknownHttpException;
 use Instacar\IntelimotorApiClient\Response\HttpResponse;
 use Instacar\IntelimotorApiClient\Response\HttpResponseInterface;
 use Psr\Http\Client\ClientInterface;
@@ -51,6 +55,23 @@ final class HttpClient implements ClientInterface
     public function sendRequest(RequestInterface $request): HttpResponseInterface
     {
         $response = $this->client->sendRequest($request);
+        $statusCode = $response->getStatusCode();
+
+        if ($statusCode === 400) {
+            throw new BadRequestHttpException($response->getReasonPhrase());
+        }
+
+        if ($statusCode === 401) {
+            throw new UnauthorizedHttpException($response->getReasonPhrase());
+        }
+
+        if ($statusCode === 403) {
+            throw new ForbiddenHttpException($response->getReasonPhrase());
+        }
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new UnknownHttpException($response->getReasonPhrase());
+        }
 
         return new HttpResponse($response, $this->serializer);
     }

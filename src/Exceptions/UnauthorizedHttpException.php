@@ -20,6 +20,8 @@
 
 namespace Instacar\IntelimotorApiClient\Exceptions;
 
-class UnauthorizedHttpException extends \Exception
+use Psr\Http\Client\ClientExceptionInterface;
+
+class UnauthorizedHttpException extends \Exception implements ClientExceptionInterface
 {
 }

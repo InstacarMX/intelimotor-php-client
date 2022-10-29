@@ -20,6 +20,8 @@
 
 namespace Instacar\IntelimotorApiClient\Exceptions;
 
-class BadRequestHttpException extends \Exception
+use Psr\Http\Client\ClientExceptionInterface;
+
+class BadRequestHttpException extends \Exception implements ClientExceptionInterface
 {
 }

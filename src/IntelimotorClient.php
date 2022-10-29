@@ -21,10 +21,6 @@
 namespace Instacar\IntelimotorApiClient;
 
 use Instacar\IntelimotorApiClient\Client\HttpClient;
-use Instacar\IntelimotorApiClient\Exceptions\BadRequestHttpException;
-use Instacar\IntelimotorApiClient\Exceptions\ForbiddenHttpException;
-use Instacar\IntelimotorApiClient\Exceptions\UnauthorizedHttpException;
-use Instacar\IntelimotorApiClient\Exceptions\UnknownHttpException;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
 use Instacar\IntelimotorApiClient\Model\Color;
@@ -50,7 +46,6 @@ use Instacar\IntelimotorApiClient\Response\ColorResponse;
 use Instacar\IntelimotorApiClient\Response\ColorsResponse;
 use Instacar\IntelimotorApiClient\Response\CreateMessageResponse;
 use Instacar\IntelimotorApiClient\Response\CreateValuationResponse;
-use Instacar\IntelimotorApiClient\Response\HttpResponseInterface;
 use Instacar\IntelimotorApiClient\Response\ModelResponse;
 use Instacar\IntelimotorApiClient\Response\ModelsResponse;
 use Instacar\IntelimotorApiClient\Response\TrimResponse;
@@ -158,10 +153,6 @@ class IntelimotorClient
     /**
      * @return iterable<BusinessUnit>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBusinessUnits(): iterable
     {
@@ -175,10 +166,6 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return BusinessUnit
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBusinessUnit(string $businessUnitId): BusinessUnit
     {
@@ -192,10 +179,6 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBusinessUnitUnits(string $businessUnitId): iterable
     {
@@ -209,10 +192,6 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBusinessUnitInventoryUnits(string $businessUnitId): iterable
     {
@@ -226,10 +205,6 @@ class IntelimotorClient
      * @param string $businessUnitId
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBusinessUnitSoldUnits(string $businessUnitId): iterable
     {
@@ -242,10 +217,6 @@ class IntelimotorClient
     /**
      * @return iterable<Color>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getColors(): iterable
     {
@@ -258,10 +229,6 @@ class IntelimotorClient
     /**
      * @return iterable<Color>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getColorsCsv(): iterable
     {
@@ -276,10 +243,6 @@ class IntelimotorClient
      * @param string $colorId
      * @return Color
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getColor(string $colorId): Color
     {
@@ -293,10 +256,6 @@ class IntelimotorClient
      * @param string $country
      * @return iterable<Brand>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBrands(string $country = 'MX'): iterable
     {
@@ -312,10 +271,6 @@ class IntelimotorClient
      * @param string $country
      * @return iterable<Brand>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBrandsCsv(string $country = 'MX'): iterable
     {
@@ -330,10 +285,6 @@ class IntelimotorClient
      * @param string $brandId
      * @return Brand
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getBrand(string $brandId): Brand
     {
@@ -347,10 +298,6 @@ class IntelimotorClient
      * @param string $brandId
      * @return iterable<Model>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getModels(string $brandId): iterable
     {
@@ -364,10 +311,6 @@ class IntelimotorClient
      * @param string $country
      * @return iterable<Model>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getModelsCsv(string $country = 'MX'): iterable
     {
@@ -383,10 +326,6 @@ class IntelimotorClient
      * @param string $modelId
      * @return Model
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getModel(string $brandId, string $modelId): Model
     {
@@ -401,10 +340,6 @@ class IntelimotorClient
      * @param string $modelId
      * @return iterable<Year>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getYears(string $brandId, string $modelId): iterable
     {
@@ -418,10 +353,6 @@ class IntelimotorClient
      * @param string $country
      * @return iterable<Year>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getYearsCsv(string $country = 'MX'): iterable
     {
@@ -438,10 +369,6 @@ class IntelimotorClient
      * @param string $yearId
      * @return Year
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getYear(string $brandId, string $modelId, string $yearId): Year
     {
@@ -457,10 +384,6 @@ class IntelimotorClient
      * @param string $yearId
      * @return iterable<Trim>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getTrims(string $brandId, string $modelId, string $yearId): iterable
     {
@@ -474,10 +397,6 @@ class IntelimotorClient
      * @param string $country
      * @return iterable<Trim>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getTrimsCsv(string $country = 'MX'): iterable
     {
@@ -495,10 +414,6 @@ class IntelimotorClient
      * @param string $trimId
      * @return Trim
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getTrim(string $brandId, string $modelId, string $yearId, string $trimId): Trim
     {
@@ -511,10 +426,6 @@ class IntelimotorClient
     /**
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getUnits(): iterable
     {
@@ -524,10 +435,6 @@ class IntelimotorClient
     /**
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getInventoryUnits(): iterable
     {
@@ -537,10 +444,6 @@ class IntelimotorClient
     /**
      * @return iterable<Unit>
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getSoldUnits(): iterable
     {
@@ -551,10 +454,6 @@ class IntelimotorClient
      * @param string $id
      * @return Unit
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function getUnit(string $id): Unit
     {
@@ -563,10 +462,6 @@ class IntelimotorClient
 
     /**
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function createMessage(string $channel, CreateMessageInput $message): CreateMessageOutput
     {
@@ -577,10 +472,6 @@ class IntelimotorClient
 
     /**
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     public function createValuation(CreateValuationInput $valuation): CreateValuationOutput
     {
@@ -589,7 +480,7 @@ class IntelimotorClient
 
     public static function createDefault(string $apiKey, string $apiSecret): self
     {
-        if (!class_exists(HttpClient::class)) {
+        if (!class_exists(SymfonyHttpClient::class)) {
             throw new LogicException(
                 'You must install the Symfony HTTP Client component.' . PHP_EOL .
                 'Please, execute "composer require symfony/http-client" in your project root'
@@ -626,10 +517,6 @@ class IntelimotorClient
      * @phpstan-return TResponse
      * @return object
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     private function itemRequest(
         string $responseClass,
@@ -641,7 +528,7 @@ class IntelimotorClient
         array $headers = [],
     ): object {
         $request = $this->makeRequest($endpoint, $method, $params, $payload, $authenticated, $headers);
-        $response = $this->sendRequest($request);
+        $response = $this->client->sendRequest($request);
 
         return $response->deserializeResponse($responseClass)->getData();
     }
@@ -663,10 +550,6 @@ class IntelimotorClient
      * @phpstan-return iterable<TResponse>
      * @return iterable
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     private function collectionRequest(
         string $responseClass,
@@ -678,7 +561,7 @@ class IntelimotorClient
         array $headers = [],
     ): iterable {
         $request = $this->makeRequest($endpoint, $method, $params, $payload, $authenticated, $headers);
-        $response = $this->sendRequest($request);
+        $response = $this->client->sendRequest($request);
 
         return $response->deserializeResponse($responseClass)->getData();
     }
@@ -697,10 +580,6 @@ class IntelimotorClient
      * @phpstan-return iterable<T>
      * @return iterable
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     private function paginatedRequest(
         string $responseClass,
@@ -718,7 +597,7 @@ class IntelimotorClient
             $params['pageSize'] = (string) $pageSize;
 
             $request = $this->makeRequest($endpoint, $method, $params, null, $authenticated, $headers);
-            $response = $this->sendRequest($request);
+            $response = $this->client->sendRequest($request);
             $paginatedResponse = $response->deserializeResponse($responseClass);
             $items = $paginatedResponse->getData();
 
@@ -739,10 +618,6 @@ class IntelimotorClient
      * @phpstan-return iterable<array<string, string>>
      * @return iterable
      * @throws ClientExceptionInterface
-     * @throws BadRequestHttpException
-     * @throws UnauthorizedHttpException
-     * @throws ForbiddenHttpException
-     * @throws UnknownHttpException
      */
     private function csvRequest(
         string $endpoint,
@@ -751,7 +626,7 @@ class IntelimotorClient
         array $headers = [],
     ): iterable {
         $request = $this->makeRequest("$endpoint/csv", 'GET', $params, null, $authenticated, $headers);
-        $response = $this->sendRequest($request);
+        $response = $this->client->sendRequest($request);
 
         $columns = null;
         foreach ($response->streamLines() as $row) {
@@ -799,38 +674,5 @@ class IntelimotorClient
         }
 
         return $request;
-    }
-
-    /**
-     * @param HttpRequestInterface $request
-     * @return HttpResponseInterface
-     * @throws BadRequestHttpException
-     * @throws ClientExceptionInterface
-     * @throws ForbiddenHttpException
-     * @throws UnauthorizedHttpException
-     * @throws UnknownHttpException
-     */
-    private function sendRequest(HttpRequestInterface $request): HttpResponseInterface
-    {
-        $response = $this->client->sendRequest($request);
-        $statusCode = $response->getStatusCode();
-
-        if ($statusCode === 400) {
-            throw new BadRequestHttpException($response->getReasonPhrase());
-        }
-
-        if ($statusCode === 401) {
-            throw new UnauthorizedHttpException($response->getReasonPhrase());
-        }
-
-        if ($statusCode === 403) {
-            throw new ForbiddenHttpException($response->getReasonPhrase());
-        }
-
-        if ($statusCode < 200 || $statusCode > 299) {
-            throw new UnknownHttpException($response->getReasonPhrase());
-        }
-
-        return $response;
     }
 }
