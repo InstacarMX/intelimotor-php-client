@@ -64,6 +64,12 @@ Esta librería utiliza la licencia Lesser General Public Licence Version 3 (LGPL
 [LICENSE](LICENSE).
 
 ## Registro de cambios
+### v2.1.0
+- Se mejoró las excepciones para derivar de la interfaz ClientExceptionInterface.
+- Se agregó una nueva excepción para el estatus HTTP 404 No encontrado.
+#### CAMBIOS ROMPEDORES
+- Se eliminó la excepción ForbiddenHttpException.
+
 ### v2.0.0
 - Se migró el código para utilizar los estándares PSR-7, PSR-17 y PSR-18 para las llamadas HTTP a la API de Intelimotor.
 - Se actualizó la versión mínima de PHP a 8.1 y de Symfony a 5.4.
