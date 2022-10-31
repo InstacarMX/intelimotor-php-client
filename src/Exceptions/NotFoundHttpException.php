@@ -41,6 +41,6 @@ namespace Instacar\IntelimotorApiClient\Exceptions;
 
 use Psr\Http\Client\ClientExceptionInterface;
 
-class ForbiddenHttpException extends \Exception implements ClientExceptionInterface
+class NotFoundHttpException extends \Exception implements ClientExceptionInterface
 {
 }

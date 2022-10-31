@@ -93,6 +93,20 @@ class FixturesResponseFactory
         '/api/colors/5ce850dd045e5d03040c6a5c' => [
             'GET' => 'colors-item-get.json',
         ],
+
+        // Errors
+        '/api/business-units/bad-request' => [
+            'GET' => ['payload' => '400-bad-request-get.json', 'statusCode' => 400],
+        ],
+        '/api/business-units/unauthorized' => [
+            'GET' => ['payload' => '401-unauthorized-get.json', 'statusCode' => 401],
+        ],
+        '/api/business-units/000000000000000000000000' => [
+            'GET' => ['payload' => '404-not-found-get.json', 'statusCode' => 404],
+        ],
+        '/api/business-units/500000000000000000000000' => [
+            'GET' => ['payload' => '500-server-error-get.json', 'statusCode' => 500],
+        ],
     ];
 
     /**
@@ -103,11 +117,18 @@ class FixturesResponseFactory
         $uri = new Uri($url);
 
         $fixture = self::FIXTURES[$uri->getPath()][$method];
-        $payload = file_get_contents(__DIR__ . \DIRECTORY_SEPARATOR . $fixture);
+        if (\is_string($fixture)) {
+            $fixture = ['payload' => $fixture];
+        }
+
+        $payload = file_get_contents(__DIR__ . \DIRECTORY_SEPARATOR . $fixture['payload']);
         if ($payload === false) {
             throw new \UnexpectedValueException(sprintf('Could not read file %s', $fixture));
         }
 
-        return new MockResponse($payload, ['response_headers' => ['Content-Type' => 'application/json']]);
+        return new MockResponse($payload, [
+            'http_code' => $fixture['statusCode'] ?? 200,
+            'response_headers' => ['Content-Type' => 'application/json'],
+        ]);
     }
 }

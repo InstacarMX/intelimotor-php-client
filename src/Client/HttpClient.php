@@ -40,7 +40,7 @@ declare(strict_types=1);
 namespace Instacar\IntelimotorApiClient\Client;
 
 use Instacar\IntelimotorApiClient\Exceptions\BadRequestHttpException;
-use Instacar\IntelimotorApiClient\Exceptions\ForbiddenHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\NotFoundHttpException;
 use Instacar\IntelimotorApiClient\Exceptions\UnauthorizedHttpException;
 use Instacar\IntelimotorApiClient\Exceptions\UnknownHttpException;
 use Instacar\IntelimotorApiClient\Response\HttpResponse;
@@ -80,8 +80,8 @@ final class HttpClient implements ClientInterface
             throw new UnauthorizedHttpException($response->getReasonPhrase());
         }
 
-        if ($statusCode === 403) {
-            throw new ForbiddenHttpException($response->getReasonPhrase());
+        if ($statusCode === 404) {
+            throw new NotFoundHttpException($response->getReasonPhrase());
         }
 
         if ($statusCode < 200 || $statusCode > 299) {

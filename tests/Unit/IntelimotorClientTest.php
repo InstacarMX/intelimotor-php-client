@@ -39,6 +39,10 @@ declare(strict_types=1);
 
 namespace Instacar\IntelimotorApiClient\Test\Unit;
 
+use Instacar\IntelimotorApiClient\Exceptions\BadRequestHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\NotFoundHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\UnauthorizedHttpException;
+use Instacar\IntelimotorApiClient\Exceptions\UnknownHttpException;
 use Instacar\IntelimotorApiClient\IntelimotorClient;
 use Instacar\IntelimotorApiClient\Model\Brand;
 use Instacar\IntelimotorApiClient\Model\BusinessUnit;
@@ -592,5 +596,29 @@ class IntelimotorClientTest extends TestCase
         $color = $this->client->getColor('5ce850dd045e5d03040c6a5c');
         $this->assertEquals('5ce850dd045e5d03040c6a5c', $color->getId());
         $this->assertEquals('Agua', $color->getName());
+    }
+
+    public function testBadRequestExceptions(): void
+    {
+        $this->expectException(BadRequestHttpException::class);
+        $this->client->getBusinessUnit('bad-request');
+    }
+
+    public function testUnauthorizedException(): void
+    {
+        $this->expectException(UnauthorizedHttpException::class);
+        $this->client->getBusinessUnit('unauthorized');
+    }
+
+    public function testNotFoundException(): void
+    {
+        $this->expectException(NotFoundHttpException::class);
+        $this->client->getBusinessUnit('000000000000000000000000');
+    }
+
+    public function testServerErrorException(): void
+    {
+        $this->expectException(UnknownHttpException::class);
+        $this->client->getBusinessUnit('500000000000000000000000');
     }
 }
